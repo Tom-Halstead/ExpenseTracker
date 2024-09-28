@@ -1,7 +1,10 @@
-INSERT INTO "user" (username, email, password_hash)
+INSERT INTO "user" (username, first_name, last_name, email, password_hash, is_active)
 VALUES
-    ('johndoe', 'johndoe@example.com', 'hashedpassword1'),
-    ('janedoe', 'janedoe@example.com', 'hashedpassword2');
+    ('johndoe', 'John', 'Doe', 'johndoe@example.com', 'hashedpassword1', TRUE),
+    ('janedoe', 'Jane', 'Doe', 'janedoe@example.com', 'hashedpassword2', TRUE),
+    ('mikejohnson', 'Mike', 'Johnson', 'mikej@example.com', 'hashedpassword3', TRUE),
+    ('lisabrown', 'Lisa', 'Brown', 'lisab@example.com', 'hashedpassword4', FALSE),
+    ('alexwhite', 'Alex', 'White', 'alexw@example.com', 'hashedpassword5', TRUE);
 
 
 INSERT INTO category ("name", "type", description, user_id)

@@ -1,4 +1,13 @@
 package com.expensetracker.model.dao;
 
-public class BudgetDao {
+import com.expensetracker.model.entities.Budget;
+
+import java.util.List;
+
+public interface BudgetDao {
+    List<Budget> getAllBudgets();
+    Budget getBudgetById(int id);
+    void addBudget(Budget budget);
+    void updateBudget(Budget budget);
+    void deleteBudget(int id);
 }
