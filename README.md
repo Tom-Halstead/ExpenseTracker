@@ -14,7 +14,7 @@ Track your expenses, manage your budget, and record your income all in one centr
 
 ## Features
 - Budget: Enter your monthly allowance and track your expenses out of that set budget.
-- Income: Track your incomes, set income types.
+- Income: Track your incomes, set income types, calculate incomes
 - Expenses: Manage your expenses, track your monthly spending
 
 ---

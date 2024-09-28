@@ -4,9 +4,11 @@ DROP TABLE IF EXISTS expense, category, budget, recurring_expense, income, "user
 CREATE TABLE "user" (
     user_id serial PRIMARY KEY,
     username varchar(50) NOT NULL UNIQUE,
-    email varchar(20) NOT NULL,
+    first_name varchar (20) NOT NULL,
+    last_name varchar (20) NOT NULL,
+    email varchar(50) NOT NULL,
     password_hash varchar(50),
-    is_active varchar(255) NOT NULL,
+    is_active boolean DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP)
 );
 
@@ -14,7 +16,7 @@ CREATE TABLE category (
     category_id serial PRIMARY KEY,
     user_id int NOT NULL,
     "name" varchar(50) NOT NULL UNIQUE,
-    type varchar(20) NOT NULL,
+    type varchar(50) NOT NULL,
     description varchar(50),
     is_active BOOLEAN DEFAULT TRUE,
     created_at DATE DEFAULT CURRENT_DATE,
@@ -59,7 +61,7 @@ CREATE TABLE income (
     user_id int NOT NULL,
     amount DECIMAL(10, 2) NOT NULL,
     date DATE NOT NULL,
-    "source" varchar(15) NOT NULL,
+    "source" varchar(50) NOT NULL,
     description varchar(50),
     category_id int,
     CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES category(category_id),

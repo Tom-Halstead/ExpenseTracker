@@ -1,18 +1,19 @@
-package com.expensetracker.model;
+package com.expensetracker.model.entities;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Expense {
     private int id;
     private String description;
-    private double amount;
+    private BigDecimal amount;
     private LocalDate date;
     private int categoryId;
 
     public Expense(int categoryId, LocalDate date, double amount, String description, int id) {
         this.categoryId = categoryId;
         this.date = date;
-        this.amount = amount;
+        this.amount = BigDecimal.valueOf(amount);
         this.description = description;
         this.id = id;
     }
@@ -33,12 +34,12 @@ public class Expense {
         this.date = date;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
     public void setAmount(double amount) {
-        this.amount = amount;
+        this.amount = BigDecimal.valueOf(amount);
     }
 
     public String getDescription() {
