@@ -1,23 +1,35 @@
 package com.expensetracker.model;
 
+import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 
+@Entity
+@Table(name = "budget")
 public class Budget {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int userId;
-    private int categoryId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
     private BigDecimal amount;
     private int month;
     private int year;
 
-    public Budget(int id, int userId, int categoryId, BigDecimal amount, int month, int year) {
+    public Budget(int id, User user, Category category, BigDecimal amount, int month, int year) {
         this.id = id;
-        this.userId = userId;
-        this.categoryId = categoryId;
+        this.user = user;
+        this.category = category;
         this.amount = amount;
         this.month = month;
         this.year = year;
     }
+    public Budget() {}
+
 
     public int getId() {
         return id;
@@ -27,20 +39,20 @@ public class Budget {
         this.id = id;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public int getCategoryId() {
-        return categoryId;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public BigDecimal getAmount() {

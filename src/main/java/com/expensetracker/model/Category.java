@@ -1,23 +1,33 @@
 package com.expensetracker.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "category")
 public class Category {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "category_id")
     private int id;
     private String name;
     private String description;
     private String type;
+    @Column(name = "is_active")
     private boolean isActive;
-    private int userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
+    private User user;
 
-
-    public Category(int id, String name, String description, String type, boolean isActive, int userId) {
-        this.id = id;
+    public Category(String name, String description, String type, boolean isActive, User user) {
         this.name = name;
         this.description = description;
         this.type = type;
         this.isActive = isActive;
-        this.userId = userId;
+        this.user = user;
     }
-    
+    public Category() {}
+
+
     public int getId() {
         return id;
     }
@@ -58,11 +68,11 @@ public class Category {
         this.isActive = isActive;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

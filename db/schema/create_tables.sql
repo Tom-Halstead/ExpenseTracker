@@ -1,60 +1,59 @@
 DROP TABLE IF EXISTS expense, category, budget, income, "user" CASCADE;
 
-
 CREATE TABLE "user" (
-    user_id serial PRIMARY KEY,
-    username varchar(50) NOT NULL UNIQUE,
-    first_name varchar (20) NOT NULL,
-    last_name varchar (20) NOT NULL,
-    email varchar(50) NOT NULL,
-    password_hash varchar(50),
-    is_active boolean DEFAULT TRUE,
-    created_at TIMESTAMP DEFAULT (CURRENT_TIMESTAMP)
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    first_name VARCHAR(20) NOT NULL,
+    last_name VARCHAR(20) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    password_hash VARCHAR(255),  -- Increased length for hashes
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE category (
-    category_id serial PRIMARY KEY,
-    user_id int NOT NULL,
-    "name" varchar(50) NOT NULL UNIQUE,
-    type varchar(50) NOT NULL,
-    description varchar(50),
+    category_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    "name" VARCHAR(50) NOT NULL UNIQUE,
+    type VARCHAR(50) NOT NULL,
+    description VARCHAR(50),
     is_active BOOLEAN DEFAULT TRUE,
-    created_at DATE DEFAULT CURRENT_DATE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Changed to TIMESTAMP
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES "user"(user_id)
 );
 
-
 CREATE TABLE expense (
-    expense_id serial PRIMARY KEY,
-    user_id int NOT NULL,
-    description varchar(100) NOT NULL,
+    expense_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    description VARCHAR(100) NOT NULL,
     amount DECIMAL(10,2) NOT NULL,
+    recurring BOOLEAN DEFAULT FALSE,  -- Added default value
     date DATE NOT NULL,
-    category_id int,
+    category_id INT,
     CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES category(category_id),
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES "user"(user_id)
 );
 
 CREATE TABLE budget (
-    budget_id serial PRIMARY KEY,
-    user_id int NOT NULL,
-    "month" int NOT NULL,
-    "year" int NOT NULL,
+    budget_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    "month" INT NOT NULL,
+    "year" INT NOT NULL,
     amount DECIMAL(10, 2) NOT NULL,
     category_id INTEGER,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Consistent use of TIMESTAMP
     CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES category(category_id),
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES "user"(user_id)
 );
 
 CREATE TABLE income (
-    income_id serial PRIMARY KEY,
-    user_id int NOT NULL,
+    income_id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
     amount DECIMAL(10, 2) NOT NULL,
     date DATE NOT NULL,
-    "source" varchar(50) NOT NULL,
-    description varchar(50),
-    category_id int,
+    "source" VARCHAR(50) NOT NULL,
+    description VARCHAR(50),
+    category_id INT,
     CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES category(category_id),
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES "user"(user_id)
 );
-

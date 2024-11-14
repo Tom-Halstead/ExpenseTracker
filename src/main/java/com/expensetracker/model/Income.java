@@ -1,26 +1,36 @@
 package com.expensetracker.model;
 
+import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
+@Entity
+@Table(name = "income")
 public class Income {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int categoryId;
-    private int userId;
     private BigDecimal amount;
     private LocalDate date;
     private String description;
     private String source;
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "category_id", nullable = false)
+    private Category category;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
+    private User user;
 
-    public Income(int id, int categoryId, int userId, BigDecimal amount, LocalDate date, String description, String source) {
-        this.id = id;
-        this.categoryId = categoryId;
-        this.userId = userId;
+    public Income(BigDecimal amount, LocalDate date, String description, String source, Category category, User user) {
         this.amount = amount;
         this.date = date;
         this.description = description;
         this.source = source;
+        this.category = category;
+        this.user = user;
     }
+    public Income() {}
+
 
     public int getId() {
         return id;
@@ -30,20 +40,20 @@ public class Income {
         this.id = id;
     }
 
-    public int getCategoryId() {
-        return categoryId;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public BigDecimal getAmount() {
