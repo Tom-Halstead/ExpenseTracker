@@ -1,4 +1,4 @@
-package com.expensetracker.model.entities;
+package com.expensetracker.model;
 
 import java.sql.Timestamp;
 

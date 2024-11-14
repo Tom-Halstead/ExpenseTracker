@@ -1,4 +1,4 @@
-package com.expensetracker.model.entities;
+package com.expensetracker.model;
 
 public class Category {
     private int id;

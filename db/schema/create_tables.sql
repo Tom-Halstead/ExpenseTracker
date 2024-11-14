@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS expense, category, budget, recurring_expense, income, "user" CASCADE;
+DROP TABLE IF EXISTS expense, category, budget, income, "user" CASCADE;
 
 
 CREATE TABLE "user" (
@@ -45,17 +45,7 @@ CREATE TABLE budget (
     CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES category(category_id),
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES "user"(user_id)
 );
-CREATE TABLE recurring_expense (
-    recurring_expense_id serial PRIMARY KEY,
-    user_id int NOT NULL,
-    description varchar(50) NOT NULL,
-    amount DECIMAL(10, 2) NOT NULL,
-    category_id int,
-    recurrence_interval varchar(20) NOT NULL,
-    next_due_date DATE NOT NULL,
-    CONSTRAINT fk_category FOREIGN KEY (category_id) REFERENCES category(category_id),
-    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES "user"(user_id)
-);
+
 CREATE TABLE income (
     income_id serial PRIMARY KEY,
     user_id int NOT NULL,
