@@ -12,6 +12,21 @@ public class ExpenseDTO {
     private int categoryId;
     private int userId;
 
+    public ExpenseDTO(BigDecimal amount, String description, LocalDate date) {
+        this(-1, amount, description, date); // default id when not specified
+    }
+
+    // Constructor with id
+    public ExpenseDTO(int id, BigDecimal amount, String description, LocalDate date) {
+        this.id = id;
+        this.amount = amount;
+        this.description = description;
+        this.date = date;
+    }
+
+    public ExpenseDTO(){};
+
+
     public int getId() {
         return id;
     }
@@ -66,5 +81,15 @@ public class ExpenseDTO {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return "ExpenseDTO{" +
+                "id=" + id +
+                ", amount=" + amount +
+                ", description='" + description + '\'' +
+                ", date=" + date +
+                '}';
     }
 }

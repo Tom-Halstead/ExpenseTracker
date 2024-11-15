@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,8 +32,17 @@ public class ExpenseService {
         List<Expense> expenses = expenseRepository.findAll();
         return expenses.stream()
                 .map(this::convertToDTO)
-                .collect(Collectors.toList());    }
+                .collect(Collectors.toList());
+    }
 
+    public ExpenseDTO getExpenseById(int id) {
+        Optional<Expense> expense = expenseRepository.findById(id);
+        if (expense.isPresent()) {
+            return convertToDTO(expense.get());
+        } else {
+            throw new RuntimeException("Expense not found with id: " + id);
+        }
+    }
 
 
     public ExpenseDTO addExpense(ExpenseDTO expenseDTO) {
@@ -79,4 +89,6 @@ public class ExpenseService {
         expense.setUser(user);
         return expense;
     }
+
+
 }

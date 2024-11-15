@@ -21,6 +21,10 @@ public class ExpenseController {
     public List<ExpenseDTO> getAllExpenses() {
         return expenseService.getAllExpenses();
     }
+    @GetMapping("/{id}")
+    public ExpenseDTO getExpense(@PathVariable int id) {
+        return expenseService.getExpenseById(id);
+    }
 
     @PostMapping
     public ExpenseDTO addExpense(@RequestBody ExpenseDTO expenseDTO) {

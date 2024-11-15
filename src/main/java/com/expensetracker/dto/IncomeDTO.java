@@ -12,6 +12,26 @@ public class IncomeDTO {
     private String description;
     private String source;
 
+
+    public IncomeDTO() {}
+
+    // Constructor for new records without an ID
+    public IncomeDTO(BigDecimal amount, String description, LocalDate date) {
+        this.amount = amount;
+        this.description = description;
+        this.date = date;
+    }
+
+    // Constructor for existing records with an ID
+    public IncomeDTO(Integer id, BigDecimal amount, String description, LocalDate date, int categoryId, int userId) {
+        this.id = id;
+        this.amount = amount;
+        this.description = description;
+        this.date = date;
+        this.categoryId = categoryId;
+        this.userId = userId;
+    }
+
     // Getters and Setters
     public int getId() {
         return id;
