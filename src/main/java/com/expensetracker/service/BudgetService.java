@@ -1,9 +1,9 @@
 package com.expensetracker.service;
 
 import com.expensetracker.dto.BudgetDTO;
-import com.expensetracker.model.Budget;
-import com.expensetracker.model.Category;
-import com.expensetracker.model.User;
+import com.expensetracker.entity.Budget;
+import com.expensetracker.entity.Category;
+import com.expensetracker.entity.User;
 import com.expensetracker.repository.BudgetRepository;
 import com.expensetracker.repository.CategoryRepository;
 import com.expensetracker.repository.UserRepository;

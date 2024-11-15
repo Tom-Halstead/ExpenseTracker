@@ -1,4 +1,4 @@
-package com.expensetracker.model;
+package com.expensetracker.entity;
 
 import jakarta.persistence.*;
 
@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
-@Table(name = "user")
+@Table(name = "\"user\"")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,6 +14,7 @@ public class User {
     private int id;
     private String role;
     private String username;
+    @Column(name = "password_hash")
     private String password;
     private String email;
 

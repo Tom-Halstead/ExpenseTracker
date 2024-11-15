@@ -1,4 +1,4 @@
-package com.expensetracker.model;
+package com.expensetracker.entity;
 
 import jakarta.persistence.*;
 

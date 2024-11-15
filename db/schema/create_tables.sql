@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS expense, category, budget, income, "user" CASCADE;
 
 CREATE TABLE "user" (
     "user_id" SERIAL PRIMARY KEY,
+	"role" VARCHAR(20),
     username VARCHAR(50) NOT NULL UNIQUE,
     first_name VARCHAR(20) NOT NULL,
     last_name VARCHAR(20) NOT NULL,

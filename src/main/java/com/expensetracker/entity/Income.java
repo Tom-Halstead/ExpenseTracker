@@ -1,22 +1,19 @@
-package com.expensetracker.model;
+package com.expensetracker.entity;
 
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 @Entity
-@Table(name = "expense")
-public class Expense {
+@Table(name = "income")
+public class Income {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String description;
     private BigDecimal amount;
     private LocalDate date;
-
-
-
-    private boolean recurring;
+    private String description;
+    private String source;
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "category_id", nullable = false)
     private Category category;
@@ -24,16 +21,24 @@ public class Expense {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private User user;
 
-    public Expense(Category category, User user, LocalDate date, double amount, String description, int id) {
+    public Income(BigDecimal amount, LocalDate date, String description, String source, Category category, User user) {
+        this.amount = amount;
+        this.date = date;
+        this.description = description;
+        this.source = source;
         this.category = category;
         this.user = user;
-        this.date = date;
-        this.amount = BigDecimal.valueOf(amount);
-        this.description = description;
+    }
+    public Income() {}
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
         this.id = id;
     }
-    public Expense() {}
-
 
     public Category getCategory() {
         return category;
@@ -42,27 +47,29 @@ public class Expense {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
     public LocalDate getDate() {
         return date;
     }
 
     public void setDate(LocalDate date) {
         this.date = date;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-    public boolean isRecurring() {
-        return recurring;
-    }
-
-    public void setRecurring(boolean recurring) {
-        this.recurring = recurring;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
     }
 
     public String getDescription() {
@@ -73,18 +80,11 @@ public class Expense {
         this.description = description;
     }
 
-    public int getId() {
-        return id;
+    public String getSource() {
+        return source;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+    public void setSource(String source) {
+        this.source = source;
     }
 }
