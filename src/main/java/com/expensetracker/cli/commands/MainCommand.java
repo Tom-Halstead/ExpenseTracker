@@ -20,7 +20,7 @@ public class MainCommand implements Runnable {
     @Override
     public void run() {
         // This code runs if no subcommands are invoked.
-        System.out.println("Welcome to the Expense Tracker CLI. Use -h for help.");
+        System.out.println("Welcome to the Expense Tracker CLI/API");
     }
 
 }

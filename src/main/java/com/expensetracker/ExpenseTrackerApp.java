@@ -46,7 +46,9 @@ public class ExpenseTrackerApp {
                                 // Display a welcome message and help guide
                                 System.out.println();
                                 System.out.println();
-                                System.out.println("Welcome to the Expense Tracker CLI. Use the following commands to interact with the system:\n");
+                                System.out.println("Welcome to the Expense Tracker CLI.");
+                                System.out.println();
+
                                 displayHelp();
 
                                 while (true) {
@@ -65,12 +67,11 @@ public class ExpenseTrackerApp {
         }
 
         private void displayHelp() {
-                System.out.println("Available Commands:");
-                System.out.println("  user     (-a, -u, -d, -l)  - Manage users: (Add, Update, Delete, List)");
-                System.out.println("  expense  (-a, -u, -d, -l)  - Manage expenses: (Add, Update, Delete, List)");
-                System.out.println("  budget   (-a, -u, -d, -l)  - Manage budgets: (Add, Update, Delete, List)");
-                System.out.println("  income   (-a, -u, -d, -l)  - Manage incomes: (Add, Update, Delete, List)");
-                System.out.println("  category (-a, -u, -d, -l)  - Manage categories: (Add, Update, Delete, List)");
-                System.out.println("Use '-h' after a command for detailed options, e.g., 'user -h'.\n");
+                System.out.println("Available Commands: user, expense, budget, income, category");
+                System.out.println("Available Options:  (-a, -u, -d, -l)");
+                System.out.println();
+                System.out.println("Format: <command> [option] Example user -a (Adds a user)");
+                System.out.println();
+                System.out.println("Use '-h' after a command for more info, e.g., 'user -h'.\n");
         }
 }

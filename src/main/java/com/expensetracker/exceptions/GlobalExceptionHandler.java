@@ -47,4 +47,9 @@ public class GlobalExceptionHandler extends RuntimeException {
   public ResponseEntity<String> handleGenericException(Exception ex) {
     return new ResponseEntity<>("An unexpected error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
   }
+
+  @ExceptionHandler(InvalidCredentialsException.class)
+  public ResponseEntity<String> handleInvalidCredentialsException(InvalidCredentialsException ex) {
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+  }
 }

@@ -51,7 +51,9 @@ public class UserCommand implements Runnable {
             System.out.print("Enter username: ");
             username = scanner.nextLine();
 
-            if (userService.getUserByUsername(username) != null) {
+            // Check if the username already exists
+            UserDTO existingUser = userService.getUserByUsername(username);
+            if (existingUser != null) {
                 System.out.println("Username already exists. Please try a different username.");
             } else {
                 usernameExists = false; // Username is available
@@ -69,10 +71,12 @@ public class UserCommand implements Runnable {
         System.out.print("Enter last name: ");
         String lastName = scanner.nextLine();
 
-        boolean isActive = true; // Default to true as per your requirements
+        boolean isActive = true; // Default to true
 
+        // Create UserDTO here
         UserDTO userDTO = new UserDTO(username, email, firstName, lastName, isActive);
 
+        // Save the new user
         userService.addUser(userDTO);
 
         System.out.println("User added: " + userDTO.toString());
