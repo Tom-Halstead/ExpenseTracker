@@ -4,6 +4,8 @@ import com.expensetracker.dto.IncomeDTO;
 import com.expensetracker.entity.Category;
 import com.expensetracker.entity.Income;
 import com.expensetracker.entity.User;
+import com.expensetracker.exceptions.IncomeNotFoundException;
+import com.expensetracker.exceptions.InvalidIncomeDataException;
 import com.expensetracker.repository.CategoryRepository;
 import com.expensetracker.repository.IncomeRepository;
 import com.expensetracker.repository.UserRepository;
@@ -32,25 +34,37 @@ public class IncomeService {
 
     public IncomeDTO getIncomeById(int id) {
         Income income = incomeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Income not found"));
+                .orElseThrow(() -> new IncomeNotFoundException("Income with ID " + id + " not found"));
         return convertToDTO(income);
     }
 
     public IncomeDTO addIncome(IncomeDTO incomeDTO) {
-        Income income = convertToEntity(incomeDTO);
-        income = incomeRepository.save(income);
-        return convertToDTO(income);
+        try {
+            Income income = convertToEntity(incomeDTO);
+            income = incomeRepository.save(income);
+            return convertToDTO(income);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidIncomeDataException("Invalid data for income creation: " + e.getMessage());
+        }
     }
 
     public IncomeDTO updateIncome(int id, IncomeDTO incomeDTO) {
         Income income = incomeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Income not found"));
-        updateEntity(income, incomeDTO);
-        income = incomeRepository.save(income);
-        return convertToDTO(income);
+                .orElseThrow(() -> new IncomeNotFoundException("Income with ID " + id + " not found"));
+
+        try {
+            updateEntity(income, incomeDTO);
+            income = incomeRepository.save(income);
+            return convertToDTO(income);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidIncomeDataException("Invalid data for income update: " + e.getMessage());
+        }
     }
 
     public void deleteIncome(int id) {
+        if (!incomeRepository.existsById(id)) {
+            throw new IncomeNotFoundException("Income with ID " + id + " not found");
+        }
         incomeRepository.deleteById(id);
     }
 
@@ -68,9 +82,9 @@ public class IncomeService {
 
     private Income convertToEntity(IncomeDTO dto) {
         User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new InvalidIncomeDataException("User not found"));
         Category category = categoryRepository.findById(dto.getCategoryId())
-                .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+                .orElseThrow(() -> new InvalidIncomeDataException("Category not found"));
 
         Income income = new Income();
         income.setUser(user);

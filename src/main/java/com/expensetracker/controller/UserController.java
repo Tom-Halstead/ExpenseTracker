@@ -46,7 +46,7 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
 
-    // Delete a user
+    // Delete a user by username or ID
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteUser(@RequestParam(required = false) String username,

@@ -1,6 +1,8 @@
 package com.expensetracker.controller;
 
 import com.expensetracker.dto.BudgetDTO;
+import com.expensetracker.exceptions.BudgetNotFoundException;
+import com.expensetracker.exceptions.InvalidBudgetDataException;
 import com.expensetracker.service.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,5 +51,16 @@ public class BudgetController {
     public ResponseEntity<Void> deleteBudget(@PathVariable int id) {
         budgetService.deleteBudget(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // Exception Handlers
+    @ExceptionHandler(BudgetNotFoundException.class)
+    public ResponseEntity<String> handleBudgetNotFound(BudgetNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(InvalidBudgetDataException.class)
+    public ResponseEntity<String> handleInvalidBudgetData(InvalidBudgetDataException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 }

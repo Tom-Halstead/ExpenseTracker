@@ -4,6 +4,9 @@ import com.expensetracker.dto.BudgetDTO;
 import com.expensetracker.entity.Budget;
 import com.expensetracker.entity.Category;
 import com.expensetracker.entity.User;
+import com.expensetracker.exceptions.BudgetNotFoundException;
+import com.expensetracker.exceptions.CategoryNotFoundException;
+import com.expensetracker.exceptions.UserNotFoundException;
 import com.expensetracker.repository.BudgetRepository;
 import com.expensetracker.repository.CategoryRepository;
 import com.expensetracker.repository.UserRepository;
@@ -32,7 +35,7 @@ public class BudgetService {
 
     public BudgetDTO getBudgetById(int id) {
         Budget budget = budgetRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Budget not found"));
+                .orElseThrow(() -> new BudgetNotFoundException(id));
         return convertToDTO(budget);
     }
 
@@ -44,13 +47,16 @@ public class BudgetService {
 
     public BudgetDTO updateBudget(int id, BudgetDTO budgetDTO) {
         Budget budget = budgetRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Budget not found"));
+                .orElseThrow(() -> new BudgetNotFoundException(id));
         updateEntity(budget, budgetDTO);
         budget = budgetRepository.save(budget);
         return convertToDTO(budget);
     }
 
     public void deleteBudget(int id) {
+        if (!budgetRepository.existsById(id)) {
+            throw new BudgetNotFoundException(id);
+        }
         budgetRepository.deleteById(id);
     }
 
@@ -67,9 +73,9 @@ public class BudgetService {
 
     private Budget convertToEntity(BudgetDTO dto) {
         User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException(dto.getUserId()));
         Category category = categoryRepository.findById(dto.getCategoryId())
-                .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+                .orElseThrow(() -> new CategoryNotFoundException(dto.getCategoryId()));
 
         Budget budget = new Budget();
         budget.setUser(user);
