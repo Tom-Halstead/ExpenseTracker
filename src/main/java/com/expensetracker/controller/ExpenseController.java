@@ -38,6 +38,6 @@ public class ExpenseController {
 
     @DeleteMapping("/{id}")
     public void deleteExpense(@PathVariable int id) {
-        expenseService.deleteExpense(id);
+        expenseService.deleteExpenseById(id);
     }
 }

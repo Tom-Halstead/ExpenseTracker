@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
         @Autowired
         private PasswordEncoder passwordEncoder;
 
+
         public List<UserDTO> getAllUsers() {
             List<User> users = userRepository.findAll();
             return users.stream()
@@ -29,6 +30,12 @@ import java.util.stream.Collectors;
             User user = userRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("User not found"));
             return convertToDTO(user);
+        }
+
+        public UserDTO getUserByUsername(String username) {
+            return userRepository.findByUsername(username)
+                    .map(this::convertToDTO)
+                    .orElse(null); // Return null if user is not found
         }
 
         public UserDTO addUser(UserDTO userDTO) {
@@ -54,8 +61,16 @@ import java.util.stream.Collectors;
             return convertToDTO(user);
         }
 
-        public void deleteUser(int id) {
-            userRepository.deleteById(id);
+        public void deleteUserById(int id) {
+            User user = userRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+            userRepository.delete(user);
+        }
+
+        public void deleteUserByUsername(String username) {
+            User user = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+            userRepository.delete(user);
         }
 
         private UserDTO convertToDTO(User user) {
@@ -68,4 +83,6 @@ import java.util.stream.Collectors;
             dto.setActive(user.isActive());
             return dto;
         }
+
+
     }

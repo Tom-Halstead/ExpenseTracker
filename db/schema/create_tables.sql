@@ -8,7 +8,7 @@ CREATE TABLE "user" (
     last_name VARCHAR(20) NOT NULL,
     email VARCHAR(50) NOT NULL,
     password_hash VARCHAR(255),  -- Increased length for hashes
-    is_active BOOLEAN DEFAULT TRUE,
+    is_active BOOLEAN DEFAULT true,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -19,7 +19,7 @@ CREATE TABLE category (
     type VARCHAR(50) NOT NULL,
     description VARCHAR(50),
     is_active BOOLEAN DEFAULT TRUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Changed to TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
     CONSTRAINT fk_user FOREIGN KEY ("user_id") REFERENCES "user"("user_id")
 );
 

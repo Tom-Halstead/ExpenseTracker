@@ -6,7 +6,19 @@ public class UserDTO {
     private String email;
     private String firstName;
     private String lastName;
-    private boolean isActive;
+    private boolean isActive = true;
+
+
+    public UserDTO(String username, String email, String firstName, String lastName, boolean isActive) {
+        this.username = username;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.isActive = isActive;
+    }
+
+    public UserDTO() {};
+
 
     // Getters and Setters
     public int getId() {
@@ -55,5 +67,11 @@ public class UserDTO {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("username='%s', email='%s', firstName='%s', lastName='%s'}",
+                username, email, firstName, lastName);
     }
 }

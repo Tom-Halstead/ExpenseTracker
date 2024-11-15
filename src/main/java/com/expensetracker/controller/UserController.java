@@ -48,9 +48,16 @@ public class UserController {
 
     // Delete a user
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable int id) {
-        userService.deleteUser(id);
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteUser(@RequestParam(required = false) String username,
+                                           @RequestParam(required = false) Integer id) {
+        if (username != null) {
+            userService.deleteUserByUsername(username);
+        } else if (id != null) {
+            userService.deleteUserById(id);
+        } else {
+            return ResponseEntity.badRequest().build(); // Return 400 if neither is provided
+        }
         return ResponseEntity.noContent().build();
     }
 }

@@ -25,7 +25,7 @@ public class User {
     private String lastName;
 
     @Column(name = "is_active")
-    private boolean isActive;
+    private boolean isActive = true;
 
     @Column(name = "created_at")
     private Timestamp createdAt;

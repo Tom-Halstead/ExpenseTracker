@@ -60,7 +60,7 @@ public class ExpenseService {
         Expense updatedExpense = expenseRepository.save(expense);
         return convertToDTO(updatedExpense);    }
 
-    public void deleteExpense(int id) {
+    public void deleteExpenseById(int id) {
         expenseRepository.deleteById(id);
     }
 

@@ -1,7 +1,9 @@
 package com.expensetracker.cli.commands;
 
+import org.springframework.stereotype.Component;
 import picocli.CommandLine;
 
+@Component
 @CommandLine.Command(
         name = "app",
         description = "Main entry point for the application.",
@@ -21,8 +23,4 @@ public class MainCommand implements Runnable {
         System.out.println("Welcome to the Expense Tracker CLI. Use -h for help.");
     }
 
-    public static void main(String[] args) {
-        int exitCode = new CommandLine(new MainCommand()).execute(args);
-        System.exit(exitCode);
-    }
 }
