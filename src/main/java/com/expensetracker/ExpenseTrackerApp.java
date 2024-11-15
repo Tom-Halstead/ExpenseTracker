@@ -37,6 +37,9 @@ public class ExpenseTrackerApp {
                 // Create a CommandLine instance with the factory and main command
                 CommandLine commandLine = new CommandLine(mainCommand, picocliFactory());
 
+                // Add CategoryCommand bean to CommandLine instance
+                commandLine.addSubcommand("category", applicationContext.getBean(CategoryCommand.class));
+
                 // Start the CLI in a separate thread to keep the server responsive
                 new Thread(() -> {
                         try (Scanner scanner = new Scanner(System.in)) {
@@ -63,10 +66,11 @@ public class ExpenseTrackerApp {
 
         private void displayHelp() {
                 System.out.println("Available Commands:");
-                System.out.println("  user  (-a, -u, -d, -l)  - Manage users: (Add, Update, Delete, List)");
-                System.out.println("  expense (-a, -u, -d, -l) - Manage expenses: (Add, Update, Delete, List)");
-                System.out.println("  budget (-a, -u, -d, -l) - Manage budgets: (Add, Update, Delete, List)");
-                System.out.println("  income (-a, -u, -d, -l) - Manage incomes: (Add, Update, Delete, List)");
+                System.out.println("  user     (-a, -u, -d, -l)  - Manage users: (Add, Update, Delete, List)");
+                System.out.println("  expense  (-a, -u, -d, -l)  - Manage expenses: (Add, Update, Delete, List)");
+                System.out.println("  budget   (-a, -u, -d, -l)  - Manage budgets: (Add, Update, Delete, List)");
+                System.out.println("  income   (-a, -u, -d, -l)  - Manage incomes: (Add, Update, Delete, List)");
+                System.out.println("  category (-a, -u, -d, -l)  - Manage categories: (Add, Update, Delete, List)");
                 System.out.println("Use '-h' after a command for detailed options, e.g., 'user -h'.\n");
         }
 }

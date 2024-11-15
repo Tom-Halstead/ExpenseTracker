@@ -2,6 +2,10 @@ package com.expensetracker.entity;
 
 import jakarta.persistence.*;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "category")
 public class Category {
@@ -11,6 +15,8 @@ public class Category {
     private int id;
     private String name;
     private String description;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
     private String type;
     @Column(name = "is_active")
     private boolean isActive;
@@ -74,5 +80,12 @@ public class Category {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return this.createdAt;
     }
 }

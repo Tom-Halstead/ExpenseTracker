@@ -14,22 +14,25 @@ public class IncomeDTO {
 
 
     public IncomeDTO() {}
-
-    // Constructor for new records without an ID
-    public IncomeDTO(BigDecimal amount, String description, LocalDate date) {
+    // Constructor for new records without an ID, including user and category IDs
+    public IncomeDTO(int userId, int categoryId, BigDecimal amount, LocalDate date, String description, String source) {
+        this.userId = userId;
+        this.categoryId = categoryId;
         this.amount = amount;
-        this.description = description;
         this.date = date;
+        this.description = description;
+        this.source = source;
     }
 
     // Constructor for existing records with an ID
-    public IncomeDTO(Integer id, BigDecimal amount, String description, LocalDate date, int categoryId, int userId) {
+    public IncomeDTO(int id, int userId, int categoryId, BigDecimal amount, LocalDate date, String description, String source) {
         this.id = id;
-        this.amount = amount;
-        this.description = description;
-        this.date = date;
-        this.categoryId = categoryId;
         this.userId = userId;
+        this.categoryId = categoryId;
+        this.amount = amount;
+        this.date = date;
+        this.description = description;
+        this.source = source;
     }
 
     // Getters and Setters

@@ -10,6 +10,16 @@ public class BudgetDTO {
     private int month;
     private int year;
 
+    public BudgetDTO(int userId, int categoryId, BigDecimal amount, int month, int year) {
+        this.userId = userId;
+        this.categoryId = categoryId;
+        this.amount = amount;
+        this.month = month;
+        this.year = year;
+    }
+
+    public BudgetDTO() {};
+
     // Getters and Setters
     public int getId() {
         return id;
@@ -57,5 +67,17 @@ public class BudgetDTO {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    @Override
+    public String toString() {
+        return "BudgetDTO{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", categoryId=" + categoryId +
+                ", amount=" + amount +
+                ", month=" + month +
+                ", year=" + year +
+                '}';
     }
 }

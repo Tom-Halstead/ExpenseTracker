@@ -1,6 +1,9 @@
 package com.expensetracker.cli.commands;
 
+import com.expensetracker.dto.CategoryDTO;
 import com.expensetracker.dto.ExpenseDTO;
+import com.expensetracker.exceptions.CategoryNotFoundException;
+import com.expensetracker.service.CategoryService;
 import com.expensetracker.service.ExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,6 +23,9 @@ public class ExpenseCommand implements Runnable {
 
     @Autowired
     private ExpenseService expenseService;
+
+    @Autowired
+    private CategoryService categoryService; // Inject CategoryService
 
     @CommandLine.Option(names = {"-a", "--add"}, description = "Add a new expense")
     private boolean add;
@@ -55,22 +61,28 @@ public class ExpenseCommand implements Runnable {
     }
 
     private void addExpense() {
-        System.out.print("Enter amount: ");
-        BigDecimal amount = new BigDecimal(scanner.nextLine()); // Using BigDecimal
+        System.out.print("Enter category ID: ");
+        int categoryId = Integer.parseInt(scanner.nextLine());
+        try {
+            // Validate if the category exists
+            CategoryDTO category = categoryService.getCategoryById(categoryId);
 
-        System.out.print("Enter description: ");
-        String description = scanner.nextLine();
+            System.out.print("Enter amount: ");
+            BigDecimal amount = new BigDecimal(scanner.nextLine());
 
-        // Use the current system date
-        LocalDate date = LocalDate.now();
+            System.out.print("Enter description: ");
+            String description = scanner.nextLine();
 
-        // Create an ExpenseDTO using BigDecimal for the amount and the current date
-        ExpenseDTO expenseDTO = new ExpenseDTO(amount, description, date);
+            // Use the current system date
+            LocalDate date = LocalDate.now();
 
-        // Save the new expense
-        expenseService.addExpense(expenseDTO);
-
-        System.out.println("Expense added with current date: " + expenseDTO.toString());
+            // Create an ExpenseDTO
+            ExpenseDTO expenseDTO = new ExpenseDTO(categoryId, amount, description, date);
+            expenseService.addExpense(expenseDTO);
+            System.out.println("Expense added with current date: " + expenseDTO.toString());
+        } catch (CategoryNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void deleteExpense() {
@@ -109,17 +121,21 @@ public class ExpenseCommand implements Runnable {
         BigDecimal amount = amountInput.isEmpty() ? existingExpense.getAmount() : new BigDecimal(amountInput);
 
         System.out.print("Enter new description (leave blank to keep current: " + existingExpense.getDescription() + "): ");
-        String description = scanner.nextLine().isEmpty() ? existingExpense.getDescription() : scanner.nextLine();
+        String description = scanner.nextLine();
+        if (!description.isEmpty()) {
+            existingExpense.setDescription(description);
+        }
 
         System.out.print("Enter new date (YYYY-MM-DD, leave blank to keep current: " + existingExpense.getDate() + "): ");
         String dateInput = scanner.nextLine();
         LocalDate date = dateInput.isEmpty() ? existingExpense.getDate() : LocalDate.parse(dateInput);
 
         // Create an updated ExpenseDTO with the modified values
-        ExpenseDTO updatedExpense = new ExpenseDTO(amount, description, date);
+        existingExpense.setAmount(amount);
+        existingExpense.setDate(date);
 
         // Call the service to update the expense
-        expenseService.updateExpense(id, updatedExpense);
-        System.out.println("Expense updated: " + updatedExpense.toString());
+        expenseService.updateExpense(id, existingExpense);
+        System.out.println("Expense updated: " + existingExpense.toString());
     }
 }
