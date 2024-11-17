@@ -2,21 +2,11 @@ package com.expensetracker.service;
 
 import com.expensetracker.dto.UserDTO;
 import com.expensetracker.entity.User;
-import com.expensetracker.exceptions.InvalidCredentialsException;
 import com.expensetracker.exceptions.UserNotFoundException;
 import com.expensetracker.exceptions.UsernameNotFoundException;
 import com.expensetracker.repository.UserRepository;
-import com.expensetracker.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 import java.util.List;
@@ -27,41 +17,12 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
-
-
 
     /**
-     * Authenticates the user and generates a JWT token if successful.
+     * Retrieves all users.
      *
-     * @param username the username
-     * @param password the password
-     * @return a JWT token if authentication is successful
+     * @return a list of all users
      */
-    public String authenticate(String username, String password) {
-        if (username == null || password == null) {
-            throw new InvalidCredentialsException("Username and password must not be null.");
-        }
-        try {
-            // Authenticate the user
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, password)
-            );
-
-            // Generate and return JWT token if authentication is successful
-            return jwtTokenProvider.generateToken(authentication);
-        } catch (Exception ex) {
-            throw new InvalidCredentialsException("Invalid username or password");
-        }
-    }
-
     public List<UserDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream()
@@ -69,22 +30,46 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    public UserDTO getUserByCognitoId(String cognitoId) {
+        User user = userRepository.findByCognitoId(cognitoId)
+                .orElseThrow(() -> new UserNotFoundException(Integer.parseInt(cognitoId)));
+        return convertToDTO(user);
+    }
+
+    /**
+     * Retrieves a user by ID.
+     *
+     * @param id the user ID
+     * @return the user DTO
+     */
     public UserDTO getUserById(int id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
         return convertToDTO(user);
     }
 
+    /**
+     * Retrieves a user by username.
+     *
+     * @param username the username
+     * @return the user DTO, or null if not found
+     */
     public UserDTO getUserByUsername(String username) {
         return userRepository.findByUsername(username)
                 .map(this::convertToDTO)
-                .orElse(null); // Return null if user is not found
+                .orElse(null);
     }
 
+    /**
+     * Adds a new user to the database.
+     * (Note: User authentication and password management are handled by Cognito.)
+     *
+     * @param userDTO the user data transfer object
+     * @return the created user DTO
+     */
     public UserDTO addUser(UserDTO userDTO) {
         User user = new User();
         user.setUsername(userDTO.getUsername());
-        user.setPassword(passwordEncoder.encode("defaultPassword"));
         user.setEmail(userDTO.getEmail());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
@@ -93,6 +78,13 @@ public class UserService {
         return convertToDTO(user);
     }
 
+    /**
+     * Updates an existing user.
+     *
+     * @param id the user ID
+     * @param userDTO the updated user data
+     * @return the updated user DTO
+     */
     public UserDTO updateUser(int id, UserDTO userDTO) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
@@ -104,18 +96,45 @@ public class UserService {
         return convertToDTO(user);
     }
 
+    public UserDTO updateUserByCognitoId(String cognitoId, UserDTO userDTO) {
+        User user = userRepository.findByCognitoId(cognitoId)
+                .orElseThrow(() -> new UserNotFoundException(Integer.parseInt(cognitoId)));
+        user.setEmail(userDTO.getEmail());
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setActive(userDTO.isActive());
+        user = userRepository.save(user);
+        return convertToDTO(user);
+    }
+
+    /**
+     * Deletes a user by ID.
+     *
+     * @param id the user ID
+     */
     public void deleteUserById(int id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
         userRepository.delete(user);
     }
 
+    /**
+     * Deletes a user by username.
+     *
+     * @param username the username
+     */
     public void deleteUserByUsername(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
         userRepository.delete(user);
     }
 
+    /**
+     * Converts a User entity to a UserDTO.
+     *
+     * @param user the user entity
+     * @return the user DTO
+     */
     private UserDTO convertToDTO(User user) {
         UserDTO dto = new UserDTO();
         dto.setId(user.getId());

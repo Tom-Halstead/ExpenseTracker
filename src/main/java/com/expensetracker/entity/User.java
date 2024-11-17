@@ -18,6 +18,9 @@ public class User {
     private String password;
     private String email;
 
+    @Column(name = "cognito_id")
+    private String cognitoId;
+
     @Column(name = "first_name")
     private String firstName;
 
@@ -44,7 +47,7 @@ public class User {
 
 
     public User(int id, String role, String username, String password, String email, String firstName,
-                String lastName, boolean isActive, Timestamp createdAt) {
+                String lastName, boolean isActive, Timestamp createdAt, String cognitoId) {
         this.id = id;
         this.role = role;
         this.username = username;
@@ -54,9 +57,18 @@ public class User {
         this.lastName = lastName;
         this.isActive = isActive;
         this.createdAt = createdAt;
+        this.cognitoId = cognitoId;
     }
 
     public User() {};
+
+    public String getCognitoId() {
+        return cognitoId;
+    }
+
+    public void setCognitoId(String cognitoId) {
+        this.cognitoId = cognitoId;
+    }
 
     public int getId() {
         return id;

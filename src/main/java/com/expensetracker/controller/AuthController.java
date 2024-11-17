@@ -1,12 +1,13 @@
 package com.expensetracker.controller;
 
 
-import com.expensetracker.dto.JwtResponseDTO;
-import com.expensetracker.dto.LoginRequestDTO;
-import com.expensetracker.service.UserService;
+import com.expensetracker.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.bind.annotation.*;
+import com.expensetracker.service.*;
 
 @CrossOrigin
 @RestController
@@ -16,9 +17,16 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequestDTO loginRequestDTO) {
-        String token = userService.authenticate(loginRequestDTO.getUsername(), loginRequestDTO.getPassword());
-        return ResponseEntity.ok(new JwtResponseDTO(token));
+
+    @GetMapping("/success")
+    public ResponseEntity<String> loginSuccess() {
+        return ResponseEntity.ok("Successfully authenticated with Cognito!");
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<UserDTO> getCurrentUserProfile(@AuthenticationPrincipal OidcUser oidcUser) {
+        String cognitoUserId = oidcUser.getSubject(); // Get the unique user ID from Cognito
+        UserDTO user = userService.getUserByCognitoId(cognitoUserId);
+        return ResponseEntity.ok(user);
     }
 }
