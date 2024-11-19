@@ -2,14 +2,18 @@ package com.expensetracker.dto;
 
 public class UserDTO {
     private int id;
-    private String username;
-    private String email;
+    private String cognitoUuid;  // Unique identifier from Cognito
+    private String username;     // Local username for display or internal use
+    private String email;        // Email used as the username in Cognito
     private String firstName;
     private String lastName;
     private boolean isActive = true;
+    private transient String password; // Not stored or serialized, used transiently for registration
 
-
-    public UserDTO(String username, String email, String firstName, String lastName, boolean isActive) {
+    // Constructor for creating a new user
+    public UserDTO(int id, String cognitoUuid, String username, String email, String firstName, String lastName, boolean isActive) {
+        this.id = id;
+        this.cognitoUuid = cognitoUuid;
         this.username = username;
         this.email = email;
         this.firstName = firstName;
@@ -17,16 +21,48 @@ public class UserDTO {
         this.isActive = isActive;
     }
 
-    public UserDTO() {};
+    /**
+     * Constructor for initial user creation before ID is set.
+     */
+    public UserDTO(String cognitoUuid, String username, String email, String firstName, String lastName, boolean isActive, String password) {
+        this.cognitoUuid = cognitoUuid;
+        this.username = username;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.isActive = isActive;
+        this.password = password; // Transient use for registration
+    }
 
+    /**
+     * No-argument constructor for frameworks.
+     */
+    public UserDTO() {}
 
-    // Getters and Setters
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public int getId() {
         return id;
     }
 
+
+
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getCognitoUuid() {
+        return cognitoUuid;
+    }
+
+    public void setCognitoUuid(String cognitoUuid) {
+        this.cognitoUuid = cognitoUuid;
     }
 
     public String getUsername() {
@@ -68,10 +104,7 @@ public class UserDTO {
     public void setActive(boolean active) {
         isActive = active;
     }
-
-    @Override
-    public String toString() {
-        return String.format("username='%s', email='%s', firstName='%s', lastName='%s'}",
-                username, email, firstName, lastName);
-    }
 }
+
+
+

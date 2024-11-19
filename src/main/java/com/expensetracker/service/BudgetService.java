@@ -21,11 +21,18 @@ public class BudgetService {
 
     @Autowired
     private BudgetRepository budgetRepository;
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private CategoryRepository categoryRepository;
 
+    /**
+     * Retrieves all budgets.
+     *
+     * @return a list of all budgets as DTOs.
+     */
     public List<BudgetDTO> getAllBudgets() {
         List<Budget> budgets = budgetRepository.findAll();
         return budgets.stream()
@@ -33,18 +40,37 @@ public class BudgetService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Retrieves a budget by its ID.
+     *
+     * @param id the budget ID.
+     * @return the corresponding budget DTO.
+     */
     public BudgetDTO getBudgetById(int id) {
         Budget budget = budgetRepository.findById(id)
                 .orElseThrow(() -> new BudgetNotFoundException(id));
         return convertToDTO(budget);
     }
 
+    /**
+     * Adds a new budget.
+     *
+     * @param budgetDTO the budget DTO containing the data to add.
+     * @return the created budget DTO.
+     */
     public BudgetDTO addBudget(BudgetDTO budgetDTO) {
         Budget budget = convertToEntity(budgetDTO);
         budget = budgetRepository.save(budget);
         return convertToDTO(budget);
     }
 
+    /**
+     * Updates an existing budget.
+     *
+     * @param id        the ID of the budget to update.
+     * @param budgetDTO the new budget data.
+     * @return the updated budget DTO.
+     */
     public BudgetDTO updateBudget(int id, BudgetDTO budgetDTO) {
         Budget budget = budgetRepository.findById(id)
                 .orElseThrow(() -> new BudgetNotFoundException(id));
@@ -53,6 +79,11 @@ public class BudgetService {
         return convertToDTO(budget);
     }
 
+    /**
+     * Deletes a budget by its ID.
+     *
+     * @param id the ID of the budget to delete.
+     */
     public void deleteBudget(int id) {
         if (!budgetRepository.existsById(id)) {
             throw new BudgetNotFoundException(id);
@@ -60,33 +91,62 @@ public class BudgetService {
         budgetRepository.deleteById(id);
     }
 
+    /**
+     * Converts a Budget entity to a BudgetDTO.
+     *
+     * @param budget the budget entity.
+     * @return the corresponding budget DTO.
+     */
     private BudgetDTO convertToDTO(Budget budget) {
-        BudgetDTO dto = new BudgetDTO();
-        dto.setId(budget.getId());
-        dto.setUserId(budget.getUser().getId());
-        dto.setCategoryId(budget.getCategory().getId());
-        dto.setAmount(budget.getAmount());
-        dto.setMonth(budget.getMonth());
-        dto.setYear(budget.getYear());
-        return dto;
+        return new BudgetDTO(
+                budget.getId(),
+                budget.getUser().getId(),
+                budget.getCategory() != null ? budget.getCategory().getId() : null, // Handle nullable category
+                budget.getAmount(),
+                budget.getMonth(),
+                budget.getYear()
+        );
     }
 
+    /**
+     * Converts a BudgetDTO to a Budget entity.
+     *
+     * @param dto the budget DTO.
+     * @return the corresponding budget entity.
+     */
     private Budget convertToEntity(BudgetDTO dto) {
         User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new UserNotFoundException(dto.getUserId()));
-        Category category = categoryRepository.findById(dto.getCategoryId())
-                .orElseThrow(() -> new CategoryNotFoundException(dto.getCategoryId()));
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + dto.getUserId()));
+
+        Category category = null;
+        if (dto.getCategoryId() != null) {
+            category = categoryRepository.findById(dto.getCategoryId())
+                    .orElseThrow(() -> new CategoryNotFoundException(dto.getCategoryId()));
+        }
 
         Budget budget = new Budget();
         budget.setUser(user);
-        budget.setCategory(category);
+        budget.setCategory(category); // Can be null if no category is provided
         budget.setAmount(dto.getAmount());
         budget.setMonth(dto.getMonth());
         budget.setYear(dto.getYear());
         return budget;
     }
 
+    /**
+     * Updates an existing Budget entity with data from a DTO.
+     *
+     * @param budget the existing budget entity.
+     * @param dto    the new budget data.
+     */
     private void updateEntity(Budget budget, BudgetDTO dto) {
+        if (dto.getCategoryId() != null) {
+            Category category = categoryRepository.findById(dto.getCategoryId())
+                    .orElseThrow(() -> new CategoryNotFoundException(dto.getCategoryId()));
+            budget.setCategory(category);
+        } else {
+            budget.setCategory(null); // Allow removing the category
+        }
         budget.setAmount(dto.getAmount());
         budget.setMonth(dto.getMonth());
         budget.setYear(dto.getYear());

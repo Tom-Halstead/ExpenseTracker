@@ -2,11 +2,15 @@ package com.expensetracker.service;
 
 import com.expensetracker.dto.CategoryDTO;
 import com.expensetracker.entity.Category;
+import com.expensetracker.entity.User;
 import com.expensetracker.exceptions.CategoryNotFoundException;
+import com.expensetracker.exceptions.UserNotFoundException;
 import com.expensetracker.repository.CategoryRepository;
+import com.expensetracker.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,10 +18,12 @@ import java.util.stream.Collectors;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository) {
+    public CategoryService(CategoryRepository categoryRepository, UserRepository userRepository) {
         this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
     }
 
     // Get all categories
@@ -31,13 +37,18 @@ public class CategoryService {
     // Get a single category by ID
     public CategoryDTO getCategoryById(int categoryId) {
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new CategoryNotFoundException(categoryId)); // Pass categoryId directly
+                .orElseThrow(() -> new CategoryNotFoundException(categoryId));
         return convertToDTO(category);
     }
 
     // Add a new category
     public CategoryDTO addCategory(CategoryDTO categoryDTO) {
+        User user = userRepository.findById(categoryDTO.getUserId())
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + categoryDTO.getUserId()));
+
         Category category = convertToEntity(categoryDTO);
+        category.setUser(user);
+        category.setCreatedAt(LocalDateTime.now());
         Category savedCategory = categoryRepository.save(category);
         return convertToDTO(savedCategory);
     }
@@ -47,10 +58,15 @@ public class CategoryService {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CategoryNotFoundException(categoryId));
 
+        User user = userRepository.findById(categoryDTO.getUserId())
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + categoryDTO.getUserId()));
+
         category.setName(categoryDTO.getName());
         category.setDescription(categoryDTO.getDescription());
         category.setType(categoryDTO.getType());
         category.setActive(categoryDTO.isActive());
+        category.setUser(user); // Update user reference if needed
+        category.setUpdatedAt(LocalDateTime.now());
 
         Category updatedCategory = categoryRepository.save(category);
         return convertToDTO(updatedCategory);
@@ -58,9 +74,10 @@ public class CategoryService {
 
     // Delete a category by ID
     public void deleteCategory(int categoryId) {
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new CategoryNotFoundException(categoryId));
-        categoryRepository.delete(category);
+        if (!categoryRepository.existsById(categoryId)) {
+            throw new CategoryNotFoundException(categoryId);
+        }
+        categoryRepository.deleteById(categoryId);
     }
 
     // Convert a Category entity to CategoryDTO
@@ -72,24 +89,21 @@ public class CategoryService {
                 category.getType(),
                 category.getDescription(),
                 category.isActive(),
-                category.getCreatedAt()
+                category.getCreatedAt(),
+                category.getUpdatedAt()
         );
     }
 
     // Convert a CategoryDTO to Category entity
     private Category convertToEntity(CategoryDTO categoryDTO) {
         Category category = new Category();
-
-        if (categoryDTO.getCategoryId() != null) {
-            category.setId(categoryDTO.getCategoryId());  // Only set if not null
-        }
-
+        category.setId(categoryDTO.getCategoryId());
         category.setName(categoryDTO.getName());
         category.setType(categoryDTO.getType());
         category.setDescription(categoryDTO.getDescription());
         category.setActive(categoryDTO.isActive());
-        category.setCreatedAt(categoryDTO.getCreatedAt());
-
+        category.setCreatedAt(categoryDTO.getCreatedAt() != null ? categoryDTO.getCreatedAt() : LocalDateTime.now());
+        category.setUpdatedAt(LocalDateTime.now());
         return category;
     }
 }

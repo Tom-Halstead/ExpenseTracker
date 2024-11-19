@@ -1,25 +1,27 @@
 package com.expensetracker.entity;
 
 import jakarta.persistence.*;
-
 import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
-@Table(name = "\"user\"")
+@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "\"user_id\"")
     private int id;
-    private String role;
+
+    @Column(name = "cognito_uuid", unique = true, nullable = false)
+    private String cognitoUuid;
+
+    @Column(name = "username", unique = true, nullable = false)
     private String username;
-    @Column(name = "password_hash")
-    private String password;
+
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Column(name = "cognito_id")
-    private String cognitoId;
+    @Column(name = "role")
+    private String role;
 
     @Column(name = "first_name")
     private String firstName;
@@ -30,45 +32,39 @@ public class User {
     @Column(name = "is_active")
     private boolean isActive = true;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     private Timestamp createdAt;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Column(name = "updated_at")
+    private Timestamp updatedAt;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> categories;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Expense> expenses;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Income> incomes;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Budget> budgets;
 
+    // Constructors, Getters, and Setters
+    public User() {}
 
-    public User(int id, String role, String username, String password, String email, String firstName,
-                String lastName, boolean isActive, Timestamp createdAt, String cognitoId) {
-        this.id = id;
-        this.role = role;
+    public User(String cognitoUuid, String username, String email, String role, String firstName, String lastName, boolean isActive) {
+        this.cognitoUuid = cognitoUuid;
         this.username = username;
-        this.password = password;
         this.email = email;
+        this.role = role;
         this.firstName = firstName;
         this.lastName = lastName;
         this.isActive = isActive;
-        this.createdAt = createdAt;
-        this.cognitoId = cognitoId;
+        this.createdAt = new Timestamp(System.currentTimeMillis());
+        this.updatedAt = new Timestamp(System.currentTimeMillis());
     }
 
-    public User() {};
-
-    public String getCognitoId() {
-        return cognitoId;
-    }
-
-    public void setCognitoId(String cognitoId) {
-        this.cognitoId = cognitoId;
-    }
 
     public int getId() {
         return id;
@@ -78,12 +74,12 @@ public class User {
         this.id = id;
     }
 
-    public String getRole() {
-        return role;
+    public String getCognitoUuid() {
+        return cognitoUuid;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setCognitoUuid(String cognitoUuid) {
+        this.cognitoUuid = cognitoUuid;
     }
 
     public String getUsername() {
@@ -94,20 +90,20 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getFirstName() {
@@ -140,6 +136,14 @@ public class User {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public List<Category> getCategories() {

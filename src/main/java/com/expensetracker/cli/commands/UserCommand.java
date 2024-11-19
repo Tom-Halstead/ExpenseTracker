@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import picocli.CommandLine;
 import com.expensetracker.service.UserService;
 
-import java.util.List;
 import java.util.Scanner;
 
 @Component
@@ -16,97 +15,94 @@ public class UserCommand implements Runnable {
     @Autowired
     private UserService userService;
 
-    @CommandLine.Option(names = {"-a", "--add"}, description = "Add a new user")
-    private boolean add;
+    private UserDTO loggedInUser;
 
-    @CommandLine.Option(names = {"-d", "--delete"}, description = "Delete a user")
-    private boolean delete;
+    @CommandLine.Option(names = {"-reg", "--register"}, description = "Register a new user")
+    private boolean register;
 
-    @CommandLine.Option(names = {"-l", "--list"}, description = "List all users")
-    private boolean list;
+    @CommandLine.Option(names = {"-login", "--login"}, description = "Log in as a user")
+    private boolean login;
 
-    private Scanner scanner = new Scanner(System.in);  // Scanner for user input
+    private Scanner scanner = new Scanner(System.in);
 
     @Override
     public void run() {
-        if (add) {
-            System.out.println("Adding a new user...");
-            addUser();
-        } else if (delete) {
-            System.out.println("Deleting a user...");
-            deleteUser();
-        } else if (list) {
-            System.out.println("Listing all users...");
-            listUsers();
+        if (register) {
+            registerUser();
+        } else if (login) {
+            loginUser();
         } else {
-            System.out.println("Please specify an option: --add, --delete, or --list");
+            System.out.println("Please specify an option: --register or --login to access other functionalities.");
         }
     }
 
-    private void addUser() {
-        boolean usernameExists = true;
-        String username = "";
-
-        while (usernameExists) {
-            System.out.print("Enter username: ");
-            username = scanner.nextLine();
-
-            // Check if the username already exists
-            UserDTO existingUser = userService.getUserByUsername(username);
-            if (existingUser != null) {
-                System.out.println("Username already exists. Please try a different username.");
-            } else {
-                usernameExists = false; // Username is available
-            }
-        }
-
-        System.out.println("Username '" + username + "' is available!");
-
+    private void registerUser() {
+        System.out.println("Please enter your registration details:");
         System.out.print("Enter email: ");
         String email = scanner.nextLine();
-
+        System.out.print("Enter username: ");
+        String username = scanner.nextLine();
         System.out.print("Enter first name: ");
         String firstName = scanner.nextLine();
-
         System.out.print("Enter last name: ");
         String lastName = scanner.nextLine();
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
 
-        boolean isActive = true; // Default to true
-
-        // Create UserDTO here
-        UserDTO userDTO = new UserDTO(username, email, firstName, lastName, isActive);
-
-        // Save the new user
-        userService.addUser(userDTO);
-
-        System.out.println("User added: " + userDTO.toString());
-    }
-
-    private void deleteUser() {
-        System.out.print("Delete by username or id? ");
-        String choice = scanner.nextLine().trim().toLowerCase();
-
-        if (choice.equals("username")) {
-            System.out.print("Enter the username: ");
-            String username = scanner.nextLine();
-            userService.deleteUserByUsername(username);
-            System.out.println("User deleted: Username = " + username);
-        } else if (choice.equals("id")) {
-            System.out.print("Enter the user ID: ");
-            int id = Integer.parseInt(scanner.nextLine());
-            userService.deleteUserById(id);
-            System.out.println("User deleted: ID = " + id);
+        UserDTO newUserDTO = new UserDTO(null, username, email, firstName, lastName, true, password);
+        UserDTO registeredUser = userService.addUser(newUserDTO);
+        if (registeredUser != null) {
+            System.out.println("Registration successful for: " + username);
+            loggedInUser = registeredUser;
+            runPostLoginOptions();
         } else {
-            System.out.println("Invalid choice. Use 'username' for username or 'id' for ID.");
+            System.out.println("Registration failed. Please try again.");
         }
     }
 
-    private void listUsers() {
-        List<UserDTO> users = userService.getAllUsers();
-        if (users.isEmpty()) {
-            System.out.println("No users found.");
+    private void loginUser() {
+        System.out.print("Enter email: ");
+        String email = scanner.nextLine();
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
+
+        loggedInUser = userService.login(email, password);
+        if (loggedInUser != null) {
+            System.out.println("Login successful for: " + email);
+            runPostLoginOptions();
         } else {
-            users.forEach(user -> System.out.println(user.toString()));
+            System.out.println("Login failed. Please check your credentials.");
+        }
+    }
+
+    private void runPostLoginOptions() {
+        System.out.println("Logged in as: " + loggedInUser.getUsername());
+        boolean running = true;
+        while (running) {
+            System.out.println("Enter command (add, delete, list, logout): ");
+            String command = scanner.nextLine();
+            switch (command.toLowerCase()) {
+                case "add":
+                    // Implement add functionality here
+                    System.out.println("Adding something..."); // Placeholder
+                    break;
+                case "delete":
+                    // Implement delete functionality here
+                    System.out.println("Deleting something..."); // Placeholder
+                    break;
+                case "list":
+                    // Implement list functionality here
+                    System.out.println("Listing items..."); // Placeholder
+                    break;
+                case "logout":
+                    System.out.println("Logging out...");
+                    loggedInUser = null;
+                    running = false;
+                    break;
+                default:
+                    System.out.println("Invalid command. Try again.");
+                    break;
+            }
         }
     }
 }

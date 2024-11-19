@@ -5,12 +5,14 @@ import java.math.BigDecimal;
 public class BudgetDTO {
     private int id;
     private int userId;
-    private int categoryId;
+    private Integer categoryId; // Changed to Integer to allow null values
     private BigDecimal amount;
     private int month;
     private int year;
 
-    public BudgetDTO(int userId, int categoryId, BigDecimal amount, int month, int year) {
+    // Full constructor including ID
+    public BudgetDTO(int id, int userId, Integer categoryId, BigDecimal amount, int month, int year) {
+        this.id = id;
         this.userId = userId;
         this.categoryId = categoryId;
         this.amount = amount;
@@ -18,7 +20,17 @@ public class BudgetDTO {
         this.year = year;
     }
 
-    public BudgetDTO() {};
+    // Constructor for creating a new Budget without ID
+    public BudgetDTO(int userId, Integer categoryId, BigDecimal amount, int month, int year) {
+        this.userId = userId;
+        this.categoryId = categoryId;
+        this.amount = amount;
+        this.month = month;
+        this.year = year;
+    }
+
+    // Default constructor
+    public BudgetDTO() {}
 
     // Getters and Setters
     public int getId() {
@@ -37,11 +49,11 @@ public class BudgetDTO {
         this.userId = userId;
     }
 
-    public int getCategoryId() {
+    public Integer getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(int categoryId) {
+    public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
 

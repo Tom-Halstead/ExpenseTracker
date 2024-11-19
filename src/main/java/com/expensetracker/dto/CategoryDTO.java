@@ -5,17 +5,18 @@ import java.time.LocalDateTime;
 public class CategoryDTO {
 
     private int categoryId;
-    private Integer userId;
+    private int userId; // Non-null to align with database structure
     private String name;
     private String type;
     private String description;
-    private boolean isActive;
+    private boolean isActive = true; // Default to true
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt; // Added updatedAt for consistency
 
     // Default constructor
     public CategoryDTO() {}
 
-    // Constructor without ID for new records
+    // Constructor for new records (without ID or timestamps)
     public CategoryDTO(int userId, String name, String type, String description, boolean isActive) {
         this.userId = userId;
         this.name = name;
@@ -24,8 +25,8 @@ public class CategoryDTO {
         this.isActive = isActive;
     }
 
-    // Constructor with ID for existing records
-    public CategoryDTO(int categoryId, int userId, String name, String type, String description, boolean isActive, LocalDateTime createdAt) {
+    // Constructor with all fields for existing records
+    public CategoryDTO(int categoryId, int userId, String name, String type, String description, boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.categoryId = categoryId;
         this.userId = userId;
         this.name = name;
@@ -33,15 +34,15 @@ public class CategoryDTO {
         this.description = description;
         this.isActive = isActive;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     // Getters and Setters
-
-    public Integer getCategoryId() {
+    public int getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(Integer categoryId) {
+    public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
     }
 
@@ -49,7 +50,7 @@ public class CategoryDTO {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -81,8 +82,8 @@ public class CategoryDTO {
         return isActive;
     }
 
-    public void setActive(boolean active) {
-        isActive = active;
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -91,6 +92,14 @@ public class CategoryDTO {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
@@ -103,6 +112,7 @@ public class CategoryDTO {
                 ", description='" + description + '\'' +
                 ", isActive=" + isActive +
                 ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
                 '}';
     }
 }

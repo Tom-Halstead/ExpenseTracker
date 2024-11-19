@@ -13,8 +13,12 @@ import java.util.List;
 @RequestMapping("/categories")
 public class CategoryController {
 
+    private final CategoryService categoryService;
+
     @Autowired
-    private CategoryService categoryService;
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     // Get all categories
     @GetMapping
@@ -33,6 +37,9 @@ public class CategoryController {
     // Create a new category
     @PostMapping
     public ResponseEntity<CategoryDTO> addCategory(@RequestBody CategoryDTO categoryDTO) {
+        if (categoryDTO.getUserId() == null) {
+            return ResponseEntity.badRequest().body(null); // Ensure userId is provided
+        }
         CategoryDTO newCategory = categoryService.addCategory(categoryDTO);
         return new ResponseEntity<>(newCategory, HttpStatus.CREATED);
     }
@@ -40,6 +47,9 @@ public class CategoryController {
     // Update an existing category
     @PutMapping("/{id}")
     public ResponseEntity<CategoryDTO> updateCategory(@PathVariable int id, @RequestBody CategoryDTO categoryDTO) {
+        if (categoryDTO.getUserId() == null) {
+            return ResponseEntity.badRequest().body(null); // Ensure userId is provided
+        }
         CategoryDTO updatedCategory = categoryService.updateCategory(id, categoryDTO);
         return ResponseEntity.ok(updatedCategory);
     }

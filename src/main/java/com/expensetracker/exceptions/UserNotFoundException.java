@@ -2,7 +2,7 @@ package com.expensetracker.exceptions;
 
 public class UserNotFoundException extends RuntimeException {
 
-    public UserNotFoundException(int userId) {
-        super("User with ID " + userId + " not found.");
+    public UserNotFoundException(String message) {
+        super("User with given ID not found.");
     }
 }
