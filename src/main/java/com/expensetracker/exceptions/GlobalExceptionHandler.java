@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends RuntimeException {
+
+
   @ExceptionHandler(BudgetNotFoundException.class)
   public ResponseEntity<String> handleBudgetNotFoundException(BudgetNotFoundException ex) {
     return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);

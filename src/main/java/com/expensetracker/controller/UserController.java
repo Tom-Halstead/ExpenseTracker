@@ -37,7 +37,7 @@ public class UserController {
     public ResponseEntity<UserDTO> getCurrentUserProfile(@AuthenticationPrincipal OidcUser oidcUser) {
         String cognitoUserId = oidcUser.getSubject();
         logger.info("Fetching profile for Cognito user ID: {}", cognitoUserId);
-        UserDTO user = userService.getUserByCognitoId(cognitoUserId);
+        UserDTO user = userService.findUserByCognitoId(cognitoUserId);
         return ResponseEntity.ok(user);
     }
 

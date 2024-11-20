@@ -26,7 +26,7 @@ public class AuthController {
     @GetMapping("/profile")
     public ResponseEntity<UserDTO> getCurrentUserProfile(@AuthenticationPrincipal OidcUser oidcUser) {
         String cognitoUserId = oidcUser.getSubject(); // Get the unique user ID from Cognito
-        UserDTO user = userService.getUserByCognitoId(cognitoUserId);
+        UserDTO user = userService.findUserByCognitoId(cognitoUserId);
         return ResponseEntity.ok(user);
     }
 }

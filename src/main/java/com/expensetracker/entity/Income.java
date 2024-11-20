@@ -1,27 +1,59 @@
 package com.expensetracker.entity;
 
 import jakarta.persistence.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "income")
 public class Income {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(nullable = false)
     private BigDecimal amount;
-    private LocalDate date;
+
+    @Column(nullable = false)
+    private LocalDateTime date;
+
+    @Column(length = 255)
     private String description;
+
+    @Column(nullable = false)
     private String source;
-    @ManyToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "category_id", nullable = false)
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", referencedColumnName = "category_id")
     private Category category;
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
-    public Income(BigDecimal amount, LocalDate date, String description, String source, Category category, User user) {
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public Income() {}
+
+    public Income(BigDecimal amount, LocalDateTime date, String description, String source, Category category, User user) {
+        this();
         this.amount = amount;
         this.date = date;
         this.description = description;
@@ -29,7 +61,9 @@ public class Income {
         this.category = category;
         this.user = user;
     }
-    public Income() {}
+
+    // Getters and setters
+
 
 
     public int getId() {
@@ -38,6 +72,38 @@ public class Income {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public Category getCategory() {
@@ -56,35 +122,19 @@ public class Income {
         this.user = user;
     }
 
-    public BigDecimal getAmount() {
-        return amount;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

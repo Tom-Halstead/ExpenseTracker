@@ -1,9 +1,8 @@
 package com.expensetracker.controller;
 
 import com.expensetracker.dto.ExpenseDTO;
-import com.expensetracker.exceptions.InvalidExpenseDataException;
+import com.expensetracker.exceptions.ExpenseNotFoundException;
 import com.expensetracker.service.ExpenseService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,18 +21,18 @@ public class ExpenseController {
     }
 
     @GetMapping
-    public List<ExpenseDTO> getAllExpenses() {
-        return expenseService.getAllExpenses();
+    public ResponseEntity<List<ExpenseDTO>> getAllExpenses() {
+        List<ExpenseDTO> expenses = expenseService.getAllExpenses();
+        return ResponseEntity.ok(expenses);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ExpenseDTO> getExpense(@PathVariable int id) {
+    public ResponseEntity<ExpenseDTO> getExpenseById(@PathVariable int id) {
         try {
             ExpenseDTO expense = expenseService.getExpenseById(id);
             return ResponseEntity.ok(expense);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(null); // Expense not found
+        } catch (ExpenseNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Expense not found
         }
     }
 
@@ -42,12 +41,8 @@ public class ExpenseController {
         try {
             ExpenseDTO createdExpense = expenseService.addExpense(expenseDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdExpense);
-        } catch (InvalidExpenseDataException e) { // custom exception for validation errors
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(null); // Invalid expense data
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(null); // General server error
+        } catch (IllegalArgumentException e) { // Assuming IllegalArgumentException is thrown for invalid data
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // Invalid expense data provided
         }
     }
 
@@ -56,12 +51,10 @@ public class ExpenseController {
         try {
             ExpenseDTO updatedExpense = expenseService.updateExpense(id, expenseDTO);
             return ResponseEntity.ok(updatedExpense);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(null); // Expense not found
-        } catch (InvalidExpenseDataException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(null); // Invalid expense data
+        } catch (ExpenseNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Expense not found
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // Invalid expense data
         }
     }
 
@@ -70,27 +63,15 @@ public class ExpenseController {
         try {
             expenseService.deleteExpenseById(id);
             return ResponseEntity.noContent().build();
-        } catch (EntityNotFoundException e) {
+        } catch (ExpenseNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Expense not found
         }
     }
 
-    // Custom exception handlers for better control
-    @ExceptionHandler(EntityNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleNotFoundException(EntityNotFoundException e) {
-        return e.getMessage();
-    }
-
-    @ExceptionHandler(InvalidExpenseDataException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleInvalidExpenseDataException(InvalidExpenseDataException e) {
-        return e.getMessage();
-    }
-
+    // Global exception handler for unhandled exceptions
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public String handleGeneralException(Exception e) {
-        return "An unexpected error occurred. Please try again later.";
+    public ResponseEntity<String> handleGeneralException(Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("An internal server error occurred: " + e.getMessage());
     }
 }

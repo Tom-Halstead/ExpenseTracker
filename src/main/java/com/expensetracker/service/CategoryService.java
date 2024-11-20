@@ -48,7 +48,6 @@ public class CategoryService {
 
         Category category = convertToEntity(categoryDTO);
         category.setUser(user);
-        category.setCreatedAt(LocalDateTime.now());
         Category savedCategory = categoryRepository.save(category);
         return convertToDTO(savedCategory);
     }
@@ -66,7 +65,6 @@ public class CategoryService {
         category.setType(categoryDTO.getType());
         category.setActive(categoryDTO.isActive());
         category.setUser(user); // Update user reference if needed
-        category.setUpdatedAt(LocalDateTime.now());
 
         Category updatedCategory = categoryRepository.save(category);
         return convertToDTO(updatedCategory);
@@ -102,8 +100,6 @@ public class CategoryService {
         category.setType(categoryDTO.getType());
         category.setDescription(categoryDTO.getDescription());
         category.setActive(categoryDTO.isActive());
-        category.setCreatedAt(categoryDTO.getCreatedAt() != null ? categoryDTO.getCreatedAt() : LocalDateTime.now());
-        category.setUpdatedAt(LocalDateTime.now());
         return category;
     }
 }

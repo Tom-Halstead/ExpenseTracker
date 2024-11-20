@@ -3,6 +3,7 @@ package com.expensetracker.entity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "budget")
@@ -30,10 +31,22 @@ public class Budget {
     private int year;
 
     @Column(name = "created_at", updatable = false)
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private Timestamp updatedAt;
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 
     // Default constructor
     public Budget() {}
@@ -46,8 +59,6 @@ public class Budget {
         this.amount = amount;
         this.month = month;
         this.year = year;
-        this.createdAt = new Timestamp(System.currentTimeMillis());
-        this.updatedAt = new Timestamp(System.currentTimeMillis());
     }
 
     // Getters and setters
@@ -99,19 +110,19 @@ public class Budget {
         this.year = year;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Timestamp updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

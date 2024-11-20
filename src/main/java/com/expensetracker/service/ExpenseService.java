@@ -4,14 +4,17 @@ import com.expensetracker.dto.ExpenseDTO;
 import com.expensetracker.entity.Category;
 import com.expensetracker.entity.Expense;
 import com.expensetracker.entity.User;
+import com.expensetracker.exceptions.ExpenseNotFoundException;
+import com.expensetracker.exceptions.CategoryNotFoundException;
+import com.expensetracker.exceptions.UserNotFoundException;
 import com.expensetracker.repository.ExpenseRepository;
 import com.expensetracker.repository.UserRepository;
 import com.expensetracker.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,59 +39,70 @@ public class ExpenseService {
     }
 
     public ExpenseDTO getExpenseById(int id) {
-        Optional<Expense> expense = expenseRepository.findById(id);
-        if (expense.isPresent()) {
-            return convertToDTO(expense.get());
-        } else {
-            throw new RuntimeException("Expense not found with id: " + id);
-        }
+        Expense expense = expenseRepository.findById(id)
+                .orElseThrow(() -> new ExpenseNotFoundException("Expense not found with id: " + id));
+        return convertToDTO(expense);
     }
-
 
     public ExpenseDTO addExpense(ExpenseDTO expenseDTO) {
         Expense expense = convertToEntity(expenseDTO);
-        Expense savedExpense = expenseRepository.save(expense);
-        return convertToDTO(savedExpense);
+        expense = expenseRepository.save(expense);
+        return convertToDTO(expense);
     }
 
     public ExpenseDTO updateExpense(int id, ExpenseDTO expenseDTO) {
         Expense expense = expenseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Expense not found"));
-        expense.setDescription(expenseDTO.getDescription());
-        expense.setAmount(expenseDTO.getAmount());
-        expense.setDate(expenseDTO.getDate());
-        Expense updatedExpense = expenseRepository.save(expense);
-        return convertToDTO(updatedExpense);    }
+                .orElseThrow(() -> new ExpenseNotFoundException("Expense not found with id: " + id));
+        updateEntityWithDTO(expense, expenseDTO);
+        expense = expenseRepository.save(expense);
+        return convertToDTO(expense);
+    }
 
     public void deleteExpenseById(int id) {
+        if (!expenseRepository.existsById(id)) {
+            throw new ExpenseNotFoundException("Expense not found with id: " + id);
+        }
         expenseRepository.deleteById(id);
     }
 
     private ExpenseDTO convertToDTO(Expense expense) {
-        ExpenseDTO dto = new ExpenseDTO();
-        dto.setId(expense.getId());
-        dto.setDescription(expense.getDescription());
-        dto.setAmount(expense.getAmount());
-        dto.setDate(expense.getDate());
-        dto.setCategoryName(expense.getCategory().getName());
-        dto.setCategoryId(expense.getCategory().getId());
-        dto.setUserId(expense.getUser().getId());
-        return dto;
+        return new ExpenseDTO(
+                expense.getId(),
+                expense.getDescription(),
+                expense.getAmount(),
+                expense.getDate(),
+                expense.isRecurring(),
+                expense.getCategory().getId(),
+                expense.getCategory().getName(),
+                expense.getUser().getId(),
+                expense.getCreatedAt(),
+                expense.getUpdatedAt()
+        );
     }
 
     private Expense convertToEntity(ExpenseDTO expenseDTO) {
+        Category category = categoryRepository.findById(expenseDTO.getCategoryId())
+                .orElseThrow(() -> new CategoryNotFoundException("Category not found with id: " + expenseDTO.getCategoryId()));
+        User user = userRepository.findById(expenseDTO.getUserId())
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + expenseDTO.getUserId()));
+
         Expense expense = new Expense();
+        expense.setId(expenseDTO.getId());
         expense.setDescription(expenseDTO.getDescription());
         expense.setAmount(expenseDTO.getAmount());
         expense.setDate(expenseDTO.getDate());
-        Category category = categoryRepository.findById(expenseDTO.getCategoryId())
-                .orElseThrow(() -> new RuntimeException("Category not found"));
-        User user = userRepository.findById(expenseDTO.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        expense.setRecurring(expenseDTO.isRecurring());
         expense.setCategory(category);
         expense.setUser(user);
+
         return expense;
     }
 
 
+    private void updateEntityWithDTO(Expense expense, ExpenseDTO expenseDTO) {
+        expense.setDescription(expenseDTO.getDescription());
+        expense.setAmount(expenseDTO.getAmount());
+        expense.setDate(expenseDTO.getDate());
+        // Assuming the category and user are not updated in this method
+    }
 }

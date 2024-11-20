@@ -2,30 +2,35 @@ package com.expensetracker.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class IncomeDTO {
     private int id;
     private int userId;
     private int categoryId;
     private BigDecimal amount;
-    private LocalDate date;
+    private LocalDateTime date;
     private String description;
     private String source;
-
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public IncomeDTO() {}
+
     // Constructor for new records without an ID, including user and category IDs
-    public IncomeDTO(int userId, int categoryId, BigDecimal amount, LocalDate date, String description, String source) {
+    public IncomeDTO(int userId, int categoryId, BigDecimal amount, LocalDateTime date, String description, String source, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.userId = userId;
         this.categoryId = categoryId;
         this.amount = amount;
         this.date = date;
         this.description = description;
         this.source = source;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
-    // Constructor for existing records with an ID
-    public IncomeDTO(int id, int userId, int categoryId, BigDecimal amount, LocalDate date, String description, String source) {
+    // Full constructor including id and timestamps for existing records
+    public IncomeDTO(int id, int userId, int categoryId, BigDecimal amount, LocalDateTime date, String description, String source, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.userId = userId;
         this.categoryId = categoryId;
@@ -33,6 +38,8 @@ public class IncomeDTO {
         this.date = date;
         this.description = description;
         this.source = source;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     // Getters and Setters
@@ -68,11 +75,11 @@ public class IncomeDTO {
         this.amount = amount;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -90,5 +97,21 @@ public class IncomeDTO {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

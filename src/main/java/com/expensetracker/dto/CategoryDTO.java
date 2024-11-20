@@ -46,7 +46,7 @@ public class CategoryDTO {
         this.categoryId = categoryId;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 

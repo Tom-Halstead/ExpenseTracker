@@ -1,16 +1,15 @@
 package com.expensetracker.cli.commands;
 
-import com.expensetracker.dto.CategoryDTO;
 import com.expensetracker.dto.ExpenseDTO;
-import com.expensetracker.exceptions.CategoryNotFoundException;
-import com.expensetracker.service.CategoryService;
 import com.expensetracker.service.ExpenseService;
+import com.expensetracker.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import picocli.CommandLine;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -25,7 +24,7 @@ public class ExpenseCommand implements Runnable {
     private ExpenseService expenseService;
 
     @Autowired
-    private CategoryService categoryService; // Inject CategoryService
+    private CategoryService categoryService;
 
     @CommandLine.Option(names = {"-a", "--add"}, description = "Add a new expense")
     private boolean add;
@@ -39,21 +38,18 @@ public class ExpenseCommand implements Runnable {
     @CommandLine.Option(names = {"-u", "--update"}, description = "Update an existing expense")
     private boolean update;
 
-    private Scanner scanner = new Scanner(System.in);  // Scanner for user input
+    private Scanner scanner = new Scanner(System.in);
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @Override
     public void run() {
         if (add) {
-            System.out.println("Adding a new expense...");
             addExpense();
         } else if (delete) {
-            System.out.println("Deleting an expense...");
             deleteExpense();
         } else if (list) {
-            System.out.println("Listing all expenses...");
             listExpenses();
         } else if (update) {
-            System.out.println("Updating an existing expense...");
             updateExpense();
         } else {
             System.out.println("Please specify an option: --add, --delete, --list, or --update");
@@ -63,79 +59,65 @@ public class ExpenseCommand implements Runnable {
     private void addExpense() {
         System.out.print("Enter category ID: ");
         int categoryId = Integer.parseInt(scanner.nextLine());
-        try {
-            // Validate if the category exists
-            CategoryDTO category = categoryService.getCategoryById(categoryId);
 
-            System.out.print("Enter amount: ");
-            BigDecimal amount = new BigDecimal(scanner.nextLine());
+        System.out.print("Enter user ID: ");
+        int userId = Integer.parseInt(scanner.nextLine());
 
-            System.out.print("Enter description: ");
-            String description = scanner.nextLine();
+        System.out.print("Enter amount: ");
+        BigDecimal amount = new BigDecimal(scanner.nextLine());
 
-            // Use the current system date
-            LocalDate date = LocalDate.now();
+        System.out.print("Enter description: ");
+        String description = scanner.nextLine();
 
-            // Create an ExpenseDTO
-            ExpenseDTO expenseDTO = new ExpenseDTO(categoryId, amount, description, date);
-            expenseService.addExpense(expenseDTO);
-            System.out.println("Expense added with current date: " + expenseDTO.toString());
-        } catch (CategoryNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
+        System.out.print("Enter date and time (yyyy-MM-dd HH:mm): ");
+        LocalDateTime date = LocalDateTime.parse(scanner.nextLine(), dateTimeFormatter);
+
+        boolean recurring = getRecurringInput();
+
+        LocalDateTime now = LocalDateTime.now();
+
+        ExpenseDTO expenseDTO = new ExpenseDTO(0, description, amount, date, recurring, categoryId, null, userId, now, now);
+        expenseService.addExpense(expenseDTO);
+        System.out.println("Expense added: " + expenseDTO);
+    }
+
+    private boolean getRecurringInput() {
+        System.out.print("Is this a recurring expense? (yes/no): ");
+        return "yes".equalsIgnoreCase(scanner.nextLine());
     }
 
     private void deleteExpense() {
-        System.out.print("Delete by ID: ");
+        System.out.print("Enter expense ID to delete: ");
         int id = Integer.parseInt(scanner.nextLine());
-
         expenseService.deleteExpenseById(id);
         System.out.println("Expense deleted: ID = " + id);
     }
 
     private void listExpenses() {
         List<ExpenseDTO> expenses = expenseService.getAllExpenses();
-        if (expenses.isEmpty()) {
-            System.out.println("No expenses found.");
-        } else {
-            expenses.forEach(expense -> System.out.println(expense.toString()));
-        }
+        expenses.forEach(expense -> System.out.println(expense));
     }
 
     private void updateExpense() {
         System.out.print("Enter the ID of the expense to update: ");
         int id = Integer.parseInt(scanner.nextLine());
-
-        // Fetch the existing expense details
         ExpenseDTO existingExpense = expenseService.getExpenseById(id);
-        if (existingExpense == null) {
-            System.out.println("Expense not found.");
-            return;
-        }
 
-        System.out.println("Current expense details: " + existingExpense.toString());
-
-        // Prompt for new values and update only if provided
-        System.out.print("Enter new amount (leave blank to keep current: " + existingExpense.getAmount() + "): ");
+        System.out.print("Enter new amount (leave blank to keep current): ");
         String amountInput = scanner.nextLine();
         BigDecimal amount = amountInput.isEmpty() ? existingExpense.getAmount() : new BigDecimal(amountInput);
 
-        System.out.print("Enter new description (leave blank to keep current: " + existingExpense.getDescription() + "): ");
-        String description = scanner.nextLine();
-        if (!description.isEmpty()) {
-            existingExpense.setDescription(description);
-        }
+        System.out.print("Enter new description (leave blank to keep current): ");
+        String description = scanner.nextLine().isEmpty() ? existingExpense.getDescription() : scanner.nextLine();
 
-        System.out.print("Enter new date (YYYY-MM-DD, leave blank to keep current: " + existingExpense.getDate() + "): ");
+        System.out.print("Enter new date and time (yyyy-MM-dd HH:mm, leave blank to keep current): ");
         String dateInput = scanner.nextLine();
-        LocalDate date = dateInput.isEmpty() ? existingExpense.getDate() : LocalDate.parse(dateInput);
+        LocalDateTime date = dateInput.isEmpty() ? existingExpense.getDate() : LocalDateTime.parse(dateInput, dateTimeFormatter);
 
-        // Create an updated ExpenseDTO with the modified values
-        existingExpense.setAmount(amount);
-        existingExpense.setDate(date);
+        boolean recurring = getRecurringInput();
 
-        // Call the service to update the expense
-        expenseService.updateExpense(id, existingExpense);
-        System.out.println("Expense updated: " + existingExpense.toString());
+        ExpenseDTO updatedExpense = new ExpenseDTO(id, description, amount, date, recurring, existingExpense.getCategoryId(), existingExpense.getCategoryName(), existingExpense.getUserId(), existingExpense.getCreatedAt(), LocalDateTime.now());
+        expenseService.updateExpense(id, updatedExpense);
+        System.out.println("Expense updated: " + updatedExpense);
     }
 }

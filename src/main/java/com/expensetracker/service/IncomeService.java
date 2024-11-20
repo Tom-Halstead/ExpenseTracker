@@ -5,7 +5,6 @@ import com.expensetracker.entity.Category;
 import com.expensetracker.entity.Income;
 import com.expensetracker.entity.User;
 import com.expensetracker.exceptions.IncomeNotFoundException;
-import com.expensetracker.exceptions.InvalidIncomeDataException;
 import com.expensetracker.repository.CategoryRepository;
 import com.expensetracker.repository.IncomeRepository;
 import com.expensetracker.repository.UserRepository;
@@ -39,26 +38,17 @@ public class IncomeService {
     }
 
     public IncomeDTO addIncome(IncomeDTO incomeDTO) {
-        try {
-            Income income = convertToEntity(incomeDTO);
-            income = incomeRepository.save(income);
-            return convertToDTO(income);
-        } catch (IllegalArgumentException e) {
-            throw new InvalidIncomeDataException("Invalid data for income creation: " + e.getMessage());
-        }
+        Income income = convertToEntity(incomeDTO);
+        income = incomeRepository.save(income);
+        return convertToDTO(income);
     }
 
     public IncomeDTO updateIncome(int id, IncomeDTO incomeDTO) {
         Income income = incomeRepository.findById(id)
                 .orElseThrow(() -> new IncomeNotFoundException("Income with ID " + id + " not found"));
-
-        try {
-            updateEntity(income, incomeDTO);
-            income = incomeRepository.save(income);
-            return convertToDTO(income);
-        } catch (IllegalArgumentException e) {
-            throw new InvalidIncomeDataException("Invalid data for income update: " + e.getMessage());
-        }
+        updateEntityWithDTO(income, incomeDTO);
+        income = incomeRepository.save(income);
+        return convertToDTO(income);
     }
 
     public void deleteIncome(int id) {
@@ -77,16 +67,19 @@ public class IncomeService {
         dto.setDate(income.getDate());
         dto.setDescription(income.getDescription());
         dto.setSource(income.getSource());
+        dto.setCreatedAt(income.getCreatedAt());  // Directly using the timestamp set by JPA
+        dto.setUpdatedAt(income.getUpdatedAt());  // Directly using the timestamp set by JPA
         return dto;
     }
 
     private Income convertToEntity(IncomeDTO dto) {
         User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new InvalidIncomeDataException("User not found"));
+                .orElseThrow(() -> new IncomeNotFoundException("User not found"));
         Category category = categoryRepository.findById(dto.getCategoryId())
-                .orElseThrow(() -> new InvalidIncomeDataException("Category not found"));
+                .orElseThrow(() -> new IncomeNotFoundException("Category not found"));
 
         Income income = new Income();
+        income.setId(dto.getId()); // Set ID in case of update
         income.setUser(user);
         income.setCategory(category);
         income.setAmount(dto.getAmount());
@@ -96,7 +89,7 @@ public class IncomeService {
         return income;
     }
 
-    private void updateEntity(Income income, IncomeDTO dto) {
+    private void updateEntityWithDTO(Income income, IncomeDTO dto) {
         income.setAmount(dto.getAmount());
         income.setDate(dto.getDate());
         income.setDescription(dto.getDescription());

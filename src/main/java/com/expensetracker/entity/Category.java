@@ -12,13 +12,13 @@ public class Category {
     @Column(name = "category_id")
     private Integer id;
 
-    @Column(name = "name", nullable = false, unique = true, length = 50)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "description", length = 50)
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "type", nullable = false, length = 50)
+    @Column(name = "type", nullable = false)
     private String type;
 
     @Column(name = "is_active", nullable = false)
@@ -28,26 +28,33 @@ public class Category {
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "created_at", updatable = false)
+    @Column(name = "created_at", updatable = false, nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    @PrePersist
+    protected void onCreate() {
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
     // Constructors
+    public Category() {}
+
     public Category(String name, String description, String type, boolean isActive, User user) {
         this.name = name;
         this.description = description;
         this.type = type;
         this.isActive = isActive;
         this.user = user;
-        this.createdAt = LocalDateTime.now(); // Automatically set creation timestamp
-        this.updatedAt = LocalDateTime.now(); // Automatically set update timestamp
-    }
-
-    public Category() {
-        this.createdAt = LocalDateTime.now(); // Automatically set creation timestamp
-        this.updatedAt = LocalDateTime.now(); // Automatically set update timestamp
     }
 
     // Getters and Setters
@@ -65,7 +72,6 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
-        this.updatedAt = LocalDateTime.now(); // Update timestamp on modification
     }
 
     public String getDescription() {
@@ -74,7 +80,6 @@ public class Category {
 
     public void setDescription(String description) {
         this.description = description;
-        this.updatedAt = LocalDateTime.now(); // Update timestamp on modification
     }
 
     public String getType() {
@@ -83,7 +88,6 @@ public class Category {
 
     public void setType(String type) {
         this.type = type;
-        this.updatedAt = LocalDateTime.now(); // Update timestamp on modification
     }
 
     public boolean isActive() {
@@ -92,7 +96,6 @@ public class Category {
 
     public void setActive(boolean isActive) {
         this.isActive = isActive;
-        this.updatedAt = LocalDateTime.now(); // Update timestamp on modification
     }
 
     public User getUser() {
@@ -101,22 +104,14 @@ public class Category {
 
     public void setUser(User user) {
         this.user = user;
-        this.updatedAt = LocalDateTime.now(); // Update timestamp on modification
     }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }

@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 import picocli.CommandLine;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Scanner;
 
@@ -30,7 +31,8 @@ public class IncomeCommand implements Runnable {
     @CommandLine.Option(names = {"-u", "--update"}, description = "Update an existing income")
     private boolean update;
 
-    private final Scanner scanner = new Scanner(System.in);  // Scanner for user input
+    private final Scanner scanner = new Scanner(System.in);
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @Override
     public void run() {
@@ -61,8 +63,8 @@ public class IncomeCommand implements Runnable {
         System.out.print("Enter source: ");
         String source = scanner.nextLine();
 
-        // Use the current system date for income date
-        LocalDate date = LocalDate.now();
+        System.out.print("Enter date and time (yyyy-MM-dd HH:mm): ");
+        LocalDateTime date = LocalDateTime.parse(scanner.nextLine(), dateTimeFormatter);
 
         System.out.print("Enter user ID: ");
         int userId = Integer.parseInt(scanner.nextLine());
@@ -70,19 +72,16 @@ public class IncomeCommand implements Runnable {
         System.out.print("Enter category ID: ");
         int categoryId = Integer.parseInt(scanner.nextLine());
 
-        // Create an IncomeDTO with the user input
-        IncomeDTO incomeDTO = new IncomeDTO(userId, categoryId, amount, date, description, source);
+        LocalDateTime now = LocalDateTime.now();
 
-        // Save the new income
+        IncomeDTO incomeDTO = new IncomeDTO(userId, categoryId, amount, date, description, source, now, now);
         incomeService.addIncome(incomeDTO);
-
         System.out.println("Income added: " + incomeDTO.toString());
     }
 
     private void deleteIncome() {
-        System.out.print("Delete by ID: ");
+        System.out.print("Enter income ID to delete: ");
         int id = Integer.parseInt(scanner.nextLine());
-
         incomeService.deleteIncome(id);
         System.out.println("Income deleted: ID = " + id);
     }
@@ -99,35 +98,26 @@ public class IncomeCommand implements Runnable {
     private void updateIncome() {
         System.out.print("Enter the ID of the income to update: ");
         int id = Integer.parseInt(scanner.nextLine());
-
-        // Fetch the existing income details
         IncomeDTO existingIncome = incomeService.getIncomeById(id);
-        if (existingIncome == null) {
-            System.out.println("Income not found.");
-            return;
-        }
 
         System.out.println("Current income details: " + existingIncome.toString());
 
-        // Prompt for new values and update only if provided
-        System.out.print("Enter new amount (leave blank to keep current: " + existingIncome.getAmount() + "): ");
+        System.out.print("Enter new amount (leave blank to keep current): ");
         String amountInput = scanner.nextLine();
         BigDecimal amount = amountInput.isEmpty() ? existingIncome.getAmount() : new BigDecimal(amountInput);
 
-        System.out.print("Enter new description (leave blank to keep current: " + existingIncome.getDescription() + "): ");
+        System.out.print("Enter new description (leave blank to keep current): ");
         String description = scanner.nextLine().isEmpty() ? existingIncome.getDescription() : scanner.nextLine();
 
-        System.out.print("Enter new source (leave blank to keep current: " + existingIncome.getSource() + "): ");
+        System.out.print("Enter new source (leave blank to keep current): ");
         String source = scanner.nextLine().isEmpty() ? existingIncome.getSource() : scanner.nextLine();
 
-        System.out.print("Enter new date (YYYY-MM-DD, leave blank to keep current: " + existingIncome.getDate() + "): ");
+        System.out.print("Enter new date and time (yyyy-MM-dd HH:mm, leave blank to keep current): ");
         String dateInput = scanner.nextLine();
-        LocalDate date = dateInput.isEmpty() ? existingIncome.getDate() : LocalDate.parse(dateInput);
+        LocalDateTime date = dateInput.isEmpty() ? existingIncome.getDate() : LocalDateTime.parse(dateInput, dateTimeFormatter);
 
-        // Create an updated IncomeDTO with the modified values
-        IncomeDTO updatedIncome = new IncomeDTO(existingIncome.getUserId(), existingIncome.getCategoryId(), amount, date, description, source);
-
-        // Call the service to update the income
+        LocalDateTime now = LocalDateTime.now();
+        IncomeDTO updatedIncome = new IncomeDTO(id, existingIncome.getUserId(), existingIncome.getCategoryId(), amount, date, description, source, existingIncome.getCreatedAt(), now);
         incomeService.updateIncome(id, updatedIncome);
         System.out.println("Income updated: " + updatedIncome.toString());
     }

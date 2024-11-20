@@ -2,6 +2,7 @@ package com.expensetracker.entity;
 
 import jakarta.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -9,6 +10,7 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private int id;
 
     @Column(name = "cognito_uuid", unique = true, nullable = false)
@@ -33,10 +35,10 @@ public class User {
     private boolean isActive = true;
 
     @Column(name = "created_at", updatable = false)
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private Timestamp updatedAt;
+    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> categories;
@@ -50,6 +52,18 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Budget> budgets;
 
+    @PrePersist
+    protected void onCreate() {
+        LocalDateTime now = LocalDateTime.now();
+        this.createdAt = now;
+        this.updatedAt = now;
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
     // Constructors, Getters, and Setters
     public User() {}
 
@@ -61,8 +75,6 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.isActive = isActive;
-        this.createdAt = new Timestamp(System.currentTimeMillis());
-        this.updatedAt = new Timestamp(System.currentTimeMillis());
     }
 
 
@@ -130,19 +142,19 @@ public class User {
         isActive = active;
     }
 
-    public Timestamp getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Timestamp updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 

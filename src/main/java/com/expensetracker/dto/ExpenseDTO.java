@@ -2,31 +2,37 @@ package com.expensetracker.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class ExpenseDTO {
     private int id;
     private String description;
     private BigDecimal amount;
-    private LocalDate date;
-    private String categoryName;
+    private LocalDateTime date;
+    private boolean recurring;
     private int categoryId;
+    private String categoryName;
     private int userId;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    public ExpenseDTO(BigDecimal amount, String description, LocalDate date) {
-        this(-1, amount, description, date); // default id when not specified
-    }
+    public ExpenseDTO() {}
 
-    // Constructor with id
-    public ExpenseDTO(int id, BigDecimal amount, String description, LocalDate date) {
+    public ExpenseDTO(int id, String description, BigDecimal amount, LocalDateTime date, boolean recurring,
+                      int categoryId, String categoryName, int userId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
-        this.amount = amount;
         this.description = description;
+        this.amount = amount;
         this.date = date;
+        this.recurring = recurring;
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+        this.userId = userId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
-    public ExpenseDTO(){};
-
-
+    // Getters and setters
     public int getId() {
         return id;
     }
@@ -51,20 +57,20 @@ public class ExpenseDTO {
         this.amount = amount;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public boolean isRecurring() {
+        return recurring;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setRecurring(boolean recurring) {
+        this.recurring = recurring;
     }
 
     public int getCategoryId() {
@@ -75,6 +81,14 @@ public class ExpenseDTO {
         this.categoryId = categoryId;
     }
 
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
     public int getUserId() {
         return userId;
     }
@@ -83,13 +97,35 @@ public class ExpenseDTO {
         this.userId = userId;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     @Override
     public String toString() {
         return "ExpenseDTO{" +
                 "id=" + id +
-                ", amount=" + amount +
                 ", description='" + description + '\'' +
+                ", amount=" + amount +
                 ", date=" + date +
+                ", recurring=" + recurring +
+                ", categoryId=" + categoryId +
+                ", categoryName='" + categoryName + '\'' +
+                ", userId=" + userId +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
                 '}';
     }
 }
