@@ -54,7 +54,7 @@ public class UserService {
         if (cognitoUuid == null) {
             throw new RuntimeException("Login failed with Cognito.");
         }
-        return userRepository.findByCognitoId(cognitoUuid)
+        return userRepository.findByCognitoUuid(cognitoUuid)
                 .map(this::convertToDTO)
                 .orElseThrow(() -> new UserNotFoundException("User not found in local database."));
     }
