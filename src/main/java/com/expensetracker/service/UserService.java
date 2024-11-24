@@ -3,9 +3,7 @@ package com.expensetracker.service;
 import com.expensetracker.dto.RegistrationResult;
 import com.expensetracker.dto.UserDTO;
 import com.expensetracker.entity.User;
-import com.expensetracker.exceptions.CognitoServiceException;
-import com.expensetracker.exceptions.UserNotFoundException;
-import com.expensetracker.exceptions.UserRegistrationException;
+import com.expensetracker.exceptions.*;
 import com.expensetracker.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -47,7 +45,7 @@ public class UserService {
 
         if (cognitoUuid == null) {
             log.info("User registration pending confirmation for username: {}", userDTO.getUsername());
-            return new RegistrationResult("PENDING_CONFIRMATION", "Please confirm your email to complete registration for: ", userDTO.getUsername());
+            return new RegistrationResult("PENDING_CONFIRMATION", "Please confirm your email to complete registration for: " + userDTO.getUsername(), userDTO.getUsername());
         }
 
         try {
@@ -55,15 +53,16 @@ public class UserService {
             User user = mapDTOToUser(userDTO, new User());
             userRepository.save(user);
             log.info("User registered successfully with UUID: {}", cognitoUuid);
-            return new RegistrationResult("SUCCESS", "User registered successfully for: ", userDTO.getUsername());
+            return new RegistrationResult("SUCCESS", "User registered successfully for: " + userDTO.getUsername(), userDTO.getUsername());
         } catch (DataIntegrityViolationException ex) {
             log.error("Database integrity violation for user {}: {}", userDTO.getUsername(), ex.getMessage());
-            return new RegistrationResult("ERROR", "Database integrity issue during registration for: ", userDTO.getUsername());
+            return new RegistrationResult("ERROR", "Database integrity issue during registration for: " + userDTO.getUsername(), userDTO.getUsername());
         } catch (Exception ex) {
             log.error("Unexpected error during registration for user {}: {}", userDTO.getUsername(), ex.getMessage());
-            return new RegistrationResult("ERROR", "Unexpected error during user registration for: ", userDTO.getUsername());
+            return new RegistrationResult("ERROR", "Unexpected error during user registration for: " + userDTO.getUsername(), userDTO.getUsername());
         }
     }
+
 
     public UserDTO fetchUserDTOFromResult(RegistrationResult result) {
         if (result == null || result.getUsername() == null) {
@@ -140,14 +139,22 @@ public class UserService {
      * @return the authenticated user's DTO if successful.
      */
     public UserDTO login(String email, String password) {
-        String cognitoUuid = cognitoService.authenticate(email, password);
-        if (cognitoUuid == null) {
-            throw new RuntimeException("Login failed with Cognito.");
+        try {
+            String cognitoUuid = cognitoService.authenticate(email, password);
+            if (cognitoUuid == null) {
+                throw new AuthenticationException("Unable to retrieve Cognito UUID.");
+            }
+            return userRepository.findByCognitoUuid(cognitoUuid)
+                    .map(this::convertToDTO)
+                    .orElseThrow(() -> new UserNotFoundException("User with UUID " + cognitoUuid + " not found in local database."));
+        } catch (CognitoServiceException e) {
+            throw new AuthenticationException("Cognito authentication failed: " + e.getMessage(), e);
+        } catch (Exception e) {
+            throw new ServiceException("An unexpected error occurred during login", e);
         }
-        return userRepository.findByCognitoUuid(cognitoUuid)
-                .map(this::convertToDTO)
-                .orElseThrow(() -> new UserNotFoundException("User not found in local database."));
     }
+
+
 
     /**
      * Retrieves all users.
