@@ -1,11 +1,17 @@
 package com.expensetracker.service;
 
+import com.expensetracker.dto.RegistrationResult;
 import com.expensetracker.dto.UserDTO;
 import com.expensetracker.entity.User;
+import com.expensetracker.exceptions.CognitoServiceException;
 import com.expensetracker.exceptions.UserNotFoundException;
+import com.expensetracker.exceptions.UserRegistrationException;
 import com.expensetracker.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +20,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService {
+
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
+
 
     @Autowired
     private UserRepository userRepository;
@@ -26,21 +35,102 @@ public class UserService {
      *
      * @param userDTO the user data transfer object containing new user data.
      * @return the created user DTO with details filled in from the local DB.
+     * @throws UserRegistrationException if there is an issue with user registration.
      */
-    public UserDTO addUser(UserDTO userDTO) {
-        String password = userDTO.getPassword(); // Make sure to securely collect and handle the password.
+    @Transactional
+    public RegistrationResult addUser(UserDTO userDTO) {
+        validateUserData(userDTO);
+        log.debug("Starting registration process for username: {}", userDTO.getUsername());
+
+        String password = userDTO.getPassword();
         String cognitoUuid = cognitoService.registerUserWithCognito(userDTO.getUsername(), password, userDTO.getEmail());
 
         if (cognitoUuid == null) {
-            throw new RuntimeException("Failed to register user with Cognito or user confirmation pending.");
+            log.info("User registration pending confirmation for username: {}", userDTO.getUsername());
+            return new RegistrationResult("PENDING_CONFIRMATION", "Please confirm your email to complete registration for: ", userDTO.getUsername());
         }
 
-        userDTO.setCognitoUuid(cognitoUuid);
-        User user = new User();
-        mapUserDTOToUser(userDTO, user);
-        user = userRepository.save(user);
-        return convertToDTO(user);
+        try {
+            userDTO.setCognitoUuid(cognitoUuid);
+            User user = mapDTOToUser(userDTO, new User());
+            userRepository.save(user);
+            log.info("User registered successfully with UUID: {}", cognitoUuid);
+            return new RegistrationResult("SUCCESS", "User registered successfully for: ", userDTO.getUsername());
+        } catch (DataIntegrityViolationException ex) {
+            log.error("Database integrity violation for user {}: {}", userDTO.getUsername(), ex.getMessage());
+            return new RegistrationResult("ERROR", "Database integrity issue during registration for: ", userDTO.getUsername());
+        } catch (Exception ex) {
+            log.error("Unexpected error during registration for user {}: {}", userDTO.getUsername(), ex.getMessage());
+            return new RegistrationResult("ERROR", "Unexpected error during user registration for: ", userDTO.getUsername());
+        }
     }
+
+    public UserDTO fetchUserDTOFromResult(RegistrationResult result) {
+        if (result == null || result.getUsername() == null) {
+            throw new IllegalArgumentException("Registration result or username cannot be null.");
+        }
+        return findByUsername(result.getUsername());
+    }
+
+    private void validateUserData(UserDTO userDTO) {
+        if (userDTO == null) {
+            throw new IllegalArgumentException("User data cannot be null");
+        }
+
+        // Validate username
+        if (userDTO.getUsername() == null || userDTO.getUsername().trim().isEmpty()) {
+            throw new IllegalArgumentException("Username is required and cannot be blank");
+        }
+
+        // Validate email format
+        if (userDTO.getEmail() == null || !isValidEmail(userDTO.getEmail())) {
+            throw new IllegalArgumentException("Invalid email address");
+        }
+
+        // Validate password
+        if (userDTO.getPassword() == null || !isValidPassword(userDTO.getPassword())) {
+            throw new IllegalArgumentException("Password must meet complexity requirements");
+        }
+
+        // Example: Check if username or email already exists
+        if (userRepository.existsByUsername(userDTO.getUsername())) {
+            throw new IllegalArgumentException("Username is already taken");
+        }
+
+        if (userRepository.existsByEmail(userDTO.getEmail())) {
+            throw new IllegalArgumentException("Email is already in use");
+        }
+
+    }
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[\\w-\\.]+@[\\w-]+\\.[a-z]{2,4}$";
+        return email != null && email.matches(emailRegex);
+    }
+
+    private boolean isValidPassword(String password) {
+        // Example: Password must be at least 8 characters and contain one digit and one special character
+        String passwordRegex = "^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$";
+        return password != null && password.matches(passwordRegex);
+    }
+
+    /**
+     * Retrieves a user by username.
+     *
+     * @param username the username to search for
+     * @return UserDTO containing user details or null if user is not found
+     */
+    @Transactional
+    public UserDTO findByUsername(String username) {
+        User user = userRepository.findByUsername(username);
+        if (user != null) {
+            return convertToDTO(user);
+        } else {
+            log.info("No user found with username: {}", username);
+            return null;
+        }
+    }
+
 
     /**
      * Authenticates a user via Cognito and retrieves user details from the local database.
@@ -88,35 +178,23 @@ public class UserService {
     }
 
     /**
-     * Maps properties from UserDTO to User entity.
-     *
-     * @param dto the UserDTO.
-     * @param user the User entity.
-     */
-    private void mapUserDTOToUser(UserDTO dto, User user) {
-        user.setCognitoUuid(dto.getCognitoUuid());
-        user.setUsername(dto.getUsername());
-        user.setEmail(dto.getEmail());
-        user.setFirstName(dto.getFirstName());
-        user.setLastName(dto.getLastName());
-        user.setActive(dto.isActive());
-    }
-
-    /**
      * Maps properties from a UserDTO to a User entity. This method is used to transfer data
      * from the DTO used in API communication to the entity used for database operations.
      *
      * @param dto The UserDTO containing the data.
      * @param user The User entity to be populated with data from the DTO.
      */
-    private void mapDTOToUser(UserDTO dto, User user) {
+    private User mapDTOToUser(UserDTO dto, User user) {
         user.setCognitoUuid(dto.getCognitoUuid()); // Ensure Cognito UUID is always set from DTO to user
         user.setUsername(dto.getUsername()); // Set username from DTO
         user.setEmail(dto.getEmail()); // Set email from DTO
         user.setFirstName(dto.getFirstName()); // Set first name from DTO
         user.setLastName(dto.getLastName()); // Set last name from DTO
         user.setActive(dto.isActive()); // Set active status from DTO
+        return user;
     }
+
+
 
 
     /**

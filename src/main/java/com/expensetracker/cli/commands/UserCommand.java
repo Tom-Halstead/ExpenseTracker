@@ -1,5 +1,6 @@
 package com.expensetracker.cli.commands;
 
+import com.expensetracker.dto.RegistrationResult;
 import com.expensetracker.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -50,15 +51,18 @@ public class UserCommand implements Runnable {
         String password = scanner.nextLine();
 
         UserDTO newUserDTO = new UserDTO(null, username, email, firstName, lastName, true, password);
-        UserDTO registeredUser = userService.addUser(newUserDTO);
-        if (registeredUser != null) {
+        RegistrationResult registrationResult = userService.addUser(newUserDTO);
+        if (registrationResult != null && registrationResult.getStatus().equals("SUCCESS")) {
             System.out.println("Registration successful for: " + username);
-            loggedInUser = registeredUser;
-            runPostLoginOptions();
+            UserDTO loggedInUser = userService.fetchUserDTOFromResult(registrationResult);
+            // loggedInUser = ...
+            runPostLoginOptions(loggedInUser);
         } else {
-            System.out.println("Registration failed. Please try again.");
+            assert registrationResult != null;
+            System.out.println("Registration failed: " + registrationResult.getMessage());
         }
     }
+
 
     private void loginUser() {
         System.out.print("Enter email: ");
@@ -69,13 +73,13 @@ public class UserCommand implements Runnable {
         loggedInUser = userService.login(email, password);
         if (loggedInUser != null) {
             System.out.println("Login successful for: " + email);
-            runPostLoginOptions();
+            runPostLoginOptions(userService.findByUsername(loggedInUser.getUsername()));
         } else {
             System.out.println("Login failed. Please check your credentials.");
         }
     }
 
-    private void runPostLoginOptions() {
+    private void runPostLoginOptions(UserDTO loggedInUser) {
         System.out.println("Logged in as: " + loggedInUser.getUsername());
         boolean running = true;
         while (running) {

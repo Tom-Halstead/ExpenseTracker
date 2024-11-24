@@ -1,5 +1,8 @@
 package com.expensetracker.service;
 
+import com.expensetracker.exceptions.CognitoServiceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
@@ -11,6 +14,8 @@ import java.util.Map;
 public class CognitoService {
 
     private final CognitoIdentityProviderClient cognitoClient;
+
+    private static final Logger log = LoggerFactory.getLogger(CognitoService.class);
 
     @Autowired
     public CognitoService(CognitoIdentityProviderClient cognitoClient) {
@@ -55,7 +60,7 @@ public class CognitoService {
     public String registerUserWithCognito(String username, String password, String email) {
         try {
             SignUpRequest signUpRequest = SignUpRequest.builder()
-                    .clientId("7mvfnfbhcnmko6r5u74si479r0") // Your actual Cognito client ID
+                    .clientId("7mvfnfbhcnmko6r5u74si479r0") // Replace with actual client ID
                     .username(username)
                     .password(password)
                     .userAttributes(AttributeType.builder().name("email").value(email).build())
@@ -63,13 +68,16 @@ public class CognitoService {
 
             SignUpResponse response = cognitoClient.signUp(signUpRequest);
             if (!response.userConfirmed()) {
-                // Handling confirmation here or inform the user to confirm via email
-                return null;
+                log.debug("User registration needs confirmation for username: {}", username);
+                return null; // Optionally return some status indicating confirmation is needed
             }
             return response.userSub(); // Returns the UUID from Cognito
+        } catch (CognitoIdentityProviderException e) {
+            log.error("AWS Cognito exception occurred for user {}: {}", username, e.awsErrorDetails().errorMessage());
+            return null;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null; // Handle exceptions appropriately
+            log.error("Exception occurred during Cognito registration for user {}: {}", username, e.getMessage());
+            return null;
         }
     }
 
