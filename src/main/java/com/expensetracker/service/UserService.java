@@ -31,11 +31,16 @@ public class UserService {
     private CognitoService cognitoService;
 
     /**
-     * Registers a new user in Cognito and synchronizes with the local database.
+     * Registers a new user in the system using AWS Cognito for authentication and stores the user information
+     * in the local database. This method first validates the user data, then registers the user with Cognito,
+     * and finally saves the user information in the database if registration is successful.
      *
-     * @param userDTO the user data transfer object containing new user data.
-     * @return the created user DTO with details filled in from the local DB.
-     * @throws UserRegistrationException if there is an issue with user registration.
+     * @param userDTO The UserDTO object containing the user's data to be registered.
+     * @return RegistrationResult An object containing the result of the registration process, including
+     *                            the status and messages related to the process and the username for which
+     *                            the registration was attempted.
+     * @throws DataIntegrityViolationException If a database integrity constraint is violated.
+     * @throws Exception If any other unexpected errors occur during the registration process.
      */
     @Transactional
     public RegistrationResult addUser(UserDTO userDTO) {
@@ -66,15 +71,38 @@ public class UserService {
         }
     }
 
-
-
-    public UserDTO fetchUserDTOFromResult(RegistrationResult result) {
-        if (result == null || result.getUsername() == null) {
-            throw new IllegalArgumentException("Registration result or username cannot be null.");
+    /**
+     * Authenticates a user via Cognito and retrieves user details from the local database.
+     *
+     * @param email    the user's email.
+     * @param password the user's password.
+     * @return the authenticated user's DTO if successful.
+     */
+    public UserDTO login(String email, String password) {
+        try {
+            String cognitoUuid = cognitoService.authenticate(email, password);
+            if (cognitoUuid == null) {
+                throw new AuthenticationException("Unable to retrieve Cognito UUID.");
+            }
+            return userRepository.findByCognitoUuid(cognitoUuid)
+                    .filter(user -> "Active".equals(user.getStatus()))  // Check if user is active
+                    .map(this::convertToDTO)
+                    .orElseThrow(() -> new UserNotFoundException("User with UUID " + cognitoUuid + " not found in local database or is not active."));
+        } catch (CognitoServiceException e) {
+            throw new AuthenticationException("Cognito authentication failed: " + e.getMessage());
         }
-        return findByUsername(result.getUsername());
     }
 
+
+
+    /**
+     * Validates a UserDTO object to ensure all required fields meet the necessary criteria for a user's data.
+     * This includes non-null checks and specific format validations for username, email, and password.
+     * It also checks the uniqueness of the username and email in the system to prevent duplicates.
+     *
+     * @param userDTO The UserDTO object containing the user data to validate.
+     * @throws IllegalArgumentException if any validation fails. The exception message details the specific reason for the failure.
+     */
     private void validateUserData(UserDTO userDTO) {
         if (userDTO == null) {
             throw new IllegalArgumentException("User data cannot be null");
@@ -106,11 +134,28 @@ public class UserService {
 
     }
 
+    /**
+     * Validates an email address against a specified regex pattern. This method checks if the provided email
+     * is not null and conforms to a standard email format, which includes having characters before and after an "@",
+     * followed by a domain with a 2 to 4 character top-level domain.
+     *
+     * @param email The email address to be validated.
+     * @return true if the email address is valid according to the regex pattern, false otherwise.
+     */
     private boolean isValidEmail(String email) {
         String emailRegex = "^[\\w-\\.]+@[\\w-]+\\.[a-z]{2,4}$";
         return email != null && email.matches(emailRegex);
     }
 
+
+    /**
+     * Validates a password based on certain criteria encapsulated in a regex pattern. This pattern checks that the
+     * password is at least 8 characters long and contains at least one digit and one special character. The method
+     * ensures that the password is not null and matches this regex.
+     *
+     * @param password The password string to validate.
+     * @return true if the password meets the criteria, false otherwise.
+     */
     private boolean isValidPassword(String password) {
         // Example: Password must be at least 8 characters and contain one digit and one special character
         String passwordRegex = "^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$";
@@ -136,32 +181,6 @@ public class UserService {
 
 
     /**
-     * Authenticates a user via Cognito and retrieves user details from the local database.
-     *
-     * @param email    the user's email.
-     * @param password the user's password.
-     * @return the authenticated user's DTO if successful.
-     */
-    public UserDTO login(String email, String password) {
-        try {
-            String cognitoUuid = cognitoService.authenticate(email, password);
-            if (cognitoUuid == null) {
-                throw new AuthenticationException("Unable to retrieve Cognito UUID.");
-            }
-            return userRepository.findByCognitoUuid(cognitoUuid)
-                    .filter(user -> "Active".equals(user.getStatus()))  // Ensure the user is active
-                    .map(this::convertToDTO)
-                    .orElseThrow(() -> new UserNotFoundException("User with UUID " + cognitoUuid + " not found in local database or not active."));
-        } catch (CognitoServiceException e) {
-            throw new AuthenticationException("Cognito authentication failed: " + e.getMessage());
-        }
-    }
-
-
-
-
-
-    /**
      * Retrieves all users.
      *
      * @return a list of all users as DTOs.
@@ -170,44 +189,6 @@ public class UserService {
         List<User> users = userRepository.findAll();
         return users.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
-
-    /**
-     * Converts a User entity to a UserDTO.
-     *
-     * @param user the user entity.
-     * @return the user DTO.
-     */
-    private UserDTO convertToDTO(User user) {
-        return new UserDTO(
-                user.getId(),
-                user.getCognitoUuid(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.isActive(),
-                user.getStatus()
-        );
-    }
-
-    /**
-     * Maps properties from a UserDTO to a User entity. This method is used to transfer data
-     * from the DTO used in API communication to the entity used for database operations.
-     *
-     * @param dto The UserDTO containing the data.
-     * @param user The User entity to be populated with data from the DTO.
-     */
-    private User mapDTOToUser(UserDTO dto, User user) {
-        user.setCognitoUuid(dto.getCognitoUuid()); // Ensure Cognito UUID is always set from DTO to user
-        user.setUsername(dto.getUsername()); // Set username from DTO
-        user.setEmail(dto.getEmail()); // Set email from DTO
-        user.setFirstName(dto.getFirstName()); // Set first name from DTO
-        user.setLastName(dto.getLastName()); // Set last name from DTO
-        user.setActive(dto.isActive()); // Set active status from DTO
-        return user;
-    }
-
-
 
 
     /**
@@ -267,6 +248,83 @@ public class UserService {
         user = userRepository.save(user); // Save the user entity
         return convertToDTO(user); // Convert entity back to DTO
     }
+
+
+    /**
+     * Activates a user based on the Cognito UUID provided. This method searches for the user in the repository
+     * by their Cognito UUID. If the user is found, it sets their status to "Active" and saves the updated user
+     * back to the repository. The method returns true if the user is successfully activated, or false if no user
+     * with the given UUID could be found.
+     *
+     * @param cognitoUuid The Cognito UUID of the user to be activated.
+     * @return true if the user is successfully activated, false otherwise.
+     */
+    public boolean activateUser(String cognitoUuid) {
+        return userRepository.findByCognitoUuid(cognitoUuid)
+                .map(user -> {
+                    user.setStatus("Active");
+                    userRepository.save(user);
+                    return true;
+                }).orElse(false);
+    }
+
+
+    /**
+     * Retrieves a UserDTO object by extracting the username from a RegistrationResult object. This method
+     * ensures that both the RegistrationResult object and its username are not null. If they are, it throws
+     * an IllegalArgumentException. If the conditions are met, it fetches the user data transfer object (DTO)
+     * based on the username found in the RegistrationResult.
+     *
+     * @param result The RegistrationResult object which contains the user's registration details.
+     * @return UserDTO The user data transfer object corresponding to the username in the RegistrationResult.
+     * @throws IllegalArgumentException If the RegistrationResult object or the username within it is null.
+     */
+    public UserDTO fetchUserDTOFromResult(RegistrationResult result) {
+        if (result == null || result.getUsername() == null) {
+            throw new IllegalArgumentException("Registration result or username cannot be null.");
+        }
+        return findByUsername(result.getUsername());
+    }
+
+    /**
+     * Converts a User entity to a UserDTO.
+     *
+     * @param user the user entity.
+     * @return the user DTO.
+     */
+    private UserDTO convertToDTO(User user) {
+        return new UserDTO(
+                user.getId(),
+                user.getCognitoUuid(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.isActive(),
+                user.getStatus()
+        );
+    }
+
+    /**
+     * Maps properties from a UserDTO to a User entity. This method is used to transfer data
+     * from the DTO used in API communication to the entity used for database operations.
+     *
+     * @param dto The UserDTO containing the data.
+     * @param user The User entity to be populated with data from the DTO.
+     */
+    private User mapDTOToUser(UserDTO dto, User user) {
+        user.setCognitoUuid(dto.getCognitoUuid()); // Ensure Cognito UUID is always set from DTO to user
+        user.setUsername(dto.getUsername()); // Set username from DTO
+        user.setEmail(dto.getEmail()); // Set email from DTO
+        user.setFirstName(dto.getFirstName()); // Set first name from DTO
+        user.setLastName(dto.getLastName()); // Set last name from DTO
+        user.setActive(dto.isActive()); // Set active status from DTO
+        return user;
+    }
+
+
+
+
 
 
 }

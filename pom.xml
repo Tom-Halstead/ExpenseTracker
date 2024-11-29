@@ -37,9 +37,11 @@
             <artifactId>aws-java-sdk-cognitoidp</artifactId>
             <version>1.11.1000</version>
         </dependency>
+
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk</artifactId>
+            <version>1.12.118</version>
         </dependency>
 
         <dependency>
@@ -109,6 +111,31 @@
                 <configuration>
                     <mainClass>com.example.cli.YourMainClass</mainClass>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <!-- Specify the descriptor or directly include assembly configuration -->
+                    <archive>
+                        <manifest>
+                            <mainClass>com.expensetracker.lambda.UserActivationFunction</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
 
