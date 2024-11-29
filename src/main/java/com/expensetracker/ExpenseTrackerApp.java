@@ -49,9 +49,10 @@ public class ExpenseTrackerApp {
                                 System.out.println("Welcome to the Expense Tracker CLI.");
                                 System.out.println();
 
-                                displayHelp();
+                                displayLoginOrRegister();
 
                                 while (true) {
+                                        System.out.println();
                                         System.out.print("Enter CLI command ('help' for options): ");
                                         String input = scanner.nextLine();
                                         if ("exit".equalsIgnoreCase(input.trim())) {
@@ -64,6 +65,14 @@ public class ExpenseTrackerApp {
                                 }
                         }
                 }).start();
+        }
+
+
+        private void displayLoginOrRegister() {
+                System.out.println("You must first register or login depending on your need.");
+                System.out.println();
+                System.out.println("Use `user -login` or `user -reg`");
+                System.out.println();
         }
 
         private void displayHelp() {

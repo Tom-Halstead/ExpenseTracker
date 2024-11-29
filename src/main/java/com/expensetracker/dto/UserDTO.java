@@ -9,9 +9,10 @@ public class UserDTO {
     private String lastName;
     private boolean isActive = true;
     private transient String password; // Not stored or serialized, used transiently for registration
+    private String status;
 
     // Constructor for creating a new user
-    public UserDTO(int id, String cognitoUuid, String username, String email, String firstName, String lastName, boolean isActive) {
+    public UserDTO(int id, String cognitoUuid, String username, String email, String firstName, String lastName, boolean isActive, String status) {
         this.id = id;
         this.cognitoUuid = cognitoUuid;
         this.username = username;
@@ -19,6 +20,7 @@ public class UserDTO {
         this.firstName = firstName;
         this.lastName = lastName;
         this.isActive = isActive;
+        this.status = status;
     }
 
     /**
@@ -38,6 +40,14 @@ public class UserDTO {
      * No-argument constructor for frameworks.
      */
     public UserDTO() {}
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getPassword() {
         return password;

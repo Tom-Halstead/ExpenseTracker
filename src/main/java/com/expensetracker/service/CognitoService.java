@@ -43,14 +43,14 @@ public class CognitoService {
             if (authResponse.authenticationResult() != null) {
                 return authResponse.authenticationResult().idToken(); // Return the ID token
             } else {
-                log.warn("No authentication result for user: {}", username);
+//                log.warn("No authentication result for user: {}", username);
                 throw new AuthenticationException("Authentication failed or no result returned.");
             }
         } catch (CognitoIdentityProviderException e) {
-            log.error("AWS Cognito error during authentication for user {}: {}", username, e.awsErrorDetails().errorMessage());
+//            log.error("AWS Cognito error during authentication for user {}: {}", username, e.awsErrorDetails().errorMessage());
             throw new ServiceException("Cognito service error: " + e.awsErrorDetails().errorMessage(), e);
         } catch (Exception e) {
-            log.error("Exception during authentication for user {}: {}", username, e.getMessage());
+//            log.error("Exception during authentication for user {}: {}", username, e.getMessage());
             throw new ServiceException("An unexpected error occurred during authentication.", e);
         }
     }

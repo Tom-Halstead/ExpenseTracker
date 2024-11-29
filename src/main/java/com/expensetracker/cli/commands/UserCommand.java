@@ -49,7 +49,6 @@ public class UserCommand implements Runnable {
         String lastName = scanner.nextLine();
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
-
         UserDTO newUserDTO = new UserDTO(null, username, email, firstName, lastName, true, password);
         RegistrationResult registrationResult = userService.addUser(newUserDTO);
         if (registrationResult != null && registrationResult.getStatus().equals("SUCCESS")) {

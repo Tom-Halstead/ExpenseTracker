@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.NotAuthorizedException;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,11 +23,12 @@ public class UserService {
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
 
+    // Injections
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    private CognitoService cognitoService; // Inject the CognitoService
+    private CognitoService cognitoService;
 
     /**
      * Registers a new user in Cognito and synchronizes with the local database.
@@ -51,6 +53,7 @@ public class UserService {
         try {
             userDTO.setCognitoUuid(cognitoUuid);
             User user = mapDTOToUser(userDTO, new User());
+            user.setStatus("Pending");  // Set user status as Pending until confirmed
             userRepository.save(user);
             log.info("User registered successfully with UUID: {}", cognitoUuid);
             return new RegistrationResult("SUCCESS", "User registered successfully for: " + userDTO.getUsername(), userDTO.getUsername());
@@ -62,6 +65,7 @@ public class UserService {
             return new RegistrationResult("ERROR", "Unexpected error during user registration for: " + userDTO.getUsername(), userDTO.getUsername());
         }
     }
+
 
 
     public UserDTO fetchUserDTOFromResult(RegistrationResult result) {
@@ -145,14 +149,15 @@ public class UserService {
                 throw new AuthenticationException("Unable to retrieve Cognito UUID.");
             }
             return userRepository.findByCognitoUuid(cognitoUuid)
+                    .filter(user -> "Active".equals(user.getStatus()))  // Ensure the user is active
                     .map(this::convertToDTO)
-                    .orElseThrow(() -> new UserNotFoundException("User with UUID " + cognitoUuid + " not found in local database."));
+                    .orElseThrow(() -> new UserNotFoundException("User with UUID " + cognitoUuid + " not found in local database or not active."));
         } catch (CognitoServiceException e) {
-            throw new AuthenticationException("Cognito authentication failed: " + e.getMessage(), e);
-        } catch (Exception e) {
-            throw new ServiceException("An unexpected error occurred during login", e);
+            throw new AuthenticationException("Cognito authentication failed: " + e.getMessage());
         }
     }
+
+
 
 
 
@@ -180,7 +185,8 @@ public class UserService {
                 user.getEmail(),
                 user.getFirstName(),
                 user.getLastName(),
-                user.isActive()
+                user.isActive(),
+                user.getStatus()
         );
     }
 

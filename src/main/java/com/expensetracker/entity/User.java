@@ -40,6 +40,9 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "status")
+    private String status;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> categories;
 
@@ -67,7 +70,7 @@ public class User {
     // Constructors, Getters, and Setters
     public User() {}
 
-    public User(String cognitoUuid, String username, String email, String role, String firstName, String lastName, boolean isActive) {
+    public User(String cognitoUuid, String username, String email, String role, String firstName, String lastName, boolean isActive, String status) {
         this.cognitoUuid = cognitoUuid;
         this.username = username;
         this.email = email;
@@ -75,8 +78,16 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.isActive = isActive;
+        this.status = status;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public int getId() {
         return id;
