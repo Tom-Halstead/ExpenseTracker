@@ -49,18 +49,40 @@ public class UserCommand implements Runnable {
         String lastName = scanner.nextLine();
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
+
+        // Create a new UserDTO with all provided fields
         UserDTO newUserDTO = new UserDTO(null, username, email, firstName, lastName, true, password);
+
+        // Call the service to register the user
         RegistrationResult registrationResult = userService.addUser(newUserDTO);
-        if (registrationResult != null && registrationResult.getStatus().equals("SUCCESS")) {
+
+        if (registrationResult != null && "SUCCESS".equals(registrationResult.getStatus())) {
             System.out.println("Registration successful for: " + username);
+
+            // Use fetchUserDTOFromResult to retrieve the logged-in user details
             UserDTO loggedInUser = userService.fetchUserDTOFromResult(registrationResult);
-            // loggedInUser = ...
-            runPostLoginOptions(loggedInUser);
+            if (loggedInUser != null) {
+                System.out.println("Logged-in User Details:");
+                System.out.println("Username: " + loggedInUser.getUsername());
+                System.out.println("Email: " + loggedInUser.getEmail());
+                System.out.println("First Name: " + loggedInUser.getFirstName());
+                System.out.println("Last Name: " + loggedInUser.getLastName());
+                runPostLoginOptions(loggedInUser); // Proceed with post-login options
+            } else {
+                System.out.println();
+                System.out.println("Error: Could not retrieve user details post-registration.");
+            }
+        } else if (registrationResult != null && "ERROR".equals(registrationResult.getStatus())
+                && registrationResult.getMessage().contains("User already exists")) {
+            System.out.println();
+            System.out.println("Registration failed: User already exists.");
         } else {
-            assert registrationResult != null;
-            System.out.println("Registration failed: " + registrationResult.getMessage());
+            System.out.println();
+            System.out.println("Registration failed: "
+                    + (registrationResult != null ? registrationResult.getMessage() : "Unknown error."));
         }
     }
+
 
 
     private void loginUser() {
@@ -82,7 +104,7 @@ public class UserCommand implements Runnable {
         System.out.println("Logged in as: " + loggedInUser.getUsername());
         boolean running = true;
         while (running) {
-            System.out.println("Enter command (add, delete, list, logout): ");
+            System.out.println("Enter command (manage expenses, manage budgets, manage categories, manage income, logout): ");
             String command = scanner.nextLine();
             switch (command.toLowerCase()) {
                 case "add":

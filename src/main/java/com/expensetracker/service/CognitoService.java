@@ -33,13 +33,13 @@ public class CognitoService {
     /**
      * Authenticates a user via AWS Cognito and returns the JWT ID token if successful.
      *
-     * @param username The username of the user trying to log in.
+     * @param email The username of the user trying to log in.
      * @param password The password of the user.
      * @return The JWT ID token if authentication is successful, null otherwise.
      */
-    public AuthResponse authenticate(String username, String password) {
+    public AuthResponse authenticate(String email, String password) {
         validateCognitoConfiguration();
-        if (username == null || username.trim().isEmpty()) {
+        if (email == null || email.trim().isEmpty()) {
             throw new IllegalArgumentException("Username cannot be null or empty.");
         }
         if (password == null || password.trim().isEmpty()) {
@@ -51,7 +51,7 @@ public class CognitoService {
                     .clientId(CLIENTID) // Use environment variable or configuration
                     .userPoolId(USERPOOLID) // Use environment variable or configuration
                     .authFlow(AuthFlowType.ADMIN_USER_PASSWORD_AUTH)
-                    .authParameters(Map.of("USERNAME", username, "PASSWORD", password))
+                    .authParameters(Map.of("USERNAME", email, "PASSWORD", password))
                     .build();
 
             AdminInitiateAuthResponse authResponse = cognitoClient.adminInitiateAuth(authRequest);
@@ -84,26 +84,26 @@ public class CognitoService {
  * @param email The email for the new user.
  * @return The unique Cognito UUID for the new user, or null if confirmation is needed.
  */
-    public String registerUserWithCognito(String username, String password, String email) {
+public String registerUserWithCognito(String username, String password, String email) {
+    try {
+        SignUpRequest signUpRequest = SignUpRequest.builder()
+                .clientId(CLIENTID)
+                .username(username)
+                .password(password)
+                .userAttributes(AttributeType.builder().name("email").value(email).build())
+                .build();
 
-        try {
-            SignUpRequest signUpRequest = SignUpRequest.builder()
-                    .clientId(CLIENTID)
-                    .username(username)
-                    .password(password)
-                    .userAttributes(AttributeType.builder().name("email").value(email).build())
-                    .build();
-
-            SignUpResponse response = cognitoClient.signUp(signUpRequest);
-            return response.userSub(); // Returns the UUID from Cognito
-        } catch (CognitoIdentityProviderException e) {
-            log.error("AWS Cognito exception occurred for user {}: {}", username, e.awsErrorDetails().errorMessage());
-            throw new RegistrationException("Error with AWS Cognito service: " + e.getMessage(), e);
-        } catch (Exception e) {
-            log.error("Exception occurred during Cognito registration for user {}: {}", username, e.getMessage());
-            throw new RegistrationException("Unexpected error during registration", e);
-        }
+        SignUpResponse response = cognitoClient.signUp(signUpRequest);
+        return response.userSub(); // Returns the UUID from Cognito
+    } catch (UsernameExistsException e) { // Specific exception for existing users
+        throw new ServiceException("User with the given email/username already exists.", e);
+    } catch (CognitoIdentityProviderException e) {
+        throw new ServiceException("Error with AWS Cognito service: " + e.awsErrorDetails().errorMessage(), e);
+    } catch (Exception e) {
+        throw new ServiceException("Unexpected error during registration", e);
     }
+}
+
 
     public void validateCognitoConfiguration() {
         if (CLIENTID == null || CLIENTID.trim().isEmpty()) {

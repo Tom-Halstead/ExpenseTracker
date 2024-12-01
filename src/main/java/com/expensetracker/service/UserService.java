@@ -55,20 +55,19 @@ public class UserService {
             userDTO.setCognitoUuid(cognitoUuid);
 
             User user = mapDTOToUser(userDTO, new User());
-            user.setStatus("Pending");  // Set user status as Pending until confirmed
+            user.setStatus("Pending"); // Set user status as Pending until confirmed
             userRepository.save(user);
             return new RegistrationResult("SUCCESS", "User registered successfully for: " + userDTO.getUsername(), userDTO.getUsername());
-        } catch (UserConfirmationRequiredException e) {
-            log.info("User registration pending confirmation for username: {}", userDTO.getUsername());
-            return new RegistrationResult("PENDING_CONFIRMATION", e.getMessage(), userDTO.getUsername());
-        } catch (RegistrationException e) {
-            log.error("Registration failed for user {}: {}", userDTO.getUsername(), e.getMessage());
-            return new RegistrationResult("ERROR", e.getMessage(), userDTO.getUsername());
+        } catch (ServiceException e) {
+            if (e.getMessage().contains("User with the given email/username already exists")) {
+                return new RegistrationResult("ERROR", "User already exists. Please use a different email or username.", userDTO.getUsername());
+            }
+            throw e; // Re-throw for unexpected errors
         } catch (Exception e) {
-            log.error("Unexpected error during registration for user {}: {}", userDTO.getUsername(), e.getMessage());
             return new RegistrationResult("ERROR", "Unexpected error during user registration for: " + userDTO.getUsername(), userDTO.getUsername());
         }
     }
+
 
 
     /**
