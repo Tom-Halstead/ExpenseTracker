@@ -69,7 +69,7 @@ public class CognitoService {
  * @return The unique Cognito UUID for the new user, or null if confirmation is needed.
  */
     public String registerUserWithCognito(String username, String password, String email) {
-        final String clientId = System.getenv("COGNITO_CLIENT_ID"); // Or from a config file
+        final String clientId = System.getenv("COGNITO_CLIENT_ID");
         try {
             SignUpRequest signUpRequest = SignUpRequest.builder()
                     .clientId(clientId)
@@ -79,10 +79,6 @@ public class CognitoService {
                     .build();
 
             SignUpResponse response = cognitoClient.signUp(signUpRequest);
-            if (!response.userConfirmed()) {
-                log.debug("User registration needs confirmation for username: {}", username);
-                throw new UserConfirmationRequiredException("User registration pending confirmation.");
-            }
             return response.userSub(); // Returns the UUID from Cognito
         } catch (CognitoIdentityProviderException e) {
             log.error("AWS Cognito exception occurred for user {}: {}", username, e.awsErrorDetails().errorMessage());

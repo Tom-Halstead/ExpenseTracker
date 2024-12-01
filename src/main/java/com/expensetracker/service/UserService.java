@@ -46,29 +46,27 @@ public class UserService {
         validateUserData(userDTO);
         log.debug("Starting registration process for username: {}", userDTO.getUsername());
 
-        String password = userDTO.getPassword();
-        String cognitoUuid = cognitoService.registerUserWithCognito(userDTO.getUsername(), password, userDTO.getEmail());
-
-        if (cognitoUuid == null) {
-            log.info("User registration pending confirmation for username: {}", userDTO.getUsername());
-            return new RegistrationResult("PENDING_CONFIRMATION", "Please confirm your email to complete registration for: " + userDTO.getUsername(), userDTO.getUsername());
-        }
-
         try {
+            String password = userDTO.getPassword();
+            String cognitoUuid = cognitoService.registerUserWithCognito(userDTO.getUsername(), password, userDTO.getEmail());
             userDTO.setCognitoUuid(cognitoUuid);
+
             User user = mapDTOToUser(userDTO, new User());
             user.setStatus("Pending");  // Set user status as Pending until confirmed
             userRepository.save(user);
-            log.info("User registered successfully with UUID: {}", cognitoUuid);
             return new RegistrationResult("SUCCESS", "User registered successfully for: " + userDTO.getUsername(), userDTO.getUsername());
-        } catch (DataIntegrityViolationException ex) {
-            log.error("Database integrity violation for user {}: {}", userDTO.getUsername(), ex.getMessage());
-            return new RegistrationResult("ERROR", "Database integrity issue during registration for: " + userDTO.getUsername(), userDTO.getUsername());
-        } catch (Exception ex) {
-            log.error("Unexpected error during registration for user {}: {}", userDTO.getUsername(), ex.getMessage());
+        } catch (UserConfirmationRequiredException e) {
+            log.info("User registration pending confirmation for username: {}", userDTO.getUsername());
+            return new RegistrationResult("PENDING_CONFIRMATION", e.getMessage(), userDTO.getUsername());
+        } catch (RegistrationException e) {
+            log.error("Registration failed for user {}: {}", userDTO.getUsername(), e.getMessage());
+            return new RegistrationResult("ERROR", e.getMessage(), userDTO.getUsername());
+        } catch (Exception e) {
+            log.error("Unexpected error during registration for user {}: {}", userDTO.getUsername(), e.getMessage());
             return new RegistrationResult("ERROR", "Unexpected error during user registration for: " + userDTO.getUsername(), userDTO.getUsername());
         }
     }
+
 
     /**
      * Authenticates a user via Cognito and retrieves user details from the local database.
@@ -109,12 +107,12 @@ public class UserService {
 
         // Validate username
         if (userDTO.getUsername() == null || userDTO.getUsername().trim().isEmpty()) {
-            throw new IllegalArgumentException("Username is required and cannot be blank");
+            throw new InvalidUsernameException("Username is required and cannot be blank");
         }
 
         // Validate email format
         if (userDTO.getEmail() == null || !isValidEmail(userDTO.getEmail())) {
-            throw new IllegalArgumentException("Invalid email address");
+            throw new InvalidEmailException("Invalid email address");
         }
 
         // Validate password
@@ -124,11 +122,11 @@ public class UserService {
 
         // Example: Check if username or email already exists
         if (userRepository.existsByUsername(userDTO.getUsername())) {
-            throw new IllegalArgumentException("Username is already taken");
+            throw new UsernameAlreadyExistsException("Username is already taken");
         }
 
         if (userRepository.existsByEmail(userDTO.getEmail())) {
-            throw new IllegalArgumentException("Email is already in use");
+            throw new EmailAlreadyExistsException("Email is already in use");
         }
 
     }
