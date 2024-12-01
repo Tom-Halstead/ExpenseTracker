@@ -1,5 +1,6 @@
 package com.expensetracker.service;
 
+import com.expensetracker.dto.AuthResponse;
 import com.expensetracker.exception.AuthenticationException;
 import com.expensetracker.exception.RegistrationException;
 import com.expensetracker.exception.ServiceException;
@@ -11,12 +12,16 @@ import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.*;
 
+import java.time.Instant;
 import java.util.Map;
 
 @Service
 public class CognitoService {
 
     private final CognitoIdentityProviderClient cognitoClient;
+
+    final String CLIENTID = System.getenv("COGNITO_CLIENT_ID");
+    final String USERPOOLID = "us-east-2_mPBSzEEWc";
 
     private static final Logger log = LoggerFactory.getLogger(CognitoService.class);
 
@@ -32,30 +37,41 @@ public class CognitoService {
      * @param password The password of the user.
      * @return The JWT ID token if authentication is successful, null otherwise.
      */
-    public String authenticate(String username, String password) {
+    public AuthResponse authenticate(String username, String password) {
+        validateCognitoConfiguration();
+        if (username == null || username.trim().isEmpty()) {
+            throw new IllegalArgumentException("Username cannot be null or empty.");
+        }
+        if (password == null || password.trim().isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be null or empty.");
+        }
+
         try {
             AdminInitiateAuthRequest authRequest = AdminInitiateAuthRequest.builder()
-                    .clientId("7mvfnfbhcnmko6r5u74si479r0") // Use your actual Cognito App client ID
-                    .userPoolId("us-east-2_mPBSzEEWc") // Use your actual Cognito User Pool ID
+                    .clientId(CLIENTID) // Use environment variable or configuration
+                    .userPoolId(USERPOOLID) // Use environment variable or configuration
                     .authFlow(AuthFlowType.ADMIN_USER_PASSWORD_AUTH)
                     .authParameters(Map.of("USERNAME", username, "PASSWORD", password))
                     .build();
 
             AdminInitiateAuthResponse authResponse = cognitoClient.adminInitiateAuth(authRequest);
             if (authResponse.authenticationResult() != null) {
-                return authResponse.authenticationResult().idToken(); // Return the ID token
+                return new AuthResponse(
+                        authResponse.authenticationResult().idToken(),
+                        authResponse.authenticationResult().accessToken(),
+                        authResponse.authenticationResult().refreshToken(),
+                        Instant.now().plusSeconds(authResponse.authenticationResult().expiresIn())
+                );
             } else {
-//                log.warn("No authentication result for user: {}", username);
-                throw new AuthenticationException("Authentication failed or no result returned.");
+                throw new AuthenticationException("Authentication failed. Please check your credentials.");
             }
         } catch (CognitoIdentityProviderException e) {
-//            log.error("AWS Cognito error during authentication for user {}: {}", username, e.awsErrorDetails().errorMessage());
             throw new ServiceException("Cognito service error: " + e.awsErrorDetails().errorMessage(), e);
         } catch (Exception e) {
-//            log.error("Exception during authentication for user {}: {}", username, e.getMessage());
             throw new ServiceException("An unexpected error occurred during authentication.", e);
         }
     }
+
 
 
 
@@ -69,10 +85,10 @@ public class CognitoService {
  * @return The unique Cognito UUID for the new user, or null if confirmation is needed.
  */
     public String registerUserWithCognito(String username, String password, String email) {
-        final String clientId = System.getenv("COGNITO_CLIENT_ID");
+
         try {
             SignUpRequest signUpRequest = SignUpRequest.builder()
-                    .clientId(clientId)
+                    .clientId(CLIENTID)
                     .username(username)
                     .password(password)
                     .userAttributes(AttributeType.builder().name("email").value(email).build())
@@ -86,6 +102,15 @@ public class CognitoService {
         } catch (Exception e) {
             log.error("Exception occurred during Cognito registration for user {}: {}", username, e.getMessage());
             throw new RegistrationException("Unexpected error during registration", e);
+        }
+    }
+
+    public void validateCognitoConfiguration() {
+        if (CLIENTID == null || CLIENTID.trim().isEmpty()) {
+            throw new IllegalStateException("Cognito Client ID is not configured.");
+        }
+        if (USERPOOLID == null || USERPOOLID.trim().isEmpty()) {
+            throw new IllegalStateException("Cognito User Pool ID is not configured.");
         }
     }
 

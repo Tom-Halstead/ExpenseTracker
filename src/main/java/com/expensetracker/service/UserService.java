@@ -1,5 +1,6 @@
 package com.expensetracker.service;
 
+import com.expensetracker.dto.AuthResponse;
 import com.expensetracker.dto.RegistrationResult;
 import com.expensetracker.dto.UserDTO;
 import com.expensetracker.entity.User;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.expensetracker.utils.CognitoUtils.extractCognitoUuid;
 
 @Service
 public class UserService {
@@ -77,18 +80,21 @@ public class UserService {
      */
     public UserDTO login(String email, String password) {
         try {
-            String cognitoUuid = cognitoService.authenticate(email, password);
-            if (cognitoUuid == null) {
-                throw new AuthenticationException("Unable to retrieve Cognito UUID.");
+            AuthResponse authResponse = cognitoService.authenticate(email, password);
+            if (authResponse == null || authResponse.getIdToken() == null) {
+                throw new AuthenticationException("Unable to retrieve Cognito UUID or token.");
             }
+
+            String cognitoUuid = extractCognitoUuid(authResponse.getIdToken()); // Assume you extract UUID from the token
             return userRepository.findByCognitoUuid(cognitoUuid)
-                    .filter(user -> "Active".equals(user.getStatus()))  // Check if user is active
+                    .filter(user -> "Active".equals(user.getStatus())) // Check if user is active
                     .map(this::convertToDTO)
                     .orElseThrow(() -> new UserNotFoundException("User with UUID " + cognitoUuid + " not found in local database or is not active."));
         } catch (CognitoServiceException e) {
             throw new AuthenticationException("Cognito authentication failed: " + e.getMessage());
         }
     }
+
 
 
 
