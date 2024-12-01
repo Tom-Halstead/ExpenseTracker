@@ -1,8 +1,8 @@
 package com.expensetracker.controller;
 
 import com.expensetracker.dto.BudgetDTO;
-import com.expensetracker.exceptions.BudgetNotFoundException;
-import com.expensetracker.exceptions.InvalidBudgetDataException;
+import com.expensetracker.exception.BudgetNotFoundException;
+import com.expensetracker.exception.InvalidBudgetDataException;
 import com.expensetracker.service.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

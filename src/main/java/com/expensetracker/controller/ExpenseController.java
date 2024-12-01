@@ -1,7 +1,7 @@
 package com.expensetracker.controller;
 
 import com.expensetracker.dto.ExpenseDTO;
-import com.expensetracker.exceptions.ExpenseNotFoundException;
+import com.expensetracker.exception.ExpenseNotFoundException;
 import com.expensetracker.service.ExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

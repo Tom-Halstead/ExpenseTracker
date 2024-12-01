@@ -1,7 +1,9 @@
 package com.expensetracker.service;
 
-import com.expensetracker.exceptions.AuthenticationException;
-import com.expensetracker.exceptions.ServiceException;
+import com.expensetracker.exception.AuthenticationException;
+import com.expensetracker.exception.RegistrationException;
+import com.expensetracker.exception.ServiceException;
+import com.expensetracker.exception.UserConfirmationRequiredException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,28 +68,30 @@ public class CognitoService {
  * @param email The email for the new user.
  * @return The unique Cognito UUID for the new user, or null if confirmation is needed.
  */
-public String registerUserWithCognito(String username, String password, String email) {
-    try {
-        SignUpRequest signUpRequest = SignUpRequest.builder()
-                .clientId("7mvfnfbhcnmko6r5u74si479r0") // Replace with actual client ID
-                .username(username)
-                .password(password)
-                .userAttributes(AttributeType.builder().name("email").value(email).build())
-                .build();
+    public String registerUserWithCognito(String username, String password, String email) {
+        final String clientId = System.getenv("COGNITO_CLIENT_ID"); // Or from a config file
+        try {
+            SignUpRequest signUpRequest = SignUpRequest.builder()
+                    .clientId(clientId)
+                    .username(username)
+                    .password(password)
+                    .userAttributes(AttributeType.builder().name("email").value(email).build())
+                    .build();
 
-        SignUpResponse response = cognitoClient.signUp(signUpRequest);
-        if (!response.userConfirmed()) {
-            log.debug("User registration needs confirmation for username: {}", username);
-            return null; // Optionally return some status indicating confirmation is needed
+            SignUpResponse response = cognitoClient.signUp(signUpRequest);
+            if (!response.userConfirmed()) {
+                log.debug("User registration needs confirmation for username: {}", username);
+                throw new UserConfirmationRequiredException("User registration pending confirmation.");
+            }
+            return response.userSub(); // Returns the UUID from Cognito
+        } catch (CognitoIdentityProviderException e) {
+            log.error("AWS Cognito exception occurred for user {}: {}", username, e.awsErrorDetails().errorMessage());
+            throw new RegistrationException("Error with AWS Cognito service: " + e.getMessage(), e);
+        } catch (Exception e) {
+            log.error("Exception occurred during Cognito registration for user {}: {}", username, e.getMessage());
+            throw new RegistrationException("Unexpected error during registration", e);
         }
-        return response.userSub(); // Returns the UUID from Cognito
-    } catch (CognitoIdentityProviderException e) {
-        log.error("AWS Cognito exception occurred for user {}: {}", username, e.awsErrorDetails().errorMessage());
-        return null;
-    } catch (Exception e) {
-        log.error("Exception occurred during Cognito registration for user {}: {}", username, e.getMessage());
-        return null;
     }
-}
+
 }
 

@@ -3,14 +3,13 @@ package com.expensetracker.service;
 import com.expensetracker.dto.CategoryDTO;
 import com.expensetracker.entity.Category;
 import com.expensetracker.entity.User;
-import com.expensetracker.exceptions.CategoryNotFoundException;
-import com.expensetracker.exceptions.UserNotFoundException;
+import com.expensetracker.exception.CategoryNotFoundException;
+import com.expensetracker.exception.UserNotFoundException;
 import com.expensetracker.repository.CategoryRepository;
 import com.expensetracker.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 

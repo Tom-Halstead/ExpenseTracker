@@ -4,7 +4,7 @@ import com.expensetracker.dto.IncomeDTO;
 import com.expensetracker.entity.Category;
 import com.expensetracker.entity.Income;
 import com.expensetracker.entity.User;
-import com.expensetracker.exceptions.IncomeNotFoundException;
+import com.expensetracker.exception.IncomeNotFoundException;
 import com.expensetracker.repository.CategoryRepository;
 import com.expensetracker.repository.IncomeRepository;
 import com.expensetracker.repository.UserRepository;

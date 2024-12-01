@@ -4,16 +4,15 @@ import com.expensetracker.dto.ExpenseDTO;
 import com.expensetracker.entity.Category;
 import com.expensetracker.entity.Expense;
 import com.expensetracker.entity.User;
-import com.expensetracker.exceptions.ExpenseNotFoundException;
-import com.expensetracker.exceptions.CategoryNotFoundException;
-import com.expensetracker.exceptions.UserNotFoundException;
+import com.expensetracker.exception.ExpenseNotFoundException;
+import com.expensetracker.exception.CategoryNotFoundException;
+import com.expensetracker.exception.UserNotFoundException;
 import com.expensetracker.repository.ExpenseRepository;
 import com.expensetracker.repository.UserRepository;
 import com.expensetracker.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
