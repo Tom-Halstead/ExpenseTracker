@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -233,6 +234,18 @@ public class UserService {
             throw new RuntimeException("User not found with Cognito UUID: " + cognitoUuid);
         }
     }
+
+
+    public String findUsernameByEmail(String email) {
+        try {
+            return userRepository.findByEmail(email)
+                    .map(User::getUsername)
+                    .orElse(null); // Null implies no user found.
+        } catch (DataAccessException e) {
+            throw new ServiceException("Database error while fetching username for email: " + email, e);
+        }
+    }
+
 
 
     /**

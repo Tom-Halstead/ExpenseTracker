@@ -1,0 +1,369 @@
+2024-12-02T00:15:47.854-06:00  INFO 7428 --- [main] com.expensetracker.ExpenseTrackerApp     : Starting ExpenseTrackerApp using Java 17.0.10 with PID 7428 (C:\Users\tommy\Projects\ExpenseTracker\target\classes started by tommy in C:\Users\tommy\Projects\ExpenseTracker)
+2024-12-02T00:15:47.856-06:00  INFO 7428 --- [main] com.expensetracker.ExpenseTrackerApp     : No active profile set, falling back to 1 default profile: "default"
+2024-12-02T00:15:48.710-06:00  INFO 7428 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-12-02T00:15:48.788-06:00  INFO 7428 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 68 ms. Found 5 JPA repository interfaces.
+2024-12-02T00:15:49.560-06:00  INFO 7428 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-12-02T00:15:49.571-06:00  INFO 7428 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-12-02T00:15:49.572-06:00  INFO 7428 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
+2024-12-02T00:15:49.719-06:00  INFO 7428 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-12-02T00:15:49.719-06:00  INFO 7428 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1803 ms
+2024-12-02T00:15:49.991-06:00  INFO 7428 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-12-02T00:15:50.101-06:00  INFO 7428 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.9.Final
+2024-12-02T00:15:50.104-06:00  INFO 7428 --- [main] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2024-12-02T00:15:50.234-06:00  INFO 7428 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2024-12-02T00:15:50.363-06:00  INFO 7428 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-12-02T00:15:50.377-06:00  INFO 7428 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-12-02T00:15:50.551-06:00  INFO 7428 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@54c11750
+2024-12-02T00:15:50.552-06:00  INFO 7428 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-12-02T00:15:50.897-06:00  INFO 7428 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2024-12-02T00:15:51.568-06:00  INFO 7428 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2024-12-02T00:15:51.676-06:00  INFO 7428 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-12-02T00:15:52.956-06:00  WARN 7428 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-12-02T00:15:53.423-06:00  INFO 7428 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@37227aa7, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@57e2d15c, org.springframework.security.web.context.SecurityContextHolderFilter@16ac67e3, org.springframework.security.web.header.HeaderWriterFilter@7ed6e557, org.springframework.security.web.authentication.logout.LogoutFilter@4458887d, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@533a8540, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@24489d12, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@2fe152aa, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@6810465, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@60f6d689, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@6a90b5e8, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@19e03398, org.springframework.security.web.session.SessionManagementFilter@735d7b99, org.springframework.security.web.access.ExceptionTranslationFilter@6c1d25fa, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@75eca6d8]
+2024-12-02T00:15:53.636-06:00  INFO 7428 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-12-02T00:15:53.646-06:00  INFO 7428 --- [main] com.expensetracker.ExpenseTrackerApp     : Started ExpenseTrackerApp in 6.193 seconds (process running for 6.571)
+2024-12-02T00:15:53.690-06:00  INFO 7428 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-12-02T00:15:53.693-06:00  INFO 7428 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-12-02T00:15:53.696-06:00  INFO 7428 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-12-02T00:15:56.549-06:00  INFO 13980 --- [main] com.expensetracker.ExpenseTrackerApp     : Starting ExpenseTrackerApp using Java 17.0.10 with PID 13980 (C:\Users\tommy\Projects\ExpenseTracker\target\classes started by tommy in C:\Users\tommy\Projects\ExpenseTracker)
+2024-12-02T00:15:56.552-06:00  INFO 13980 --- [main] com.expensetracker.ExpenseTrackerApp     : No active profile set, falling back to 1 default profile: "default"
+2024-12-02T00:15:57.313-06:00  INFO 13980 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-12-02T00:15:57.397-06:00  INFO 13980 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 76 ms. Found 5 JPA repository interfaces.
+2024-12-02T00:15:58.079-06:00  INFO 13980 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-12-02T00:15:58.091-06:00  INFO 13980 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-12-02T00:15:58.092-06:00  INFO 13980 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
+2024-12-02T00:15:58.257-06:00  INFO 13980 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-12-02T00:15:58.258-06:00  INFO 13980 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1651 ms
+2024-12-02T00:15:58.484-06:00  INFO 13980 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-12-02T00:15:58.588-06:00  INFO 13980 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.9.Final
+2024-12-02T00:15:58.592-06:00  INFO 13980 --- [main] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2024-12-02T00:15:58.859-06:00  INFO 13980 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2024-12-02T00:15:58.988-06:00  INFO 13980 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-12-02T00:15:59.003-06:00  INFO 13980 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-12-02T00:15:59.206-06:00  INFO 13980 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@3db1ce78
+2024-12-02T00:15:59.207-06:00  INFO 13980 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-12-02T00:15:59.557-06:00  INFO 13980 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2024-12-02T00:16:00.394-06:00  INFO 13980 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2024-12-02T00:16:00.508-06:00  INFO 13980 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-12-02T00:16:01.766-06:00  WARN 13980 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-12-02T00:16:02.326-06:00  INFO 13980 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@3fae1ec9, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@331fe6d4, org.springframework.security.web.context.SecurityContextHolderFilter@33671907, org.springframework.security.web.header.HeaderWriterFilter@921dbcf, org.springframework.security.web.authentication.logout.LogoutFilter@5eb4b746, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@5d04adc1, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@4c2812aa, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@2d85a4c7, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@74832504, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@67d6bb59, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1a632663, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@555454c7, org.springframework.security.web.session.SessionManagementFilter@24090832, org.springframework.security.web.access.ExceptionTranslationFilter@1cc5d8a9, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@32ae890]
+2024-12-02T00:16:02.613-06:00  INFO 13980 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-12-02T00:16:02.624-06:00  INFO 13980 --- [main] com.expensetracker.ExpenseTrackerApp     : Started ExpenseTrackerApp in 6.551 seconds (process running for 7.19)
+2024-12-02T00:16:58.999-06:00 ERROR 13980 --- [Thread-1] c.expensetracker.service.CognitoService  : AWS Cognito exception occurred: Incorrect username or password.
+2024-12-02T00:17:38.416-06:00  INFO 13980 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-12-02T00:17:38.419-06:00  INFO 13980 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-12-02T00:17:38.422-06:00  INFO 13980 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-12-02T00:17:40.719-06:00  INFO 15060 --- [main] com.expensetracker.ExpenseTrackerApp     : Starting ExpenseTrackerApp using Java 17.0.10 with PID 15060 (C:\Users\tommy\Projects\ExpenseTracker\target\classes started by tommy in C:\Users\tommy\Projects\ExpenseTracker)
+2024-12-02T00:17:40.721-06:00  INFO 15060 --- [main] com.expensetracker.ExpenseTrackerApp     : No active profile set, falling back to 1 default profile: "default"
+2024-12-02T00:17:41.549-06:00  INFO 15060 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-12-02T00:17:41.633-06:00  INFO 15060 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 74 ms. Found 5 JPA repository interfaces.
+2024-12-02T00:17:42.681-06:00  INFO 15060 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-12-02T00:17:42.700-06:00  INFO 15060 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-12-02T00:17:42.701-06:00  INFO 15060 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
+2024-12-02T00:17:42.888-06:00  INFO 15060 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-12-02T00:17:42.888-06:00  INFO 15060 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2116 ms
+2024-12-02T00:17:43.123-06:00  INFO 15060 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-12-02T00:17:43.194-06:00  INFO 15060 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.9.Final
+2024-12-02T00:17:43.198-06:00  INFO 15060 --- [main] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2024-12-02T00:17:43.399-06:00  INFO 15060 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2024-12-02T00:17:43.544-06:00  INFO 15060 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-12-02T00:17:43.564-06:00  INFO 15060 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-12-02T00:17:43.796-06:00  INFO 15060 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@48c5698
+2024-12-02T00:17:43.799-06:00  INFO 15060 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-12-02T00:17:44.233-06:00  INFO 15060 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2024-12-02T00:17:45.009-06:00  INFO 15060 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2024-12-02T00:17:45.120-06:00  INFO 15060 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-12-02T00:17:46.484-06:00  WARN 15060 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-12-02T00:17:47.119-06:00  INFO 15060 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@14997cb9, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@701153c1, org.springframework.security.web.context.SecurityContextHolderFilter@2d85a4c7, org.springframework.security.web.header.HeaderWriterFilter@1a632663, org.springframework.security.web.authentication.logout.LogoutFilter@7b9b244e, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@3b6098fd, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@4ce5013a, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@7cd6b76a, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@301434fb, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@c53dfb2, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3f16a823, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@1641dfb3, org.springframework.security.web.session.SessionManagementFilter@503b5337, org.springframework.security.web.access.ExceptionTranslationFilter@5fc3dfc1, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@5896899d]
+2024-12-02T00:17:47.432-06:00  INFO 15060 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-12-02T00:17:47.442-06:00  INFO 15060 --- [main] com.expensetracker.ExpenseTrackerApp     : Started ExpenseTrackerApp in 7.206 seconds (process running for 7.806)
+2024-12-02T00:18:45.290-06:00  WARN 15060 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m1s381ms542µs500ns).
+2024-12-02T00:19:34.445-06:00  WARN 15060 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=49s154ms758µs500ns).
+2024-12-02T00:20:56.712-06:00  WARN 15060 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m22s266ms919µs199ns).
+2024-12-02T00:20:56.715-06:00 ERROR 15060 --- [Thread-1] c.expensetracker.service.CognitoService  : AWS Cognito exception occurred: Incorrect username or password.
+2024-12-02T00:25:03.592-06:00  WARN 15060 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=4m6s880ms554µs701ns).
+2024-12-02T00:25:03.653-06:00  INFO 15060 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-12-02T00:25:03.657-06:00  INFO 15060 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-12-02T00:25:03.661-06:00  INFO 15060 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-12-02T00:25:05.881-06:00  INFO 19588 --- [main] com.expensetracker.ExpenseTrackerApp     : Starting ExpenseTrackerApp using Java 17.0.10 with PID 19588 (C:\Users\tommy\Projects\ExpenseTracker\target\classes started by tommy in C:\Users\tommy\Projects\ExpenseTracker)
+2024-12-02T00:25:05.883-06:00  INFO 19588 --- [main] com.expensetracker.ExpenseTrackerApp     : No active profile set, falling back to 1 default profile: "default"
+2024-12-02T00:25:06.723-06:00  INFO 19588 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-12-02T00:25:06.828-06:00  INFO 19588 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 92 ms. Found 5 JPA repository interfaces.
+2024-12-02T00:25:07.601-06:00  INFO 19588 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-12-02T00:25:07.610-06:00  INFO 19588 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-12-02T00:25:07.611-06:00  INFO 19588 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
+2024-12-02T00:25:07.776-06:00  INFO 19588 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-12-02T00:25:07.776-06:00  INFO 19588 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1836 ms
+2024-12-02T00:25:08.006-06:00  INFO 19588 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-12-02T00:25:08.062-06:00  INFO 19588 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.9.Final
+2024-12-02T00:25:08.064-06:00  INFO 19588 --- [main] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2024-12-02T00:25:08.251-06:00  INFO 19588 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2024-12-02T00:25:08.440-06:00  INFO 19588 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-12-02T00:25:08.459-06:00  INFO 19588 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-12-02T00:25:08.645-06:00  INFO 19588 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2b3f7704
+2024-12-02T00:25:08.648-06:00  INFO 19588 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-12-02T00:25:09.010-06:00  INFO 19588 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2024-12-02T00:25:09.784-06:00  INFO 19588 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2024-12-02T00:25:09.893-06:00  INFO 19588 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-12-02T00:25:11.099-06:00  WARN 19588 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-12-02T00:25:11.527-06:00  INFO 19588 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@3fae1ec9, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@331fe6d4, org.springframework.security.web.context.SecurityContextHolderFilter@7e38d2a2, org.springframework.security.web.header.HeaderWriterFilter@1cc5d8a9, org.springframework.security.web.authentication.logout.LogoutFilter@33ed6546, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@5d04adc1, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@4c2812aa, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@265361a, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@74832504, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@33671907, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5fc3dfc1, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@555454c7, org.springframework.security.web.session.SessionManagementFilter@921dbcf, org.springframework.security.web.access.ExceptionTranslationFilter@10bae3c0, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@32ae890]
+2024-12-02T00:25:11.771-06:00  INFO 19588 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-12-02T00:25:11.781-06:00  INFO 19588 --- [main] com.expensetracker.ExpenseTrackerApp     : Started ExpenseTrackerApp in 6.379 seconds (process running for 6.938)
+2024-12-02T00:26:14.918-06:00  WARN 19588 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m6s161ms467µs500ns).
+2024-12-02T00:31:53.146-06:00  WARN 19588 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=5m38s228ms449µs900ns).
+2024-12-02T00:31:53.149-06:00 ERROR 19588 --- [Thread-1] c.expensetracker.service.CognitoService  : AWS Cognito exception occurred: Incorrect username or password.
+2024-12-02T00:31:53.200-06:00  INFO 19588 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-12-02T00:31:53.202-06:00  INFO 19588 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-12-02T00:31:53.206-06:00  INFO 19588 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-12-02T00:31:55.393-06:00  INFO 8200 --- [main] com.expensetracker.ExpenseTrackerApp     : Starting ExpenseTrackerApp using Java 17.0.10 with PID 8200 (C:\Users\tommy\Projects\ExpenseTracker\target\classes started by tommy in C:\Users\tommy\Projects\ExpenseTracker)
+2024-12-02T00:31:55.395-06:00  INFO 8200 --- [main] com.expensetracker.ExpenseTrackerApp     : No active profile set, falling back to 1 default profile: "default"
+2024-12-02T00:31:56.179-06:00  INFO 8200 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-12-02T00:31:56.261-06:00  INFO 8200 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 72 ms. Found 5 JPA repository interfaces.
+2024-12-02T00:31:56.964-06:00  INFO 8200 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-12-02T00:31:56.977-06:00  INFO 8200 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-12-02T00:31:56.978-06:00  INFO 8200 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
+2024-12-02T00:31:57.141-06:00  INFO 8200 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-12-02T00:31:57.141-06:00  INFO 8200 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1697 ms
+2024-12-02T00:31:57.345-06:00  INFO 8200 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-12-02T00:31:57.420-06:00  INFO 8200 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.9.Final
+2024-12-02T00:31:57.425-06:00  INFO 8200 --- [main] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2024-12-02T00:31:57.611-06:00  INFO 8200 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2024-12-02T00:31:57.739-06:00  INFO 8200 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-12-02T00:31:57.753-06:00  INFO 8200 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-12-02T00:31:57.982-06:00  INFO 8200 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@45d389f2
+2024-12-02T00:31:57.986-06:00  INFO 8200 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-12-02T00:31:58.381-06:00  INFO 8200 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2024-12-02T00:31:59.125-06:00  INFO 8200 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2024-12-02T00:31:59.230-06:00  INFO 8200 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-12-02T00:32:00.507-06:00  WARN 8200 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-12-02T00:32:00.980-06:00  INFO 8200 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@3a917e07, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@63019596, org.springframework.security.web.context.SecurityContextHolderFilter@2165b170, org.springframework.security.web.header.HeaderWriterFilter@3fb5809a, org.springframework.security.web.authentication.logout.LogoutFilter@c42ee90, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@1641dfb3, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@49620576, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@4ed94e6a, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@6edd80fe, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@44046b0d, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@d20e900, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@60eb9c29, org.springframework.security.web.session.SessionManagementFilter@6529b078, org.springframework.security.web.access.ExceptionTranslationFilter@c53dfb2, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@5b9ed77b]
+2024-12-02T00:32:01.248-06:00  INFO 8200 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-12-02T00:32:01.260-06:00  INFO 8200 --- [main] com.expensetracker.ExpenseTrackerApp     : Started ExpenseTrackerApp in 6.313 seconds (process running for 6.885)
+2024-12-02T00:32:22.607-06:00 ERROR 8200 --- [Thread-1] c.expensetracker.service.CognitoService  : AWS Cognito exception occurred: Incorrect username or password.
+2024-12-02T00:32:28.940-06:00  INFO 8200 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-12-02T00:32:28.942-06:00  INFO 8200 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-12-02T00:32:28.952-06:00  INFO 8200 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-12-02T00:38:45.821-06:00  INFO 8176 --- [main] com.expensetracker.ExpenseTrackerApp     : Starting ExpenseTrackerApp using Java 17.0.10 with PID 8176 (C:\Users\tommy\Projects\ExpenseTracker\target\classes started by tommy in C:\Users\tommy\Projects\ExpenseTracker)
+2024-12-02T00:38:45.823-06:00  INFO 8176 --- [main] com.expensetracker.ExpenseTrackerApp     : No active profile set, falling back to 1 default profile: "default"
+2024-12-02T00:38:46.697-06:00  INFO 8176 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-12-02T00:38:46.776-06:00  INFO 8176 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 68 ms. Found 5 JPA repository interfaces.
+2024-12-02T00:38:47.422-06:00  INFO 8176 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-12-02T00:38:47.432-06:00  INFO 8176 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-12-02T00:38:47.433-06:00  INFO 8176 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
+2024-12-02T00:38:47.547-06:00  INFO 8176 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-12-02T00:38:47.547-06:00  INFO 8176 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1655 ms
+2024-12-02T00:38:47.742-06:00  INFO 8176 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-12-02T00:38:47.813-06:00  INFO 8176 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.9.Final
+2024-12-02T00:38:47.818-06:00  INFO 8176 --- [main] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2024-12-02T00:38:48.011-06:00  INFO 8176 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2024-12-02T00:38:48.142-06:00  INFO 8176 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-12-02T00:38:48.158-06:00  INFO 8176 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-12-02T00:38:48.352-06:00  INFO 8176 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@5d5d3a5c
+2024-12-02T00:38:48.355-06:00  INFO 8176 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-12-02T00:38:48.674-06:00  INFO 8176 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2024-12-02T00:38:49.330-06:00  INFO 8176 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2024-12-02T00:38:49.437-06:00  INFO 8176 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-12-02T00:38:50.686-06:00  WARN 8176 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-12-02T00:38:51.177-06:00  INFO 8176 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@12e3cf1c, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@70ed03e4, org.springframework.security.web.context.SecurityContextHolderFilter@7510824, org.springframework.security.web.header.HeaderWriterFilter@5dc218e2, org.springframework.security.web.authentication.logout.LogoutFilter@7640a191, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@47184859, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@22781286, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@60f6d689, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@533a8540, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@766ab25b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@735d7b99, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@24489d12, org.springframework.security.web.session.SessionManagementFilter@4be6531a, org.springframework.security.web.access.ExceptionTranslationFilter@369f85c6, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@690113f0]
+2024-12-02T00:38:51.433-06:00  INFO 8176 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-12-02T00:38:51.444-06:00  INFO 8176 --- [main] com.expensetracker.ExpenseTrackerApp     : Started ExpenseTrackerApp in 6.062 seconds (process running for 6.49)
+2024-12-02T00:39:04.923-06:00 DEBUG 8176 --- [Thread-1] s.a.a.c.i.ExecutionInterceptorChain      : Creating an interceptor chain that will apply interceptors in the following order: [software.amazon.awssdk.core.internal.interceptor.HttpChecksumRequiredInterceptor@648cbf49, software.amazon.awssdk.awscore.interceptor.HelpfulUnknownHostExceptionInterceptor@22eb0233, software.amazon.awssdk.awscore.eventstream.EventStreamInitialRequestInterceptor@61f3a4a3]
+2024-12-02T00:39:04.935-06:00 DEBUG 8176 --- [Thread-1] s.a.a.a.c.AwsCredentialsProviderChain    : Unable to load credentials from SystemPropertyCredentialsProvider(): Unable to load credentials from system settings. Access key must be specified either via environment variable (AWS_ACCESS_KEY_ID) or system property (aws.accessKeyId).
+
+software.amazon.awssdk.core.exception.SdkClientException: Unable to load credentials from system settings. Access key must be specified either via environment variable (AWS_ACCESS_KEY_ID) or system property (aws.accessKeyId).
+	at software.amazon.awssdk.core.exception.SdkClientException$BuilderImpl.build(SdkClientException.java:98) ~[sdk-core-2.17.79.jar:na]
+	at software.amazon.awssdk.auth.credentials.internal.SystemSettingsCredentialsProvider.resolveCredentials(SystemSettingsCredentialsProvider.java:58) ~[auth-2.17.79.jar:na]
+	at software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain.resolveCredentials(AwsCredentialsProviderChain.java:91) ~[auth-2.17.79.jar:na]
+	at software.amazon.awssdk.auth.credentials.internal.LazyAwsCredentialsProvider.resolveCredentials(LazyAwsCredentialsProvider.java:45) ~[auth-2.17.79.jar:na]
+	at software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider.resolveCredentials(DefaultCredentialsProvider.java:105) ~[auth-2.17.79.jar:na]
+	at software.amazon.awssdk.awscore.internal.AwsExecutionContextBuilder.resolveCredentials(AwsExecutionContextBuilder.java:171) ~[aws-core-2.17.79.jar:na]
+	at software.amazon.awssdk.awscore.internal.AwsExecutionContextBuilder.invokeInterceptorsAndCreateExecutionContext(AwsExecutionContextBuilder.java:108) ~[aws-core-2.17.79.jar:na]
+	at software.amazon.awssdk.awscore.client.handler.AwsSyncClientHandler.invokeInterceptorsAndCreateExecutionContext(AwsSyncClientHandler.java:69) ~[aws-core-2.17.79.jar:na]
+	at software.amazon.awssdk.core.internal.handler.BaseSyncClientHandler.lambda$execute$1(BaseSyncClientHandler.java:78) ~[sdk-core-2.17.79.jar:na]
+	at software.amazon.awssdk.core.internal.handler.BaseSyncClientHandler.measureApiCallSuccess(BaseSyncClientHandler.java:175) ~[sdk-core-2.17.79.jar:na]
+	at software.amazon.awssdk.core.internal.handler.BaseSyncClientHandler.execute(BaseSyncClientHandler.java:76) ~[sdk-core-2.17.79.jar:na]
+	at software.amazon.awssdk.core.client.handler.SdkSyncClientHandler.execute(SdkSyncClientHandler.java:45) ~[sdk-core-2.17.79.jar:na]
+	at software.amazon.awssdk.awscore.client.handler.AwsSyncClientHandler.execute(AwsSyncClientHandler.java:56) ~[aws-core-2.17.79.jar:na]
+	at software.amazon.awssdk.services.cognitoidentityprovider.DefaultCognitoIdentityProviderClient.adminInitiateAuth(DefaultCognitoIdentityProviderClient.java:1412) ~[cognitoidentityprovider-2.17.79.jar:na]
+	at com.expensetracker.service.CognitoService.authenticate(CognitoService.java:59) ~[classes/:na]
+	at com.expensetracker.service.UserService.login(UserService.java:83) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:343) ~[spring-aop-6.0.12.jar:6.0.12]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:699) ~[spring-aop-6.0.12.jar:6.0.12]
+	at com.expensetracker.service.UserService$$SpringCGLIB$$0.login(<generated>) ~[classes/:na]
+	at com.expensetracker.cli.commands.UserCommand.loginUser(UserCommand.java:106) ~[classes/:na]
+	at com.expensetracker.cli.commands.UserCommand.run(UserCommand.java:36) ~[classes/:na]
+	at picocli.CommandLine.executeUserObject(CommandLine.java:1939) ~[picocli-4.6.1.jar:task ':jar' property 'archiveVersion']
+	at picocli.CommandLine.access$1300(CommandLine.java:145) ~[picocli-4.6.1.jar:task ':jar' property 'archiveVersion']
+	at picocli.CommandLine$RunLast.executeUserObjectOfLastSubcommandWithSameParent(CommandLine.java:2352) ~[picocli-4.6.1.jar:task ':jar' property 'archiveVersion']
+	at picocli.CommandLine$RunLast.handle(CommandLine.java:2346) ~[picocli-4.6.1.jar:task ':jar' property 'archiveVersion']
+	at picocli.CommandLine$RunLast.handle(CommandLine.java:2311) ~[picocli-4.6.1.jar:task ':jar' property 'archiveVersion']
+	at picocli.CommandLine$AbstractParseResultHandler.execute(CommandLine.java:2179) ~[picocli-4.6.1.jar:task ':jar' property 'archiveVersion']
+	at picocli.CommandLine.execute(CommandLine.java:2078) ~[picocli-4.6.1.jar:task ':jar' property 'archiveVersion']
+	at com.expensetracker.ExpenseTrackerApp.lambda$runCLI$0(ExpenseTrackerApp.java:63) ~[classes/:na]
+	at java.base/java.lang.Thread.run(Thread.java:840) ~[na:na]
+
+2024-12-02T00:39:04.941-06:00 DEBUG 8176 --- [Thread-1] s.a.a.a.c.AwsCredentialsProviderChain    : Loading credentials from EnvironmentVariableCredentialsProvider()
+2024-12-02T00:39:04.982-06:00 DEBUG 8176 --- [Thread-1] software.amazon.awssdk.request           : Sending Request: DefaultSdkHttpFullRequest(httpMethod=POST, protocol=https, host=cognito-idp.us-east-2.amazonaws.com, encodedPath=/, headers=[amz-sdk-invocation-id, Content-Length, Content-Type, User-Agent, X-Amz-Target], queryParameters=[])
+2024-12-02T00:39:04.986-06:00 DEBUG 8176 --- [Thread-1] s.amazon.awssdk.auth.signer.Aws4Signer   : AWS4 String to sign: AWS4-HMAC-SHA256
+20241202T063904Z
+20241202/us-east-2/cognito-idp/aws4_request
+d616da3b3fd99f60f2bbc72305d1802248bdfbf7fba7ca4e09cc9e734c5f315b
+2024-12-02T00:39:05.078-06:00 DEBUG 8176 --- [Thread-1] s.a.a.h.a.i.conn.SdkTlsSocketFactory     : Connecting socket to cognito-idp.us-east-2.amazonaws.com/3.131.136.197:443 with timeout 2000
+2024-12-02T00:39:05.192-06:00 DEBUG 8176 --- [Thread-1] s.a.a.h.a.i.conn.SdkTlsSocketFactory     : Enabled protocols: [TLSv1.3, TLSv1.2]
+2024-12-02T00:39:05.192-06:00 DEBUG 8176 --- [Thread-1] s.a.a.h.a.i.conn.SdkTlsSocketFactory     : Enabled cipher suites:[TLS_AES_256_GCM_SHA384, TLS_AES_128_GCM_SHA256, TLS_CHACHA20_POLY1305_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256, TLS_DHE_DSS_WITH_AES_256_GCM_SHA384, TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, TLS_DHE_DSS_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, TLS_DHE_RSA_WITH_AES_256_CBC_SHA256, TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, TLS_DHE_RSA_WITH_AES_128_CBC_SHA256, TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, TLS_ECDH_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDH_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDH_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDH_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA384, TLS_ECDH_RSA_WITH_AES_256_CBC_SHA384, TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA256, TLS_ECDH_RSA_WITH_AES_128_CBC_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_DHE_RSA_WITH_AES_256_CBC_SHA, TLS_DHE_DSS_WITH_AES_256_CBC_SHA, TLS_DHE_RSA_WITH_AES_128_CBC_SHA, TLS_DHE_DSS_WITH_AES_128_CBC_SHA, TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDH_RSA_WITH_AES_256_CBC_SHA, TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDH_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_256_GCM_SHA384, TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA256, TLS_RSA_WITH_AES_128_CBC_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA, TLS_EMPTY_RENEGOTIATION_INFO_SCSV]
+2024-12-02T00:39:05.192-06:00 DEBUG 8176 --- [Thread-1] s.a.a.h.a.i.conn.SdkTlsSocketFactory     : socket.getSupportedProtocols(): [TLSv1.3, TLSv1.2, TLSv1.1, TLSv1, SSLv3, SSLv2Hello], socket.getEnabledProtocols(): [TLSv1.3, TLSv1.2]
+2024-12-02T00:39:05.193-06:00 DEBUG 8176 --- [Thread-1] s.a.a.h.a.i.conn.SdkTlsSocketFactory     : TLS protocol enabled for SSL handshake: [TLSv1.2, TLSv1.1, TLSv1, TLSv1.3]
+2024-12-02T00:39:05.194-06:00 DEBUG 8176 --- [Thread-1] s.a.a.h.a.i.conn.SdkTlsSocketFactory     : Starting handshake
+2024-12-02T00:39:05.342-06:00 DEBUG 8176 --- [Thread-1] s.a.a.h.a.i.conn.SdkTlsSocketFactory     : Secure session established
+2024-12-02T00:39:05.343-06:00 DEBUG 8176 --- [Thread-1] s.a.a.h.a.i.conn.SdkTlsSocketFactory     :  negotiated protocol: TLSv1.3
+2024-12-02T00:39:05.343-06:00 DEBUG 8176 --- [Thread-1] s.a.a.h.a.i.conn.SdkTlsSocketFactory     :  negotiated cipher suite: TLS_AES_128_GCM_SHA256
+2024-12-02T00:39:05.343-06:00 DEBUG 8176 --- [Thread-1] s.a.a.h.a.i.conn.SdkTlsSocketFactory     :  peer principal: CN=cognito-idp.us-east-2.amazonaws.com
+2024-12-02T00:39:05.343-06:00 DEBUG 8176 --- [Thread-1] s.a.a.h.a.i.conn.SdkTlsSocketFactory     :  peer alternative names: [cognito-idp.us-east-2.amazonaws.com, cognito-idp-fips.us-east-2.amazonaws.com]
+2024-12-02T00:39:05.343-06:00 DEBUG 8176 --- [Thread-1] s.a.a.h.a.i.conn.SdkTlsSocketFactory     :  issuer principal: CN=Amazon RSA 2048 M03, O=Amazon, C=US
+2024-12-02T00:39:05.345-06:00 DEBUG 8176 --- [Thread-1] s.a.a.h.a.internal.net.SdkSslSocket      : created: cognito-idp.us-east-2.amazonaws.com/3.131.136.197:443
+2024-12-02T00:39:05.679-06:00 DEBUG 8176 --- [Thread-1] software.amazon.awssdk.request           : Received error response: software.amazon.awssdk.services.cognitoidentityprovider.model.NotAuthorizedException: Incorrect username or password. (Service: CognitoIdentityProvider, Status Code: 400, Request ID: 9e9602b4-c9f7-4e9c-ab78-8b50a906d7d2, Extended Request ID: null)
+2024-12-02T00:39:05.688-06:00 ERROR 8176 --- [Thread-1] c.expensetracker.service.CognitoService  : AWS Cognito exception occurred: Incorrect username or password.
+2024-12-02T00:40:50.424-06:00 DEBUG 8176 --- [idle-connection-reaper] s.a.a.h.a.internal.net.SdkSslSocket      : closing cognito-idp.us-east-2.amazonaws.com/3.131.136.197:443
+2024-12-02T01:12:32.137-06:00 DEBUG 8176 --- [idle-connection-reaper] s.a.a.h.a.i.conn.IdleConnectionReaper    : Reaper thread: 
+
+java.lang.InterruptedException: sleep interrupted
+	at java.base/java.lang.Thread.sleep(Native Method) ~[na:na]
+	at software.amazon.awssdk.http.apache.internal.conn.IdleConnectionReaper$ReaperTask.run(IdleConnectionReaper.java:150) ~[apache-client-2.17.79.jar:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:840) ~[na:na]
+
+2024-12-02T01:12:32.139-06:00 DEBUG 8176 --- [idle-connection-reaper] s.a.a.h.a.i.conn.IdleConnectionReaper    : Shutting down reaper thread.
+2024-12-02T01:12:32.139-06:00  INFO 8176 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-12-02T01:12:32.141-06:00  INFO 8176 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-12-02T01:12:32.144-06:00  INFO 8176 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-12-02T01:31:57.109-06:00  INFO 18540 --- [main] com.expensetracker.ExpenseTrackerApp     : Starting ExpenseTrackerApp using Java 17.0.10 with PID 18540 (C:\Users\tommy\Projects\ExpenseTracker\target\classes started by tommy in C:\Users\tommy\Projects\ExpenseTracker)
+2024-12-02T01:31:57.111-06:00  INFO 18540 --- [main] com.expensetracker.ExpenseTrackerApp     : No active profile set, falling back to 1 default profile: "default"
+2024-12-02T01:31:57.883-06:00  INFO 18540 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-12-02T01:31:57.956-06:00  INFO 18540 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 64 ms. Found 5 JPA repository interfaces.
+2024-12-02T01:31:58.598-06:00  INFO 18540 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-12-02T01:31:58.607-06:00  INFO 18540 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-12-02T01:31:58.607-06:00  INFO 18540 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
+2024-12-02T01:31:58.728-06:00  INFO 18540 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-12-02T01:31:58.728-06:00  INFO 18540 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1556 ms
+2024-12-02T01:31:58.901-06:00  INFO 18540 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-12-02T01:31:59.001-06:00  INFO 18540 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.9.Final
+2024-12-02T01:31:59.005-06:00  INFO 18540 --- [main] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2024-12-02T01:31:59.147-06:00  INFO 18540 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2024-12-02T01:31:59.277-06:00  INFO 18540 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-12-02T01:31:59.292-06:00  INFO 18540 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-12-02T01:31:59.483-06:00  INFO 18540 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@221b77d7
+2024-12-02T01:31:59.485-06:00  INFO 18540 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-12-02T01:31:59.805-06:00  INFO 18540 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2024-12-02T01:32:00.519-06:00  INFO 18540 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2024-12-02T01:32:00.638-06:00  INFO 18540 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-12-02T01:32:01.888-06:00  WARN 18540 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-12-02T01:32:02.323-06:00  INFO 18540 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@32be672d, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@23e54c8a, org.springframework.security.web.context.SecurityContextHolderFilter@5122387, org.springframework.security.web.header.HeaderWriterFilter@42718ebf, org.springframework.security.web.authentication.logout.LogoutFilter@441d3ddf, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@55e75ce0, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@3325f17, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@10b063fd, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@276e5add, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@11b234aa, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1455a374, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@736af6f3, org.springframework.security.web.session.SessionManagementFilter@c7008b4, org.springframework.security.web.access.ExceptionTranslationFilter@5a0b925a, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7b186fb8]
+2024-12-02T01:32:02.544-06:00  INFO 18540 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-12-02T01:32:02.553-06:00  INFO 18540 --- [main] com.expensetracker.ExpenseTrackerApp     : Started ExpenseTrackerApp in 5.878 seconds (process running for 6.278)
+2024-12-02T01:32:12.581-06:00 DEBUG 18540 --- [Thread-1] s.a.a.c.i.ExecutionInterceptorChain      : Creating an interceptor chain that will apply interceptors in the following order: [software.amazon.awssdk.core.internal.interceptor.HttpChecksumRequiredInterceptor@6a437930, software.amazon.awssdk.awscore.interceptor.HelpfulUnknownHostExceptionInterceptor@30c5c2f0, software.amazon.awssdk.awscore.eventstream.EventStreamInitialRequestInterceptor@376600bd]
+2024-12-02T01:32:12.595-06:00 DEBUG 18540 --- [Thread-1] s.a.a.a.c.AwsCredentialsProviderChain    : Unable to load credentials from SystemPropertyCredentialsProvider(): Unable to load credentials from system settings. Access key must be specified either via environment variable (AWS_ACCESS_KEY_ID) or system property (aws.accessKeyId).
+
+software.amazon.awssdk.core.exception.SdkClientException: Unable to load credentials from system settings. Access key must be specified either via environment variable (AWS_ACCESS_KEY_ID) or system property (aws.accessKeyId).
+	at software.amazon.awssdk.core.exception.SdkClientException$BuilderImpl.build(SdkClientException.java:98) ~[sdk-core-2.17.79.jar:na]
+	at software.amazon.awssdk.auth.credentials.internal.SystemSettingsCredentialsProvider.resolveCredentials(SystemSettingsCredentialsProvider.java:58) ~[auth-2.17.79.jar:na]
+	at software.amazon.awssdk.auth.credentials.AwsCredentialsProviderChain.resolveCredentials(AwsCredentialsProviderChain.java:91) ~[auth-2.17.79.jar:na]
+	at software.amazon.awssdk.auth.credentials.internal.LazyAwsCredentialsProvider.resolveCredentials(LazyAwsCredentialsProvider.java:45) ~[auth-2.17.79.jar:na]
+	at software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider.resolveCredentials(DefaultCredentialsProvider.java:105) ~[auth-2.17.79.jar:na]
+	at software.amazon.awssdk.awscore.internal.AwsExecutionContextBuilder.resolveCredentials(AwsExecutionContextBuilder.java:171) ~[aws-core-2.17.79.jar:na]
+	at software.amazon.awssdk.awscore.internal.AwsExecutionContextBuilder.invokeInterceptorsAndCreateExecutionContext(AwsExecutionContextBuilder.java:108) ~[aws-core-2.17.79.jar:na]
+	at software.amazon.awssdk.awscore.client.handler.AwsSyncClientHandler.invokeInterceptorsAndCreateExecutionContext(AwsSyncClientHandler.java:69) ~[aws-core-2.17.79.jar:na]
+	at software.amazon.awssdk.core.internal.handler.BaseSyncClientHandler.lambda$execute$1(BaseSyncClientHandler.java:78) ~[sdk-core-2.17.79.jar:na]
+	at software.amazon.awssdk.core.internal.handler.BaseSyncClientHandler.measureApiCallSuccess(BaseSyncClientHandler.java:175) ~[sdk-core-2.17.79.jar:na]
+	at software.amazon.awssdk.core.internal.handler.BaseSyncClientHandler.execute(BaseSyncClientHandler.java:76) ~[sdk-core-2.17.79.jar:na]
+	at software.amazon.awssdk.core.client.handler.SdkSyncClientHandler.execute(SdkSyncClientHandler.java:45) ~[sdk-core-2.17.79.jar:na]
+	at software.amazon.awssdk.awscore.client.handler.AwsSyncClientHandler.execute(AwsSyncClientHandler.java:56) ~[aws-core-2.17.79.jar:na]
+	at software.amazon.awssdk.services.cognitoidentityprovider.DefaultCognitoIdentityProviderClient.adminInitiateAuth(DefaultCognitoIdentityProviderClient.java:1412) ~[cognitoidentityprovider-2.17.79.jar:na]
+	at com.expensetracker.service.CognitoService.authenticate(CognitoService.java:59) ~[classes/:na]
+	at com.expensetracker.service.UserService.login(UserService.java:83) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:343) ~[spring-aop-6.0.12.jar:6.0.12]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:699) ~[spring-aop-6.0.12.jar:6.0.12]
+	at com.expensetracker.service.UserService$$SpringCGLIB$$0.login(<generated>) ~[classes/:na]
+	at com.expensetracker.cli.commands.UserCommand.loginUser(UserCommand.java:106) ~[classes/:na]
+	at com.expensetracker.cli.commands.UserCommand.run(UserCommand.java:36) ~[classes/:na]
+	at picocli.CommandLine.executeUserObject(CommandLine.java:1939) ~[picocli-4.6.1.jar:task ':jar' property 'archiveVersion']
+	at picocli.CommandLine.access$1300(CommandLine.java:145) ~[picocli-4.6.1.jar:task ':jar' property 'archiveVersion']
+	at picocli.CommandLine$RunLast.executeUserObjectOfLastSubcommandWithSameParent(CommandLine.java:2352) ~[picocli-4.6.1.jar:task ':jar' property 'archiveVersion']
+	at picocli.CommandLine$RunLast.handle(CommandLine.java:2346) ~[picocli-4.6.1.jar:task ':jar' property 'archiveVersion']
+	at picocli.CommandLine$RunLast.handle(CommandLine.java:2311) ~[picocli-4.6.1.jar:task ':jar' property 'archiveVersion']
+	at picocli.CommandLine$AbstractParseResultHandler.execute(CommandLine.java:2179) ~[picocli-4.6.1.jar:task ':jar' property 'archiveVersion']
+	at picocli.CommandLine.execute(CommandLine.java:2078) ~[picocli-4.6.1.jar:task ':jar' property 'archiveVersion']
+	at com.expensetracker.ExpenseTrackerApp.lambda$runCLI$0(ExpenseTrackerApp.java:63) ~[classes/:na]
+	at java.base/java.lang.Thread.run(Thread.java:840) ~[na:na]
+
+2024-12-02T01:32:12.598-06:00 DEBUG 18540 --- [Thread-1] s.a.a.a.c.AwsCredentialsProviderChain    : Loading credentials from EnvironmentVariableCredentialsProvider()
+2024-12-02T01:32:12.634-06:00 DEBUG 18540 --- [Thread-1] software.amazon.awssdk.request           : Sending Request: DefaultSdkHttpFullRequest(httpMethod=POST, protocol=https, host=cognito-idp.us-east-2.amazonaws.com, encodedPath=/, headers=[amz-sdk-invocation-id, Content-Length, Content-Type, User-Agent, X-Amz-Target], queryParameters=[])
+2024-12-02T01:32:12.638-06:00 DEBUG 18540 --- [Thread-1] s.amazon.awssdk.auth.signer.Aws4Signer   : AWS4 String to sign: AWS4-HMAC-SHA256
+20241202T073212Z
+20241202/us-east-2/cognito-idp/aws4_request
+bdd2d74cbeafcdb94b2bc92259c51fff29c20285a22f0d5bce21e4223561b761
+2024-12-02T01:32:12.855-06:00 DEBUG 18540 --- [Thread-1] s.a.a.h.a.i.conn.SdkTlsSocketFactory     : Connecting socket to cognito-idp.us-east-2.amazonaws.com/3.12.28.39:443 with timeout 2000
+2024-12-02T01:32:12.940-06:00 DEBUG 18540 --- [Thread-1] s.a.a.h.a.i.conn.SdkTlsSocketFactory     : Enabled protocols: [TLSv1.3, TLSv1.2]
+2024-12-02T01:32:12.941-06:00 DEBUG 18540 --- [Thread-1] s.a.a.h.a.i.conn.SdkTlsSocketFactory     : Enabled cipher suites:[TLS_AES_256_GCM_SHA384, TLS_AES_128_GCM_SHA256, TLS_CHACHA20_POLY1305_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, TLS_DHE_RSA_WITH_CHACHA20_POLY1305_SHA256, TLS_DHE_DSS_WITH_AES_256_GCM_SHA384, TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, TLS_DHE_DSS_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, TLS_DHE_RSA_WITH_AES_256_CBC_SHA256, TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, TLS_DHE_RSA_WITH_AES_128_CBC_SHA256, TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, TLS_ECDH_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDH_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDH_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDH_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA384, TLS_ECDH_RSA_WITH_AES_256_CBC_SHA384, TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA256, TLS_ECDH_RSA_WITH_AES_128_CBC_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_DHE_RSA_WITH_AES_256_CBC_SHA, TLS_DHE_DSS_WITH_AES_256_CBC_SHA, TLS_DHE_RSA_WITH_AES_128_CBC_SHA, TLS_DHE_DSS_WITH_AES_128_CBC_SHA, TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDH_RSA_WITH_AES_256_CBC_SHA, TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDH_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_256_GCM_SHA384, TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA256, TLS_RSA_WITH_AES_128_CBC_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA, TLS_EMPTY_RENEGOTIATION_INFO_SCSV]
+2024-12-02T01:32:12.941-06:00 DEBUG 18540 --- [Thread-1] s.a.a.h.a.i.conn.SdkTlsSocketFactory     : socket.getSupportedProtocols(): [TLSv1.3, TLSv1.2, TLSv1.1, TLSv1, SSLv3, SSLv2Hello], socket.getEnabledProtocols(): [TLSv1.3, TLSv1.2]
+2024-12-02T01:32:12.942-06:00 DEBUG 18540 --- [Thread-1] s.a.a.h.a.i.conn.SdkTlsSocketFactory     : TLS protocol enabled for SSL handshake: [TLSv1.2, TLSv1.1, TLSv1, TLSv1.3]
+2024-12-02T01:32:12.942-06:00 DEBUG 18540 --- [Thread-1] s.a.a.h.a.i.conn.SdkTlsSocketFactory     : Starting handshake
+2024-12-02T01:32:13.059-06:00 DEBUG 18540 --- [Thread-1] s.a.a.h.a.i.conn.SdkTlsSocketFactory     : Secure session established
+2024-12-02T01:32:13.059-06:00 DEBUG 18540 --- [Thread-1] s.a.a.h.a.i.conn.SdkTlsSocketFactory     :  negotiated protocol: TLSv1.3
+2024-12-02T01:32:13.059-06:00 DEBUG 18540 --- [Thread-1] s.a.a.h.a.i.conn.SdkTlsSocketFactory     :  negotiated cipher suite: TLS_AES_128_GCM_SHA256
+2024-12-02T01:32:13.059-06:00 DEBUG 18540 --- [Thread-1] s.a.a.h.a.i.conn.SdkTlsSocketFactory     :  peer principal: CN=cognito-idp.us-east-2.amazonaws.com
+2024-12-02T01:32:13.059-06:00 DEBUG 18540 --- [Thread-1] s.a.a.h.a.i.conn.SdkTlsSocketFactory     :  peer alternative names: [cognito-idp.us-east-2.amazonaws.com, cognito-idp-fips.us-east-2.amazonaws.com]
+2024-12-02T01:32:13.060-06:00 DEBUG 18540 --- [Thread-1] s.a.a.h.a.i.conn.SdkTlsSocketFactory     :  issuer principal: CN=Amazon RSA 2048 M03, O=Amazon, C=US
+2024-12-02T01:32:13.063-06:00 DEBUG 18540 --- [Thread-1] s.a.a.h.a.internal.net.SdkSslSocket      : created: cognito-idp.us-east-2.amazonaws.com/3.12.28.39:443
+2024-12-02T01:32:13.475-06:00 DEBUG 18540 --- [Thread-1] software.amazon.awssdk.request           : Received error response: software.amazon.awssdk.services.cognitoidentityprovider.model.NotAuthorizedException: Incorrect username or password. (Service: CognitoIdentityProvider, Status Code: 400, Request ID: 8824d786-8c46-4c39-8bd4-089f96159094, Extended Request ID: null)
+2024-12-02T01:32:13.485-06:00 ERROR 18540 --- [Thread-1] c.expensetracker.service.CognitoService  : AWS Cognito exception occurred: Incorrect username or password.
+2024-12-02T01:32:55.299-06:00 DEBUG 18540 --- [idle-connection-reaper] s.a.a.h.a.i.conn.IdleConnectionReaper    : Reaper thread: 
+
+java.lang.InterruptedException: sleep interrupted
+	at java.base/java.lang.Thread.sleep(Native Method) ~[na:na]
+	at software.amazon.awssdk.http.apache.internal.conn.IdleConnectionReaper$ReaperTask.run(IdleConnectionReaper.java:150) ~[apache-client-2.17.79.jar:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:840) ~[na:na]
+
+2024-12-02T01:32:55.300-06:00 DEBUG 18540 --- [SpringApplicationShutdownHook] s.a.a.h.a.internal.net.SdkSslSocket      : closing cognito-idp.us-east-2.amazonaws.com/3.12.28.39:443
+2024-12-02T01:32:55.300-06:00 DEBUG 18540 --- [idle-connection-reaper] s.a.a.h.a.i.conn.IdleConnectionReaper    : Shutting down reaper thread.
+2024-12-02T01:32:55.303-06:00  INFO 18540 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-12-02T01:32:55.305-06:00  INFO 18540 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-12-02T01:32:55.308-06:00  INFO 18540 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-12-02T01:32:57.492-06:00  INFO 14180 --- [main] com.expensetracker.ExpenseTrackerApp     : Starting ExpenseTrackerApp using Java 17.0.10 with PID 14180 (C:\Users\tommy\Projects\ExpenseTracker\target\classes started by tommy in C:\Users\tommy\Projects\ExpenseTracker)
+2024-12-02T01:32:57.495-06:00  INFO 14180 --- [main] com.expensetracker.ExpenseTrackerApp     : No active profile set, falling back to 1 default profile: "default"
+2024-12-02T01:32:58.231-06:00  INFO 14180 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-12-02T01:32:58.300-06:00  INFO 14180 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 61 ms. Found 5 JPA repository interfaces.
+2024-12-02T01:32:58.957-06:00  INFO 14180 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-12-02T01:32:58.969-06:00  INFO 14180 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-12-02T01:32:58.969-06:00  INFO 14180 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.13]
+2024-12-02T01:32:59.103-06:00  INFO 14180 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-12-02T01:32:59.103-06:00  INFO 14180 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1548 ms
+2024-12-02T01:32:59.284-06:00  INFO 14180 --- [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-12-02T01:32:59.362-06:00  INFO 14180 --- [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.2.9.Final
+2024-12-02T01:32:59.367-06:00  INFO 14180 --- [main] org.hibernate.cfg.Environment            : HHH000406: Using bytecode reflection optimizer
+2024-12-02T01:32:59.529-06:00  INFO 14180 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2024-12-02T01:32:59.653-06:00  INFO 14180 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-12-02T01:32:59.667-06:00  INFO 14180 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-12-02T01:32:59.837-06:00  INFO 14180 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@54c11750
+2024-12-02T01:32:59.839-06:00  INFO 14180 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-12-02T01:33:00.205-06:00  INFO 14180 --- [main] o.h.b.i.BytecodeProviderInitiator        : HHH000021: Bytecode provider name : bytebuddy
+2024-12-02T01:33:00.880-06:00  INFO 14180 --- [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2024-12-02T01:33:01.000-06:00  INFO 14180 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-12-02T01:33:02.326-06:00  WARN 14180 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-12-02T01:33:02.778-06:00  INFO 14180 --- [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@5d51203b, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@32be672d, org.springframework.security.web.context.SecurityContextHolderFilter@719e8f9f, org.springframework.security.web.header.HeaderWriterFilter@14b4f462, org.springframework.security.web.authentication.logout.LogoutFilter@65689000, org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter@b3c7c75, org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter@55e75ce0, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@6d21a69f, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@23e54c8a, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@9abbe39, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@11b234aa, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@276e5add, org.springframework.security.web.session.SessionManagementFilter@a6fc2e1, org.springframework.security.web.access.ExceptionTranslationFilter@5cc28282, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@639d808a]
+2024-12-02T01:33:03.005-06:00  INFO 14180 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-12-02T01:33:03.014-06:00  INFO 14180 --- [main] com.expensetracker.ExpenseTrackerApp     : Started ExpenseTrackerApp in 6.083 seconds (process running for 6.499)
+2024-12-02T01:33:21.627-06:00 ERROR 14180 --- [Thread-1] c.expensetracker.service.CognitoService  : AWS Cognito exception occurred: Incorrect username or password.
+2024-12-02T01:34:29.737-06:00  INFO 14180 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-12-02T01:34:29.744-06:00  INFO 14180 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-12-02T01:34:29.750-06:00  INFO 14180 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

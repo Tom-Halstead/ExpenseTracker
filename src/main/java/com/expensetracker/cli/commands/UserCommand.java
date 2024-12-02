@@ -2,6 +2,8 @@ package com.expensetracker.cli.commands;
 
 import com.expensetracker.dto.RegistrationResult;
 import com.expensetracker.dto.UserDTO;
+import com.expensetracker.exception.ServiceException;
+import com.expensetracker.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import picocli.CommandLine;
@@ -94,14 +96,29 @@ public class UserCommand implements Runnable {
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
 
-        loggedInUser = userService.login(email, password);
-        if (loggedInUser != null) {
-            System.out.println("Login successful for: " + email);
-            runPostLoginOptions(userService.findByUsername(loggedInUser.getUsername()));
-        } else {
-            System.out.println("Login failed. Please check your credentials.");
+        try {
+            String username = userService.findUsernameByEmail(email);
+            if (username == null) {
+                System.out.println("No user found with the given email.");
+                return;
+            }
+
+            loggedInUser = userService.login(email, password);
+
+            if (loggedInUser != null) {
+                System.out.println("Login successful for: " + username);
+                runPostLoginOptions(loggedInUser);
+            } else {
+                System.out.println("Login failed. Please check your credentials.");
+            }
+        } catch (UserNotFoundException e) {
+            System.out.println("Error: " + e.getMessage());
+        } catch (ServiceException e) {
+            System.out.println("A system error occurred. Please try again later.");
         }
     }
+
+
 
     private void runPostLoginOptions(UserDTO loggedInUser) {
         boolean running = true;

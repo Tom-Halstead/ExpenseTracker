@@ -2,9 +2,7 @@ package com.expensetracker.service;
 
 import com.expensetracker.dto.AuthResponse;
 import com.expensetracker.exception.AuthenticationException;
-import com.expensetracker.exception.RegistrationException;
 import com.expensetracker.exception.ServiceException;
-import com.expensetracker.exception.UserConfirmationRequiredException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,22 +38,28 @@ public class CognitoService {
     public AuthResponse authenticate(String email, String password) {
         validateCognitoConfiguration();
         if (email == null || email.trim().isEmpty()) {
-            throw new IllegalArgumentException("Username cannot be null or empty.");
+            throw new IllegalArgumentException("Email cannot be null or empty.");
         }
         if (password == null || password.trim().isEmpty()) {
             throw new IllegalArgumentException("Password cannot be null or empty.");
         }
 
+        log.debug("Authenticating user with email: {}", email);
+
         try {
             AdminInitiateAuthRequest authRequest = AdminInitiateAuthRequest.builder()
-                    .clientId(CLIENTID) // Use environment variable or configuration
-                    .userPoolId(USERPOOLID) // Use environment variable or configuration
+                    .clientId(CLIENTID)
+                    .userPoolId(USERPOOLID)
                     .authFlow(AuthFlowType.ADMIN_USER_PASSWORD_AUTH)
                     .authParameters(Map.of("USERNAME", email, "PASSWORD", password))
                     .build();
 
+            log.debug("Sending auth request: {}", authRequest);
+
             AdminInitiateAuthResponse authResponse = cognitoClient.adminInitiateAuth(authRequest);
+
             if (authResponse.authenticationResult() != null) {
+                log.debug("Authentication successful for user: {}", email);
                 return new AuthResponse(
                         authResponse.authenticationResult().idToken(),
                         authResponse.authenticationResult().accessToken(),
@@ -63,14 +67,18 @@ public class CognitoService {
                         Instant.now().plusSeconds(authResponse.authenticationResult().expiresIn())
                 );
             } else {
+                log.warn("Authentication failed: No authentication result for user {}", email);
                 throw new AuthenticationException("Authentication failed. Please check your credentials.");
             }
         } catch (CognitoIdentityProviderException e) {
+            log.error("AWS Cognito exception occurred: {}", e.awsErrorDetails().errorMessage());
             throw new ServiceException("Cognito service error: " + e.awsErrorDetails().errorMessage(), e);
         } catch (Exception e) {
+            log.error("Unexpected error occurred during authentication: {}", e.getMessage());
             throw new ServiceException("An unexpected error occurred during authentication.", e);
         }
     }
+
 
 
 
