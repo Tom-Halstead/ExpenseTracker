@@ -2,7 +2,6 @@ package com.expensetracker.cli.commands;
 
 import com.expensetracker.dto.BudgetDTO;
 import com.expensetracker.dto.UserDTO;
-import com.expensetracker.entity.User;
 import com.expensetracker.service.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,6 +21,7 @@ public class BudgetCommand implements Command {
     @Autowired
     private BudgetService budgetService;
     private UserDTO loggedInUser;
+    private Scanner scanner = new Scanner(System.in);
 
     @CommandLine.Option(names = {"-a", "--add"}, description = "Add a new budget")
     private boolean add;
@@ -35,26 +35,19 @@ public class BudgetCommand implements Command {
     @CommandLine.Option(names = {"-u", "--update"}, description = "Update an existing budget")
     private boolean update;
 
-    private Scanner scanner = new Scanner(System.in);  // Scanner for user input
-
-    public BudgetCommand(UserDTO loggedInUser) {
+    public BudgetCommand() {
+        // Default constructor for Spring to manage
     }
-
-
 
     @Override
     public void execute() {
         if (add) {
-            System.out.println("Adding a new budget...");
             addBudget();
         } else if (delete) {
-            System.out.println("Deleting a budget...");
             deleteBudget();
         } else if (list) {
-            System.out.println("Listing all budgets...");
             listBudgets();
         } else if (update) {
-            System.out.println("Updating an existing budget...");
             updateBudget();
         } else {
             System.out.println("Please specify an option: --add, --delete, --list, or --update");
@@ -62,40 +55,30 @@ public class BudgetCommand implements Command {
     }
 
     private void addBudget() {
+        System.out.println("Adding a new budget...");
         System.out.print("Enter amount: ");
         BigDecimal amount = new BigDecimal(scanner.nextLine());
-
         System.out.print("Enter category ID: ");
         int categoryId = Integer.parseInt(scanner.nextLine());
-
-        System.out.print("Enter user ID: ");
-        int userId = Integer.parseInt(scanner.nextLine());
-
         System.out.print("Enter month (1-12): ");
         int month = Integer.parseInt(scanner.nextLine());
-
         System.out.print("Enter year (e.g., 2023): ");
         int year = Integer.parseInt(scanner.nextLine());
 
-        // Create a new BudgetDTO
-        BudgetDTO budgetDTO = new BudgetDTO(userId, categoryId, amount, month, year);
-
-        // Save the new budget
+        BudgetDTO budgetDTO = new BudgetDTO(loggedInUser.getId(), categoryId, amount, month, year);
         budgetService.addBudget(budgetDTO);
-
         System.out.println("Budget added: " + budgetDTO.toString());
     }
 
     private void deleteBudget() {
-        System.out.print("Delete by ID: ");
+        System.out.print("Enter budget ID to delete: ");
         int id = Integer.parseInt(scanner.nextLine());
-
         budgetService.deleteBudget(id);
         System.out.println("Budget deleted: ID = " + id);
     }
 
     private void listBudgets() {
-        List<BudgetDTO> budgets = budgetService.getAllBudgets();
+        List<BudgetDTO> budgets = budgetService.getAllBudgetsForUser(loggedInUser.getId());
         if (budgets.isEmpty()) {
             System.out.println("No budgets found.");
         } else {
@@ -106,8 +89,6 @@ public class BudgetCommand implements Command {
     private void updateBudget() {
         System.out.print("Enter the ID of the budget to update: ");
         int id = Integer.parseInt(scanner.nextLine());
-
-        // Fetch the existing budget details
         BudgetDTO existingBudget = budgetService.getBudgetById(id);
         if (existingBudget == null) {
             System.out.println("Budget not found.");
@@ -115,41 +96,20 @@ public class BudgetCommand implements Command {
         }
 
         System.out.println("Current budget details: " + existingBudget.toString());
-
-        // Prompt for new values and update only if provided
         System.out.print("Enter new amount (leave blank to keep current: " + existingBudget.getAmount() + "): ");
         String amountInput = scanner.nextLine();
         BigDecimal amount = amountInput.isEmpty() ? existingBudget.getAmount() : new BigDecimal(amountInput);
 
-        System.out.print("Enter new category ID (leave blank to keep current: " + existingBudget.getCategoryId() + "): ");
-        String categoryInput = scanner.nextLine();
-        int categoryId = categoryInput.isEmpty() ? existingBudget.getCategoryId() : Integer.parseInt(categoryInput);
-
-        System.out.print("Enter new user ID (leave blank to keep current: " + existingBudget.getUserId() + "): ");
-        String userInput = scanner.nextLine();
-        int userId = userInput.isEmpty() ? existingBudget.getUserId() : Integer.parseInt(userInput);
-
-        System.out.print("Enter new month (leave blank to keep current: " + existingBudget.getMonth() + "): ");
-        String monthInput = scanner.nextLine();
-        int month = monthInput.isEmpty() ? existingBudget.getMonth() : Integer.parseInt(monthInput);
-
-        System.out.print("Enter new year (leave blank to keep current: " + existingBudget.getYear() + "): ");
-        String yearInput = scanner.nextLine();
-        int year = yearInput.isEmpty() ? existingBudget.getYear() : Integer.parseInt(yearInput);
-
-        // Create an updated BudgetDTO with the modified values
-        BudgetDTO updatedBudget = new BudgetDTO(userId, categoryId, amount, month, year);
-
-        // Call the service to update the budget
+        BudgetDTO updatedBudget = new BudgetDTO(loggedInUser.getId(), existingBudget.getCategoryId(), amount, existingBudget.getMonth(), existingBudget.getYear());
         budgetService.updateBudget(id, updatedBudget);
         System.out.println("Budget updated: " + updatedBudget.toString());
     }
 
-    public UserDTO getLoggedInUser() {
-        return loggedInUser;
-    }
-
     public void setLoggedInUser(UserDTO loggedInUser) {
         this.loggedInUser = loggedInUser;
+    }
+
+    public UserDTO getLoggedInUser() {
+        return loggedInUser;
     }
 }

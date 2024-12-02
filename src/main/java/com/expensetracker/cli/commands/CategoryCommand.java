@@ -17,6 +17,8 @@ import java.util.Scanner;
 )
 public class CategoryCommand implements Command {
 
+    private UserDTO loggedInUser;
+
     @Autowired
     private CategoryService categoryService;
 
@@ -144,5 +146,13 @@ public class CategoryCommand implements Command {
         // Update the category
         CategoryDTO updatedCategory = categoryService.updateCategory(id, existingCategory);
         System.out.println("Category updated: " + updatedCategory.toString());
+    }
+
+    public void setLoggedInUser(UserDTO loggedInUser) {
+        this.loggedInUser = loggedInUser;
+    }
+
+    public UserDTO getLoggedInUser() {
+        return loggedInUser;
     }
 }

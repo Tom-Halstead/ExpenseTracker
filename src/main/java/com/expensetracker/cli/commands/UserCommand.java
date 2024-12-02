@@ -124,8 +124,11 @@ public class UserCommand implements Command {
         }
     }
 
+    public UserDTO getLoggedInUser() {
+        return loggedInUser;
+    }
 
-
-
-
+    public void setLoggedInUser(UserDTO loggedInUser) {
+        this.loggedInUser = loggedInUser;
+    }
 }

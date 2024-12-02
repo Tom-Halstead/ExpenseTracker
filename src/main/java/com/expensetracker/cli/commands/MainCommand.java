@@ -57,11 +57,25 @@ public class MainCommand implements Runnable, ApplicationListener<UserLoginSucce
     }
 
     private void initCommands() {
-        commandMap.put("manage incomes", new IncomeCommand(loggedInUser));
-        commandMap.put("manage expenses", new ExpenseCommand(loggedInUser));
-        commandMap.put("manage budgets", new BudgetCommand(loggedInUser));
-        commandMap.put("manage categories", new CategoryCommand(loggedInUser));
-        commandMap.put("logout", new LogoutCommand(loggedInUser));
+        IncomeCommand incomeCommand = applicationContext.getBean(IncomeCommand.class);
+        incomeCommand.setLoggedInUser(loggedInUser);
+        commandMap.put("manage incomes", incomeCommand);
+
+        ExpenseCommand expenseCommand = applicationContext.getBean(ExpenseCommand.class);
+        expenseCommand.setLoggedInUser(loggedInUser);
+        commandMap.put("manage expenses", expenseCommand);
+
+        BudgetCommand budgetCommand = applicationContext.getBean(BudgetCommand.class);
+        budgetCommand.setLoggedInUser(loggedInUser);
+        commandMap.put("manage budgets", budgetCommand);
+
+        CategoryCommand categoryCommand = applicationContext.getBean(CategoryCommand.class);
+        categoryCommand.setLoggedInUser(loggedInUser);
+        commandMap.put("manage categories", categoryCommand);
+
+        LogoutCommand logoutCommand = applicationContext.getBean(LogoutCommand.class);
+        logoutCommand.setLoggedInUser(loggedInUser);
+        commandMap.put("logout", logoutCommand);
     }
 
     @Override

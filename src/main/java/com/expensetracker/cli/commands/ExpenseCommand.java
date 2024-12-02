@@ -21,6 +21,8 @@ import java.util.Scanner;
 )
 public class ExpenseCommand implements Command {
 
+    private UserDTO loggedInUser;
+
     @Autowired
     private ExpenseService expenseService;
 
@@ -124,5 +126,13 @@ public class ExpenseCommand implements Command {
         ExpenseDTO updatedExpense = new ExpenseDTO(id, description, amount, date, recurring, existingExpense.getCategoryId(), existingExpense.getCategoryName(), existingExpense.getUserId(), existingExpense.getCreatedAt(), LocalDateTime.now());
         expenseService.updateExpense(id, updatedExpense);
         System.out.println("Expense updated: " + updatedExpense);
+    }
+
+    public UserDTO getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public void setLoggedInUser(UserDTO loggedInUser) {
+        this.loggedInUser = loggedInUser;
     }
 }

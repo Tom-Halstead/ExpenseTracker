@@ -11,8 +11,10 @@ import com.expensetracker.repository.BudgetRepository;
 import com.expensetracker.repository.CategoryRepository;
 import com.expensetracker.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -150,5 +152,53 @@ public class BudgetService {
         budget.setAmount(dto.getAmount());
         budget.setMonth(dto.getMonth());
         budget.setYear(dto.getYear());
+    }
+
+    /**
+     * Retrieves all budgets for a specified user.
+     *
+     * @param userId the ID of the user whose budgets are to be retrieved
+     * @return a list of BudgetDTO objects
+     */
+    public List<BudgetDTO> getAllBudgetsForUser(int userId) {
+        try {
+            List<BudgetDTO> budgets = budgetRepository.findAllByUserId(userId);
+            if (budgets.isEmpty()) {
+                System.out.println("No budgets found for user ID: " + userId);
+                return Collections.emptyList();  // Return an empty list if no budgets found
+            }
+            return budgets;
+        } catch (DataAccessException e) {
+            System.err.println("Error accessing data for user ID: " + userId + ", error: " + e.getMessage());
+            // Optionally, rethrow as a custom exception or return an empty list
+            throw new RuntimeException("Data access error when trying to retrieve budgets", e);
+        } catch (Exception e) {
+            System.err.println("An unexpected error occurred for user ID: " + userId + ", error: " + e.getMessage());
+            // Optionally, rethrow or handle differently
+            throw new RuntimeException("Unexpected error when trying to retrieve budgets", e);
+        }
+    }
+
+    /**
+     * Retrieves all budgets for a specified user.
+     *
+     * @param userId the ID of the user whose budgets are to be retrieved
+     * @return a list of BudgetDTO objects, or an empty list if no budgets are found
+     */
+    public List<BudgetDTO> findAllByUserId(int userId) {
+        try {
+            List<BudgetDTO> budgets = budgetRepository.findAllByUserId(userId);
+            if (budgets.isEmpty()) {
+                System.out.println("No budgets found for user ID: " + userId);
+                return Collections.emptyList();  // Return an empty list if no budgets found
+            }
+            return budgets;
+        } catch (DataAccessException e) {
+            System.err.println("Error accessing data for user ID: " + userId + ", error: " + e.getMessage());
+            throw new RuntimeException("Data access error when trying to retrieve budgets", e);
+        } catch (Exception e) {
+            System.err.println("An unexpected error occurred for user ID: " + userId + ", error: " + e.getMessage());
+            throw new RuntimeException("Unexpected error when trying to retrieve budgets", e);
+        }
     }
 }

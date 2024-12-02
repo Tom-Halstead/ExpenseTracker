@@ -17,6 +17,8 @@ import java.util.Scanner;
 @CommandLine.Command(name = "income", description = "Manage incomes.")
 public class IncomeCommand implements Command {
 
+    private UserDTO loggedInUser;
+
     @Autowired
     private IncomeService incomeService;
 
@@ -125,5 +127,13 @@ public class IncomeCommand implements Command {
         IncomeDTO updatedIncome = new IncomeDTO(id, existingIncome.getUserId(), existingIncome.getCategoryId(), amount, date, description, source, existingIncome.getCreatedAt(), now);
         incomeService.updateIncome(id, updatedIncome);
         System.out.println("Income updated: " + updatedIncome.toString());
+    }
+
+    public UserDTO getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public void setLoggedInUser(UserDTO loggedInUser) {
+        this.loggedInUser = loggedInUser;
     }
 }
