@@ -1,6 +1,7 @@
 package com.expensetracker.cli.commands;
 
 import com.expensetracker.dto.IncomeDTO;
+import com.expensetracker.dto.UserDTO;
 import com.expensetracker.service.IncomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,10 +15,11 @@ import java.util.Scanner;
 
 @Component
 @CommandLine.Command(name = "income", description = "Manage incomes.")
-public class IncomeCommand implements Runnable {
+public class IncomeCommand implements Command {
 
     @Autowired
     private IncomeService incomeService;
+
 
     @CommandLine.Option(names = {"-a", "--add"}, description = "Add new income")
     private boolean add;
@@ -34,8 +36,11 @@ public class IncomeCommand implements Runnable {
     private final Scanner scanner = new Scanner(System.in);
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
+    public IncomeCommand(UserDTO loggedInUser) {
+    }
+
     @Override
-    public void run() {
+    public void execute() {
         if (add) {
             System.out.println("Adding a new income...");
             addIncome();

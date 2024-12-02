@@ -85,9 +85,9 @@ public class UserService {
                 throw new AuthenticationException("Unable to retrieve Cognito UUID or token.");
             }
 
-            String cognitoUuid = extractCognitoUuid(authResponse.getIdToken()); // Assume you extract UUID from the token
+            String cognitoUuid = extractCognitoUuid(authResponse.getIdToken());
             return userRepository.findByCognitoUuid(cognitoUuid)
-//                    .filter(user -> "Active".equals(user.getStatus())) // Check if user is active
+                    .filter(user -> "Active".equals(user.getStatus()) || "Pending".equals(user.getStatus())) // Check if user is active or pending
                     .map(this::convertToDTO)
                     .orElseThrow(() -> new UserNotFoundException("User with UUID " + cognitoUuid + " not found in local database or is not active."));
         } catch (CognitoServiceException e) {

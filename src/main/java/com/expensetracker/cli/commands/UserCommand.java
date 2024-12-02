@@ -1,23 +1,27 @@
 package com.expensetracker.cli.commands;
 
+import com.expensetracker.cli.events.UserLoginSuccessEvent;
 import com.expensetracker.dto.RegistrationResult;
 import com.expensetracker.dto.UserDTO;
 import com.expensetracker.exception.ServiceException;
 import com.expensetracker.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import picocli.CommandLine;
 import com.expensetracker.service.UserService;
 
-import java.io.Console;
 import java.util.Scanner;
 
 @Component
 @CommandLine.Command(name = "user", description = "Commands related to user management")
-public class UserCommand implements Runnable {
+public class UserCommand implements Command {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+
 
     private UserDTO loggedInUser;
 
@@ -30,7 +34,7 @@ public class UserCommand implements Runnable {
     private Scanner scanner = new Scanner(System.in);
 
     @Override
-    public void run() {
+    public void execute() {
         if (register) {
             registerUser();
         } else if (login) {
@@ -74,7 +78,7 @@ public class UserCommand implements Runnable {
                 System.out.println("First Name: " + loggedInUser.getFirstName());
                 System.out.println("Last Name: " + loggedInUser.getLastName());
                 System.out.println();
-                runPostLoginOptions(loggedInUser); // Proceed with post-login options
+                eventPublisher.publishEvent(new UserLoginSuccessEvent(this, loggedInUser));
             } else {
                 System.out.println();
                 System.out.println("Error: Could not retrieve user details post-registration.");
@@ -109,7 +113,7 @@ public class UserCommand implements Runnable {
 
             if (loggedInUser != null) {
                 System.out.println("Login successful for: " + username);
-                runPostLoginOptions(loggedInUser);
+                eventPublisher.publishEvent(new UserLoginSuccessEvent(this, loggedInUser));
             } else {
                 System.out.println("Login failed. Please check your credentials.");
             }
@@ -123,37 +127,5 @@ public class UserCommand implements Runnable {
 
 
 
-    private void runPostLoginOptions(UserDTO loggedInUser) {
-        boolean running = true;
-        while (running) {
-            System.out.println("Enter command (manage incomes, manage expenses, manage budgets, manage categories, logout): ");
-            String command = scanner.nextLine();
-            switch (command.toLowerCase()) {
-                case "manage incomes":
-                    // Implement income functionality here
-                    System.out.println("Incomes..."); // Placeholder
-                    break;
-                case "manage expenses":
-                    // Implement expense functionality here
-                    System.out.println("Expenses..."); // Placeholder
-                    break;
-                case "manage budgets":
-                    // Implement budget functionality here
-                    System.out.println("Budgets..."); // Placeholder
-                    break;
-                case "manage categories":
-                    // Implement category functionality here
-                    System.out.println("Categories...");
-                    break;
-                case "logout":
-                    System.out.println("Logging out...");
-                    loggedInUser = null;
-                    running = false;
-                    break;
-                default:
-                    System.out.println("Invalid command. Try again.");
-                    break;
-            }
-        }
-    }
+
 }

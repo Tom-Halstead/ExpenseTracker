@@ -1,6 +1,8 @@
 package com.expensetracker.cli.commands;
 
 import com.expensetracker.dto.BudgetDTO;
+import com.expensetracker.dto.UserDTO;
+import com.expensetracker.entity.User;
 import com.expensetracker.service.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,10 +17,11 @@ import java.util.Scanner;
         name = "budget",
         description = "Manage budgets."
 )
-public class BudgetCommand implements Runnable {
+public class BudgetCommand implements Command {
 
     @Autowired
     private BudgetService budgetService;
+    private UserDTO loggedInUser;
 
     @CommandLine.Option(names = {"-a", "--add"}, description = "Add a new budget")
     private boolean add;
@@ -34,8 +37,13 @@ public class BudgetCommand implements Runnable {
 
     private Scanner scanner = new Scanner(System.in);  // Scanner for user input
 
+    public BudgetCommand(UserDTO loggedInUser) {
+    }
+
+
+
     @Override
-    public void run() {
+    public void execute() {
         if (add) {
             System.out.println("Adding a new budget...");
             addBudget();
@@ -135,5 +143,13 @@ public class BudgetCommand implements Runnable {
         // Call the service to update the budget
         budgetService.updateBudget(id, updatedBudget);
         System.out.println("Budget updated: " + updatedBudget.toString());
+    }
+
+    public UserDTO getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public void setLoggedInUser(UserDTO loggedInUser) {
+        this.loggedInUser = loggedInUser;
     }
 }

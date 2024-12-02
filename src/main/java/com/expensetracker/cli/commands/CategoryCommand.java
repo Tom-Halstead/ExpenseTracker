@@ -1,6 +1,7 @@
 package com.expensetracker.cli.commands;
 
 import com.expensetracker.dto.CategoryDTO;
+import com.expensetracker.dto.UserDTO;
 import com.expensetracker.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,10 +15,11 @@ import java.util.Scanner;
         name = "category",
         description = "Manage categories."
 )
-public class CategoryCommand implements Runnable {
+public class CategoryCommand implements Command {
 
     @Autowired
     private CategoryService categoryService;
+
 
     @CommandLine.Option(names = {"-a", "--add"}, description = "Add a new category")
     private boolean add;
@@ -33,8 +35,11 @@ public class CategoryCommand implements Runnable {
 
     private Scanner scanner = new Scanner(System.in); // Scanner for user input
 
+    public CategoryCommand(UserDTO loggedInUser) {
+    }
+
     @Override
-    public void run() {
+    public void execute() {
         if (add) {
             System.out.println("Adding a new category...");
             addCategory();

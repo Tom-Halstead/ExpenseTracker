@@ -1,6 +1,7 @@
 package com.expensetracker.cli.commands;
 
 import com.expensetracker.dto.ExpenseDTO;
+import com.expensetracker.dto.UserDTO;
 import com.expensetracker.service.ExpenseService;
 import com.expensetracker.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,14 @@ import java.util.Scanner;
         name = "expense",
         description = "Commands related to managing expenses."
 )
-public class ExpenseCommand implements Runnable {
+public class ExpenseCommand implements Command {
 
     @Autowired
     private ExpenseService expenseService;
 
     @Autowired
     private CategoryService categoryService;
+
 
     @CommandLine.Option(names = {"-a", "--add"}, description = "Add a new expense")
     private boolean add;
@@ -41,8 +43,11 @@ public class ExpenseCommand implements Runnable {
     private Scanner scanner = new Scanner(System.in);
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
+    public ExpenseCommand(UserDTO loggedInUser) {
+    }
+
     @Override
-    public void run() {
+    public void execute() {
         if (add) {
             addExpense();
         } else if (delete) {
