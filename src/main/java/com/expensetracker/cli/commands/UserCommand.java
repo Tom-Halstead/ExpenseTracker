@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import picocli.CommandLine;
 import com.expensetracker.service.UserService;
 
+import java.io.Console;
 import java.util.Scanner;
 
 @Component
@@ -67,6 +68,7 @@ public class UserCommand implements Runnable {
             if (loggedInUser != null) {
                 System.out.println();
                 System.out.println("Logged-in User Details:");
+                System.out.println();
                 System.out.println("Username: " + loggedInUser.getUsername());
                 System.out.println("Email: " + loggedInUser.getEmail());
                 System.out.println("First Name: " + loggedInUser.getFirstName());
@@ -117,6 +119,7 @@ public class UserCommand implements Runnable {
             System.out.println("A system error occurred. Please try again later.");
         }
     }
+
 
 
 
