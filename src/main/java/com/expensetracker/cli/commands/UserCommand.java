@@ -57,16 +57,19 @@ public class UserCommand implements Runnable {
         RegistrationResult registrationResult = userService.addUser(newUserDTO);
 
         if (registrationResult != null && "SUCCESS".equals(registrationResult.getStatus())) {
+            System.out.println();
             System.out.println("Registration successful for: " + username);
 
             // Use fetchUserDTOFromResult to retrieve the logged-in user details
             UserDTO loggedInUser = userService.fetchUserDTOFromResult(registrationResult);
             if (loggedInUser != null) {
+                System.out.println();
                 System.out.println("Logged-in User Details:");
                 System.out.println("Username: " + loggedInUser.getUsername());
                 System.out.println("Email: " + loggedInUser.getEmail());
                 System.out.println("First Name: " + loggedInUser.getFirstName());
                 System.out.println("Last Name: " + loggedInUser.getLastName());
+                System.out.println();
                 runPostLoginOptions(loggedInUser); // Proceed with post-login options
             } else {
                 System.out.println();
@@ -101,23 +104,26 @@ public class UserCommand implements Runnable {
     }
 
     private void runPostLoginOptions(UserDTO loggedInUser) {
-        System.out.println("Logged in as: " + loggedInUser.getUsername());
         boolean running = true;
         while (running) {
-            System.out.println("Enter command (manage expenses, manage budgets, manage categories, manage income, logout): ");
+            System.out.println("Enter command (manage incomes, manage expenses, manage budgets, manage categories, logout): ");
             String command = scanner.nextLine();
             switch (command.toLowerCase()) {
-                case "add":
-                    // Implement add functionality here
-                    System.out.println("Adding something..."); // Placeholder
+                case "manage incomes":
+                    // Implement income functionality here
+                    System.out.println("Incomes..."); // Placeholder
                     break;
-                case "delete":
-                    // Implement delete functionality here
-                    System.out.println("Deleting something..."); // Placeholder
+                case "manage expenses":
+                    // Implement expense functionality here
+                    System.out.println("Expenses..."); // Placeholder
                     break;
-                case "list":
-                    // Implement list functionality here
-                    System.out.println("Listing items..."); // Placeholder
+                case "manage budgets":
+                    // Implement budget functionality here
+                    System.out.println("Budgets..."); // Placeholder
+                    break;
+                case "manage categories":
+                    // Implement category functionality here
+                    System.out.println("Categories...");
                     break;
                 case "logout":
                     System.out.println("Logging out...");
