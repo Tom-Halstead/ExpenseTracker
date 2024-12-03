@@ -154,30 +154,7 @@ public class BudgetService {
         budget.setYear(dto.getYear());
     }
 
-    /**
-     * Retrieves all budgets for a specified user.
-     *
-     * @param userId the ID of the user whose budgets are to be retrieved
-     * @return a list of BudgetDTO objects
-     */
-    public List<BudgetDTO> getAllBudgetsForUser(int userId) {
-        try {
-            List<BudgetDTO> budgets = budgetRepository.findAllByUserId(userId);
-            if (budgets.isEmpty()) {
-                System.out.println("No budgets found for user ID: " + userId);
-                return Collections.emptyList();  // Return an empty list if no budgets found
-            }
-            return budgets;
-        } catch (DataAccessException e) {
-            System.err.println("Error accessing data for user ID: " + userId + ", error: " + e.getMessage());
-            // Optionally, rethrow as a custom exception or return an empty list
-            throw new RuntimeException("Data access error when trying to retrieve budgets", e);
-        } catch (Exception e) {
-            System.err.println("An unexpected error occurred for user ID: " + userId + ", error: " + e.getMessage());
-            // Optionally, rethrow or handle differently
-            throw new RuntimeException("Unexpected error when trying to retrieve budgets", e);
-        }
-    }
+
 
     /**
      * Retrieves all budgets for a specified user.

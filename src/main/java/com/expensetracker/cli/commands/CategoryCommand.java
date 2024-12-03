@@ -15,7 +15,7 @@ import java.util.Scanner;
         name = "category",
         description = "Manage categories."
 )
-public class CategoryCommand implements Command {
+public class CategoryCommand implements Runnable {
 
     private UserDTO loggedInUser;
 
@@ -37,11 +37,11 @@ public class CategoryCommand implements Command {
 
     private Scanner scanner = new Scanner(System.in); // Scanner for user input
 
-    public CategoryCommand(UserDTO loggedInUser) {
+    public CategoryCommand() {
     }
 
     @Override
-    public void execute() {
+    public void run() {
         if (add) {
             System.out.println("Adding a new category...");
             addCategory();

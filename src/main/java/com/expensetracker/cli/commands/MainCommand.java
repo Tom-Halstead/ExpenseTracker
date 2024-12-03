@@ -27,7 +27,7 @@ import java.util.Scanner;
 )
 public class MainCommand implements Runnable, ApplicationListener<UserLoginSuccessEvent> {
     private UserDTO loggedInUser;
-    private Map<String, Command> commandMap = new HashMap<>();
+    private Map<String, Runnable> commandMap = new HashMap<>();
     private Scanner scanner = new Scanner(System.in);
 
     @Autowired
@@ -44,9 +44,9 @@ public class MainCommand implements Runnable, ApplicationListener<UserLoginSucce
         while (running) {
             System.out.println("Enter command:");
             String input = scanner.nextLine().toLowerCase();
-            Command command = commandMap.get(input);
+            Runnable command = commandMap.get(input);
             if (command != null) {
-                command.execute();
+                command.run();
                 if ("logout".equals(input)) {
                     running = false;
                 }

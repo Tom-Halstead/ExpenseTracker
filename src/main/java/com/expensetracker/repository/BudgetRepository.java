@@ -11,10 +11,7 @@ public interface BudgetRepository extends JpaRepository<Budget, Integer> {
 
     Optional<Budget> findById(int id);
 
-
     void deleteById(int id);
-
-    List<BudgetDTO> getAllBudgetsForUser(int userId);
 
     List<BudgetDTO> findAllByUserId(int userId);
 }

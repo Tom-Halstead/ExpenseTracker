@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 @Component
 @CommandLine.Command(name = "income", description = "Manage incomes.")
-public class IncomeCommand implements Command {
+public class IncomeCommand implements Runnable {
 
     private UserDTO loggedInUser;
 
@@ -38,11 +38,11 @@ public class IncomeCommand implements Command {
     private final Scanner scanner = new Scanner(System.in);
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    public IncomeCommand(UserDTO loggedInUser) {
+    public IncomeCommand() {
     }
 
     @Override
-    public void execute() {
+    public void run() {
         if (add) {
             System.out.println("Adding a new income...");
             addIncome();

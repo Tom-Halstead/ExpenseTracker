@@ -1,8 +1,12 @@
 package com.expensetracker.cli.commands;
 
 import com.expensetracker.dto.UserDTO;
+import org.springframework.stereotype.Component;
+import picocli.CommandLine;
 
-public class LogoutCommand implements Command {
+@Component
+@CommandLine.Command(name = "logout", description = "Commands related to logging out a user out.")
+public class LogoutCommand implements Runnable {
     private UserDTO loggedInUser;
 
     public LogoutCommand() {
@@ -10,7 +14,8 @@ public class LogoutCommand implements Command {
     }
 
     @Override
-    public void execute() {
+    public void run() {
+
         System.out.println("Logging out " + loggedInUser.getUsername());
         // Perform cleanup, if necessary
         loggedInUser = null;

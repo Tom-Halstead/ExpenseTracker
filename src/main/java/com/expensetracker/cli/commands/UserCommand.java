@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 @Component
 @CommandLine.Command(name = "user", description = "Commands related to user management")
-public class UserCommand implements Command {
+public class UserCommand implements Runnable {
 
     @Autowired
     private UserService userService;
@@ -34,7 +34,7 @@ public class UserCommand implements Command {
     private Scanner scanner = new Scanner(System.in);
 
     @Override
-    public void execute() {
+    public void run() {
         if (register) {
             registerUser();
         } else if (login) {

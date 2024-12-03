@@ -19,7 +19,7 @@ import java.util.Scanner;
         name = "expense",
         description = "Commands related to managing expenses."
 )
-public class ExpenseCommand implements Command {
+public class ExpenseCommand implements Runnable {
 
     private UserDTO loggedInUser;
 
@@ -45,11 +45,11 @@ public class ExpenseCommand implements Command {
     private Scanner scanner = new Scanner(System.in);
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    public ExpenseCommand(UserDTO loggedInUser) {
+    public ExpenseCommand() {
     }
 
     @Override
-    public void execute() {
+    public void run() {
         if (add) {
             addExpense();
         } else if (delete) {

@@ -16,7 +16,7 @@ import java.util.Scanner;
         name = "budget",
         description = "Manage budgets."
 )
-public class BudgetCommand implements Command {
+public class BudgetCommand implements Runnable {
 
     @Autowired
     private BudgetService budgetService;
@@ -40,7 +40,7 @@ public class BudgetCommand implements Command {
     }
 
     @Override
-    public void execute() {
+    public void run() {
         if (add) {
             addBudget();
         } else if (delete) {
@@ -78,7 +78,7 @@ public class BudgetCommand implements Command {
     }
 
     private void listBudgets() {
-        List<BudgetDTO> budgets = budgetService.getAllBudgetsForUser(loggedInUser.getId());
+        List<BudgetDTO> budgets = budgetService.findAllByUserId(loggedInUser.getId());
         if (budgets.isEmpty()) {
             System.out.println("No budgets found.");
         } else {
