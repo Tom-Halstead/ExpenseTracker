@@ -1,7 +1,9 @@
 package com.expensetracker.cli.commands;
 
+import com.expensetracker.cli.commands.interfaces.UserAwareCommand;
 import com.expensetracker.dto.IncomeDTO;
 import com.expensetracker.dto.UserDTO;
+import com.expensetracker.service.CategoryService;
 import com.expensetracker.service.IncomeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,12 +17,15 @@ import java.util.Scanner;
 
 @Component
 @CommandLine.Command(name = "income", description = "Manage incomes.")
-public class IncomeCommand implements Runnable {
+public class IncomeCommand implements UserAwareCommand {
 
     private UserDTO loggedInUser;
 
     @Autowired
     private IncomeService incomeService;
+
+    @Autowired
+    private CategoryService categoryService;
 
 
     @CommandLine.Option(names = {"-a", "--add"}, description = "Add new income")
@@ -70,18 +75,13 @@ public class IncomeCommand implements Runnable {
         System.out.print("Enter source: ");
         String source = scanner.nextLine();
 
-        System.out.print("Enter date and time (yyyy-MM-dd HH:mm): ");
-        LocalDateTime date = LocalDateTime.parse(scanner.nextLine(), dateTimeFormatter);
-
-        System.out.print("Enter user ID: ");
-        int userId = Integer.parseInt(scanner.nextLine());
-
         System.out.print("Enter category ID: ");
+        categoryService.getAllCategories();
         int categoryId = Integer.parseInt(scanner.nextLine());
 
         LocalDateTime now = LocalDateTime.now();
 
-        IncomeDTO incomeDTO = new IncomeDTO(userId, categoryId, amount, date, description, source, now, now);
+        IncomeDTO incomeDTO = new IncomeDTO(loggedInUser.getId(), categoryId, amount, LocalDateTime.now(), description, source, now, now);
         incomeService.addIncome(incomeDTO);
         System.out.println("Income added: " + incomeDTO.toString());
     }

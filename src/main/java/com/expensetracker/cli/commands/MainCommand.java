@@ -26,6 +26,7 @@ import java.util.Scanner;
         }
 )
 public class MainCommand implements Runnable, ApplicationListener<UserLoginSuccessEvent> {
+    private volatile boolean running = true;
     private UserDTO loggedInUser;
     private Map<String, Runnable> commandMap = new HashMap<>();
     private Scanner scanner = new Scanner(System.in);
@@ -40,16 +41,12 @@ public class MainCommand implements Runnable, ApplicationListener<UserLoginSucce
 
     @Override
     public void run() {
-        boolean running = true;
         while (running) {
             System.out.println("Enter command:");
-            String input = scanner.nextLine().toLowerCase();
+            String input = scanner.nextLine().trim().toLowerCase();
             Runnable command = commandMap.get(input);
             if (command != null) {
                 command.run();
-                if ("logout".equals(input)) {
-                    running = false;
-                }
             } else {
                 System.out.println("Invalid command. Try again.");
             }

@@ -1,5 +1,6 @@
 package com.expensetracker.cli.commands;
 
+import com.expensetracker.cli.commands.interfaces.UserAwareCommand;
 import com.expensetracker.cli.events.UserLoginSuccessEvent;
 import com.expensetracker.dto.RegistrationResult;
 import com.expensetracker.dto.UserDTO;
@@ -15,7 +16,7 @@ import java.util.Scanner;
 
 @Component
 @CommandLine.Command(name = "user", description = "Commands related to user management")
-public class UserCommand implements Runnable {
+public class UserCommand implements UserAwareCommand {
 
     @Autowired
     private UserService userService;
