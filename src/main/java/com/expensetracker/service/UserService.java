@@ -132,7 +132,8 @@ public class UserService {
         }
 
         if (userRepository.existsByEmail(userDTO.getEmail())) {
-            throw new EmailAlreadyExistsException("Email is already in use");
+//            throw new EmailAlreadyExistsException("Email is already in use");
+            System.out.println("Email is already in use.");
         }
 
     }

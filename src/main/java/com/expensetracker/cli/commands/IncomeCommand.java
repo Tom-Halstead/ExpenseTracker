@@ -48,22 +48,34 @@ public class IncomeCommand implements UserAwareCommand {
 
     @Override
     public void run() {
-        if (add) {
-            System.out.println("Adding a new income...");
-            addIncome();
-        } else if (delete) {
-            System.out.println("Deleting an income...");
-            deleteIncome();
-        } else if (list) {
-            System.out.println("Listing all incomes...");
-            listIncomes();
-        } else if (update) {
-            System.out.println("Updating an existing income...");
-            updateIncome();
-        } else {
-            System.out.println("Please specify an option: --add, --delete, --list, or --update");
+        System.out.println("Enter command (add, delete, list, update):");
+        String action = scanner.nextLine().trim().toLowerCase();
+
+        switch (action) {
+            case "add":
+                System.out.println("Add Income Menu:");
+                addIncome();
+                break;
+            case "delete":
+                System.out.println("Delete Income Menu:");
+                deleteIncome();
+                break;
+            case "list":
+                System.out.println("Listing unique incomes:");
+                listIncomes();
+                break;
+            case "update":
+                System.out.println("Update Income Menu:");
+                updateIncome();
+                break;
+            default:
+                System.out.println("Invalid command. Please try again.");
+                break;
         }
     }
+
+
+
 
     private void addIncome() {
         System.out.print("Enter amount: ");

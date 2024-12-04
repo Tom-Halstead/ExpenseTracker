@@ -44,7 +44,6 @@ public class CognitoService {
             throw new IllegalArgumentException("Password cannot be null or empty.");
         }
 
-        log.debug("Authenticating user with email: {}", email);
 
         try {
             AdminInitiateAuthRequest authRequest = AdminInitiateAuthRequest.builder()
@@ -54,12 +53,10 @@ public class CognitoService {
                     .authParameters(Map.of("USERNAME", email, "PASSWORD", password))
                     .build();
 
-            log.debug("Sending auth request: {}", authRequest);
 
             AdminInitiateAuthResponse authResponse = cognitoClient.adminInitiateAuth(authRequest);
 
             if (authResponse.authenticationResult() != null) {
-                log.debug("Authentication successful for user: {}", email);
                 return new AuthResponse(
                         authResponse.authenticationResult().idToken(),
                         authResponse.authenticationResult().accessToken(),
@@ -67,14 +64,11 @@ public class CognitoService {
                         Instant.now().plusSeconds(authResponse.authenticationResult().expiresIn())
                 );
             } else {
-                log.warn("Authentication failed: No authentication result for user {}", email);
                 throw new AuthenticationException("Authentication failed. Please check your credentials.");
             }
         } catch (CognitoIdentityProviderException e) {
-            log.error("AWS Cognito exception occurred: {}", e.awsErrorDetails().errorMessage());
             throw new ServiceException("Cognito service error: " + e.awsErrorDetails().errorMessage(), e);
         } catch (Exception e) {
-            log.error("Unexpected error occurred during authentication: {}", e.getMessage());
             throw new ServiceException("An unexpected error occurred during authentication.", e);
         }
     }
@@ -102,8 +96,8 @@ public String registerUserWithCognito(String username, String password, String e
                 .build();
 
         SignUpResponse response = cognitoClient.signUp(signUpRequest);
-        return response.userSub(); // Returns the UUID from Cognito
-    } catch (UsernameExistsException e) { // Specific exception for existing users
+        return response.userSub(); // Returns the UUID from Cognito used for Auth
+    } catch (UsernameExistsException e) {
         throw new ServiceException("User with the given email/username already exists.", e);
     } catch (CognitoIdentityProviderException e) {
         throw new ServiceException("Error with AWS Cognito service: " + e.awsErrorDetails().errorMessage(), e);

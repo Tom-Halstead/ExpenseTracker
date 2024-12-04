@@ -70,6 +70,8 @@ public class UserCommand implements UserAwareCommand {
 
             // Use fetchUserDTOFromResult to retrieve the logged-in user details
             UserDTO loggedInUser = userService.fetchUserDTOFromResult(registrationResult);
+
+
             if (loggedInUser != null) {
                 System.out.println();
                 System.out.println("Logged-in User Details:");

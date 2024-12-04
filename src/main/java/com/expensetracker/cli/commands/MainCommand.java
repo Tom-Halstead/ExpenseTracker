@@ -47,6 +47,7 @@ public class MainCommand implements Runnable, ApplicationListener<UserLoginSucce
             Runnable command = commandMap.get(input);
             if (command != null) {
                 command.run();
+                clearBuffer(scanner);
             } else {
                 System.out.println("Invalid command. Try again.");
             }
@@ -80,6 +81,12 @@ public class MainCommand implements Runnable, ApplicationListener<UserLoginSucce
         this.loggedInUser = event.getUser();
         initCommands();
         run();
+    }
+
+    private void clearBuffer(Scanner scanner) {
+        if (scanner.hasNextLine()) {
+            scanner.nextLine();
+        }
     }
 
 }
