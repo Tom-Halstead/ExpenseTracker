@@ -37,13 +37,9 @@ public class ExpenseTrackerApp {
                 // Create a CommandLine instance with the factory and main command
                 CommandLine commandLine = new CommandLine(mainCommand, picocliFactory());
 
-                // Add CategoryCommand bean to CommandLine instance
-                commandLine.addSubcommand("category", applicationContext.getBean(CategoryCommand.class));
-
                 // Start the CLI in a separate thread to keep the server responsive
                 new Thread(() -> {
                         try (Scanner scanner = new Scanner(System.in)) {
-                                // Display a welcome message and help guide
                                 System.out.println();
                                 System.out.println();
                                 System.out.println("Welcome to the Expense Tracker CLI.");

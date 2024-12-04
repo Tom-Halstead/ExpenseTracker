@@ -115,7 +115,9 @@ public class UserCommand implements UserAwareCommand {
             loggedInUser = userService.login(email, password);
 
             if (loggedInUser != null) {
+                System.out.println();
                 System.out.println("Login successful for: " + username);
+                System.out.println();
                 eventPublisher.publishEvent(new UserLoginSuccessEvent(this, loggedInUser));
             } else {
                 System.out.println("Login failed. Please check your credentials.");

@@ -21,7 +21,10 @@ public class LogoutCommand implements UserAwareCommand {
 
         System.out.println("Logging out " + loggedInUser.getUsername());
         // Perform cleanup, if necessary
+        System.out.println();
         loggedInUser = null;
+        System.out.println("Logged out.");
+
     }
 
     public void setLoggedInUser(UserDTO loggedInUser) {

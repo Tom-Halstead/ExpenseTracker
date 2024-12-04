@@ -22,6 +22,9 @@ import java.util.Scanner;
                 ExpenseCommand.class,
                 IncomeCommand.class,
                 BudgetCommand.class,
+                CategoryCommand.class,
+                LogoutCommand.class,
+                ExitCommand.class,
                 CommandLine.HelpCommand.class
         }
 )
@@ -42,6 +45,8 @@ public class MainCommand implements Runnable, ApplicationListener<UserLoginSucce
     @Override
     public void run() {
         while (running) {
+            System.out.println("Enter command (manage incomes, manage expenses, manage budgets, manage categories, logout):");
+            System.out.println();
             System.out.println("Enter command:");
             String input = scanner.nextLine().trim().toLowerCase();
             Runnable command = commandMap.get(input);
@@ -71,6 +76,10 @@ public class MainCommand implements Runnable, ApplicationListener<UserLoginSucce
         categoryCommand.setLoggedInUser(loggedInUser);
         commandMap.put("manage categories", categoryCommand);
 
+        ExitCommand exitCommand = applicationContext.getBean(ExitCommand.class);
+        exitCommand.setLoggedInUser(loggedInUser);
+        commandMap.put("exit", new ExitCommand(this));
+
         LogoutCommand logoutCommand = applicationContext.getBean(LogoutCommand.class);
         logoutCommand.setLoggedInUser(loggedInUser);
         commandMap.put("logout", logoutCommand);
@@ -87,6 +96,10 @@ public class MainCommand implements Runnable, ApplicationListener<UserLoginSucce
         if (scanner.hasNextLine()) {
             scanner.nextLine();
         }
+    }
+
+    public void stopRunning() {
+        this.running = false;
     }
 
 }

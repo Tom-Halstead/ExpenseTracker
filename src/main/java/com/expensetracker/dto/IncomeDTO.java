@@ -3,6 +3,7 @@ package com.expensetracker.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class IncomeDTO {
     private int id;
@@ -113,5 +114,18 @@ public class IncomeDTO {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return "\n" +
+                "CategoryId = " + categoryId + "\n" +
+                "Amount = " + amount + "\n" +
+                "Date = " + (date != null ? date.format(formatter) : "null") + "\n" +
+                "Description = '" + description + '\'' + "\n" +
+                "Source = '" + source + '\'' + "\n" +
+                "Created At = " + (createdAt != null ? createdAt.format(formatter) : "null") + "\n" +
+                "Updated At = " + (updatedAt != null ? updatedAt.format(formatter) : "null");
     }
 }
