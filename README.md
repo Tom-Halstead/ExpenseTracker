@@ -1,6 +1,6 @@
 # Expense Tracker Application
 
-A way overly complicated expense tracking app utilizing AWS Cognito for user authentication and management.
+An authentication heavy expense tracking CLI utilizing AWS Cognito for user authentication and management, that allows you to customize your finances in order to keep track of them within a simple database structure.
 ---
 
 ## Table of Contents 
@@ -13,8 +13,9 @@ A way overly complicated expense tracking app utilizing AWS Cognito for user aut
 
 ## Features
 - User:
-    - Register a user, and receive an MFA authentication email via AWS SES.
+    - Leverages Amazon Cognito for user registration and authentication. 
     - Login to the CLI to perform actions on your account.
+    - Register a user, and receive an MFA authentication email via AWS SES.
 - Budget: 
     - Enter your monthly allowance and track your expenses out of that set budget.
     - Receive monthly reports on spending, regarding budgeting and allowances.
@@ -23,7 +24,9 @@ A way overly complicated expense tracking app utilizing AWS Cognito for user aut
 - Expenses:
     - Manage your expenses
     - Track monthly spending
-
+- Reports:
+    - Generate custom reports based on your needs from tables and existing records.
+    
 ---
 
 ## Usage

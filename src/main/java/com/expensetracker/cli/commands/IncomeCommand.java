@@ -95,7 +95,9 @@ public class IncomeCommand implements UserAwareCommand {
 
         IncomeDTO incomeDTO = new IncomeDTO(loggedInUser.getId(), categoryId, amount, LocalDateTime.now(), description, source, now, now);
         incomeService.addIncome(incomeDTO);
+        System.out.println();
         System.out.println("Income added: " + incomeDTO.toString());
+        enterCommand();
     }
 
     private void deleteIncome() {
@@ -103,14 +105,17 @@ public class IncomeCommand implements UserAwareCommand {
         int id = Integer.parseInt(scanner.nextLine());
         incomeService.deleteIncome(id);
         System.out.println("Income deleted: ID = " + id);
+        enterCommand();
     }
 
     private void listIncomes() {
         List<IncomeDTO> incomes = incomeService.getAllIncomes();
         if (incomes.isEmpty()) {
             System.out.println("No incomes found.");
+            enterCommand();
         } else {
             incomes.forEach(income -> System.out.println(income.toString()));
+            enterCommand();
         }
     }
 
@@ -147,5 +152,9 @@ public class IncomeCommand implements UserAwareCommand {
 
     public void setLoggedInUser(UserDTO loggedInUser) {
         this.loggedInUser = loggedInUser;
+    }
+
+    public void enterCommand() {
+        System.out.println("Enter command (manage incomes, manage expenses, manage budgets, manage categories, logout): ");
     }
 }
