@@ -20,8 +20,11 @@ public class BudgetCommand implements Runnable {
 
     @Autowired
     private BudgetService budgetService;
+
+    @Autowired
+    private Scanner scanner;
+
     private UserDTO loggedInUser;
-    private Scanner scanner = new Scanner(System.in);
 
     @CommandLine.Option(names = {"-a", "--add"}, description = "Add a new budget")
     private boolean add;

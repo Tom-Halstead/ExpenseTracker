@@ -27,6 +27,9 @@ public class IncomeCommand implements UserAwareCommand {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private Scanner scanner;
+
 
     @CommandLine.Option(names = {"-a", "--add"}, description = "Add new income")
     private boolean add;
@@ -40,7 +43,6 @@ public class IncomeCommand implements UserAwareCommand {
     @CommandLine.Option(names = {"-u", "--update"}, description = "Update an existing income")
     private boolean update;
 
-    private final Scanner scanner = new Scanner(System.in);
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public IncomeCommand() {
@@ -48,31 +50,37 @@ public class IncomeCommand implements UserAwareCommand {
 
     @Override
     public void run() {
-        System.out.println("Enter command (add, delete, list, update):");
-        String action = scanner.nextLine().trim().toLowerCase();
+        while (true) {
+            System.out.println("Enter command (add, delete, list, update, exit):");
+            String action = scanner.nextLine().trim().toLowerCase();
 
-        switch (action) {
-            case "add":
-                System.out.println("Add Income Menu:");
-                addIncome();
-                break;
-            case "delete":
-                System.out.println("Delete Income Menu:");
-                deleteIncome();
-                break;
-            case "list":
-                System.out.println("Listing unique incomes:");
-                listIncomes();
-                break;
-            case "update":
-                System.out.println("Update Income Menu:");
-                updateIncome();
-                break;
-            default:
-                System.out.println("Invalid command. Please try again.");
-                break;
+            switch (action) {
+                case "add":
+                    System.out.println("Add Income Menu:");
+                    addIncome();
+                    break;
+                case "delete":
+                    System.out.println("Delete Income Menu:");
+                    deleteIncome();
+                    break;
+                case "list":
+                    System.out.println("Listing unique incomes:");
+                    listIncomes();
+                    break;
+                case "update":
+                    System.out.println("Update Income Menu:");
+                    updateIncome();
+                    break;
+                case "exit":
+                    System.out.println("Exiting...");
+                    return;  // Exit the loop and end the method
+                default:
+                    System.out.println("Invalid command. Please try again.");
+                    break;
+            }
         }
     }
+
 
 
 
@@ -97,7 +105,6 @@ public class IncomeCommand implements UserAwareCommand {
         incomeService.addIncome(incomeDTO);
         System.out.println();
         System.out.println("Income added: " + incomeDTO.toString());
-        enterCommand();
     }
 
     private void deleteIncome() {
@@ -105,17 +112,14 @@ public class IncomeCommand implements UserAwareCommand {
         int id = Integer.parseInt(scanner.nextLine());
         incomeService.deleteIncome(id);
         System.out.println("Income deleted: ID = " + id);
-        enterCommand();
     }
 
     private void listIncomes() {
         List<IncomeDTO> incomes = incomeService.getAllIncomes();
         if (incomes.isEmpty()) {
             System.out.println("No incomes found.");
-            enterCommand();
         } else {
             incomes.forEach(income -> System.out.println(income.toString()));
-            enterCommand();
         }
     }
 
@@ -131,14 +135,14 @@ public class IncomeCommand implements UserAwareCommand {
         BigDecimal amount = amountInput.isEmpty() ? existingIncome.getAmount() : new BigDecimal(amountInput);
 
         System.out.print("Enter new description (leave blank to keep current): ");
-        String description = scanner.nextLine().isEmpty() ? existingIncome.getDescription() : scanner.nextLine();
+        String userInput = scanner.nextLine();
+        String description = userInput.isEmpty() ? existingIncome.getDescription() : userInput;
 
         System.out.print("Enter new source (leave blank to keep current): ");
-        String source = scanner.nextLine().isEmpty() ? existingIncome.getSource() : scanner.nextLine();
+        userInput = scanner.nextLine();
+        String source = userInput.isEmpty() ? existingIncome.getSource() : userInput;
 
-        System.out.print("Enter new date and time (yyyy-MM-dd HH:mm, leave blank to keep current): ");
-        String dateInput = scanner.nextLine();
-        LocalDateTime date = dateInput.isEmpty() ? existingIncome.getDate() : LocalDateTime.parse(dateInput, dateTimeFormatter);
+        LocalDateTime date = existingIncome.getDate();
 
         LocalDateTime now = LocalDateTime.now();
         IncomeDTO updatedIncome = new IncomeDTO(id, existingIncome.getUserId(), existingIncome.getCategoryId(), amount, date, description, source, existingIncome.getCreatedAt(), now);

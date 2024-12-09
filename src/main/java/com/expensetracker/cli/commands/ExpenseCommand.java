@@ -29,6 +29,9 @@ public class ExpenseCommand implements Runnable {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private Scanner scanner;
+
 
     @CommandLine.Option(names = {"-a", "--add"}, description = "Add a new expense")
     private boolean add;
@@ -42,7 +45,6 @@ public class ExpenseCommand implements Runnable {
     @CommandLine.Option(names = {"-u", "--update"}, description = "Update an existing expense")
     private boolean update;
 
-    private Scanner scanner = new Scanner(System.in);
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public ExpenseCommand() {

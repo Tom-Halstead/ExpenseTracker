@@ -119,7 +119,9 @@ public class IncomeDTO {
     @Override
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return "\n" +
+        return
+                "\n" +
+                "UserId = " + userId + "\n" +
                 "CategoryId = " + categoryId + "\n" +
                 "Amount = " + amount + "\n" +
                 "Date = " + (date != null ? date.format(formatter) : "null") + "\n" +

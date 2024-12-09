@@ -32,10 +32,13 @@ public class MainCommand implements Runnable, ApplicationListener<UserLoginSucce
     private volatile boolean running = true;
     private UserDTO loggedInUser;
     private Map<String, Runnable> commandMap = new HashMap<>();
-    private Scanner scanner = new Scanner(System.in);
+
 
     @Autowired
     private ApplicationContext applicationContext;
+
+    @Autowired
+    private Scanner scanner;
 
 
 

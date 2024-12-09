@@ -22,6 +22,9 @@ public class CategoryCommand implements Runnable {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private Scanner scanner;
+
 
     @CommandLine.Option(names = {"-a", "--add"}, description = "Add a new category")
     private boolean add;
@@ -35,7 +38,6 @@ public class CategoryCommand implements Runnable {
     @CommandLine.Option(names = {"-u", "--update"}, description = "Update an existing category")
     private boolean update;
 
-    private Scanner scanner = new Scanner(System.in); // Scanner for user input
 
     public CategoryCommand() {
     }

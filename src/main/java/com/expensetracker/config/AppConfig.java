@@ -6,6 +6,8 @@ import org.springframework.web.client.RestTemplate;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 
+import java.util.Scanner;
+
 @Configuration
 public class AppConfig {
 
@@ -19,6 +21,10 @@ public class AppConfig {
         return CognitoIdentityProviderClient.builder()
                 .region(Region.US_EAST_2)
                 .build();
+    }
+    @Bean
+    public Scanner scanner() {
+        return new Scanner(System.in);
     }
 
 }
