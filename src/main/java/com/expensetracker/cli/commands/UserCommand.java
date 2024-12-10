@@ -1,7 +1,7 @@
 package com.expensetracker.cli.commands;
 
 import com.expensetracker.cli.commands.interfaces.UserAwareCommand;
-import com.expensetracker.cli.events.UserLoginSuccessEvent;
+import com.expensetracker.cli.events.UserLoginEvent;
 import com.expensetracker.dto.RegistrationResult;
 import com.expensetracker.dto.UserDTO;
 import com.expensetracker.exception.ServiceException;
@@ -85,7 +85,7 @@ public class UserCommand implements UserAwareCommand {
                 System.out.println("First Name: " + loggedInUser.getFirstName());
                 System.out.println("Last Name: " + loggedInUser.getLastName());
                 System.out.println();
-                eventPublisher.publishEvent(new UserLoginSuccessEvent(this, loggedInUser));
+                eventPublisher.publishEvent(new UserLoginEvent(this, loggedInUser));
             } else {
                 System.out.println();
                 System.out.println("Error: Could not retrieve user details post-registration.");
@@ -121,7 +121,7 @@ public class UserCommand implements UserAwareCommand {
                 System.out.println();
                 System.out.println("Login successful for: " + username);
                 System.out.println();
-                eventPublisher.publishEvent(new UserLoginSuccessEvent(this, loggedInUser));
+                eventPublisher.publishEvent(new UserLoginEvent(this, loggedInUser));
             } else {
                 System.out.println("Login failed. Please check your credentials.");
             }

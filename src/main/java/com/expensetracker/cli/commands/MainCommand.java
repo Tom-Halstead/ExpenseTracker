@@ -1,9 +1,11 @@
 package com.expensetracker.cli.commands;
 
-import com.expensetracker.cli.events.UserLoginSuccessEvent;
+import com.expensetracker.cli.events.UserLoginEvent;
+import com.expensetracker.cli.events.UserLogoutEvent;
 import com.expensetracker.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 import picocli.CommandLine;
@@ -28,7 +30,7 @@ import java.util.Scanner;
                 CommandLine.HelpCommand.class
         }
 )
-public class MainCommand implements Runnable, ApplicationListener<UserLoginSuccessEvent> {
+public class MainCommand implements Runnable, ApplicationListener<UserLoginEvent> {
     private volatile boolean running = true;
     private UserDTO loggedInUser;
     private Map<String, Runnable> commandMap = new HashMap<>();
@@ -89,11 +91,22 @@ public class MainCommand implements Runnable, ApplicationListener<UserLoginSucce
     }
 
     @Override
-    public void onApplicationEvent(UserLoginSuccessEvent event) {
+    public void onApplicationEvent(UserLoginEvent event) {
         this.loggedInUser = event.getUser();
         initCommands();
         run();
     }
+
+//    @Override
+//    public void onApplicationEvent(ApplicationEvent event) {
+//        if (event instanceof UserLoginEvent) {
+//            this.loggedInUser = ((UserLoginEvent) event).getUser();
+////            System.out.println("Login successful for: " + loggedInUser.getUsername());
+//        } else if (event instanceof UserLogoutEvent) {
+//            this.loggedInUser = null;
+//            System.out.println("Enter 'user login' or 'user register' to start:");
+//        }
+//    }
 
     private void clearBuffer(Scanner scanner) {
         if (scanner.hasNextLine()) {
@@ -112,4 +125,6 @@ public class MainCommand implements Runnable, ApplicationListener<UserLoginSucce
     public void setLoggedInUser(UserDTO loggedInUser) {
         this.loggedInUser = loggedInUser;
     }
+
+
 }
