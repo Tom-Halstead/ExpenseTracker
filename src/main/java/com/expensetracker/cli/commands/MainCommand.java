@@ -105,4 +105,11 @@ public class MainCommand implements Runnable, ApplicationListener<UserLoginSucce
         this.running = false;
     }
 
+    public UserDTO getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public void setLoggedInUser(UserDTO loggedInUser) {
+        this.loggedInUser = loggedInUser;
+    }
 }

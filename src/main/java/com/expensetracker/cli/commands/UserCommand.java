@@ -29,20 +29,26 @@ public class UserCommand implements UserAwareCommand {
 
     private UserDTO loggedInUser;
 
+    @CommandLine.Option(names = {"-reg", "--register"}, description = "Register a new user")
+    private boolean register;
+
+    @CommandLine.Option(names = {"-login", "--login"}, description = "Log in as a user")
+    private boolean login;
+
 
     @Override
     public void run() {
         System.out.println();
-//        if (register) {
-//            registerUser();
-//        } else if (login) {
-//            loginUser();
-//        } else {
-//            System.out.println("Please specify an option: --register or --login to access other functionalities.");
-//        }
+        if (register) {
+            registerUser();
+        } else if (login) {
+            loginUser();
+        } else {
+            System.out.println("Please specify an option: --register or --login to access other functionalities.");
+        }
     }
 
-    @CommandLine.Command(name =  "register", aliases = {"user register"}, description = "Register a new user")
+    @CommandLine.Command(name = "register", description = "Register as a user")
     private void registerUser() {
         System.out.println("Please enter your registration details:");
         System.out.print("Enter email: ");
@@ -95,8 +101,7 @@ public class UserCommand implements UserAwareCommand {
         }
     }
 
-
-    @CommandLine.Command(name = "login", aliases = {"user login"}, description = "Login as a user")
+    @CommandLine.Command(name = "login", description = "Login as a user")
     private void loginUser() {
         System.out.print("Enter email: ");
         String email = scanner.nextLine();
