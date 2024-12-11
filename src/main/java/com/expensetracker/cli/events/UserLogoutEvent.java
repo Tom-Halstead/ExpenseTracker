@@ -8,4 +8,6 @@ public class UserLogoutEvent extends ApplicationEvent {
         super(source);
     }
 
+
+
 }

@@ -51,6 +51,25 @@ public class CategoryService {
         return convertToDTO(savedCategory);
     }
 
+    public CategoryDTO createOrGetDefaultCategory(int userId) {
+        // Check if the default category already exists
+        Category existingCategory = categoryRepository.findByName("Default Category");
+        if (existingCategory != null) {
+            return convertToDTO(existingCategory);
+        }
+
+        // If not, create a new one
+        String defaultName = "Default Category";
+        String defaultType = "General";  // Example type
+        String defaultDescription = "Automatically created category";
+
+        CategoryDTO newCategory = new CategoryDTO(userId, defaultName, defaultType, defaultDescription, true);
+        Category savedCategory = categoryRepository.save(convertToEntity(newCategory));
+        return convertToDTO(savedCategory);
+    }
+
+
+
     // Update an existing category
     public CategoryDTO updateCategory(int categoryId, CategoryDTO categoryDTO) {
         Category category = categoryRepository.findById(categoryId)

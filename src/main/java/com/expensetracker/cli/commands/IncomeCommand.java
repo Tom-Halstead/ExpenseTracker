@@ -1,6 +1,7 @@
 package com.expensetracker.cli.commands;
 
 import com.expensetracker.cli.commands.interfaces.UserAwareCommand;
+import com.expensetracker.dto.CategoryDTO;
 import com.expensetracker.dto.IncomeDTO;
 import com.expensetracker.dto.UserDTO;
 import com.expensetracker.service.CategoryService;
@@ -29,6 +30,9 @@ public class IncomeCommand implements UserAwareCommand {
 
     @Autowired
     private Scanner scanner;
+
+    @Autowired
+    private MainCommand mainCommand;
 
 
     @CommandLine.Option(names = {"-a", "--add"}, description = "Add new income")
@@ -72,7 +76,10 @@ public class IncomeCommand implements UserAwareCommand {
                     updateIncome();
                     break;
                 case "exit":
-                    System.out.println("Exiting...");
+                    System.out.println();
+                    System.out.println("Previous Selections...");
+                    System.out.println();
+                    mainCommand.run();
                     return;  // Exit the loop and end the method
                 default:
                     System.out.println("Invalid command. Please try again.");
@@ -86,26 +93,56 @@ public class IncomeCommand implements UserAwareCommand {
 
 
     private void addIncome() {
-        System.out.print("Enter amount: ");
-        BigDecimal amount = new BigDecimal(scanner.nextLine());
+        Scanner scanner = new Scanner(System.in);
 
+        // Enter amount
+        System.out.print("Enter amount: ");
+        BigDecimal amount = new BigDecimal(scanner.nextLine());  // Consider validating this input
+
+        // Enter description
         System.out.print("Enter description: ");
         String description = scanner.nextLine();
 
+        // Enter source
         System.out.print("Enter source: ");
         String source = scanner.nextLine();
 
-        System.out.print("Enter category ID: ");
+        // Display all categories for user reference
         categoryService.getAllCategories();
-        int categoryId = Integer.parseInt(scanner.nextLine());
 
+        // Enter category ID
+        System.out.print("Enter category ID (leave blank to create a default category): ");
+        String categoryIdInput = scanner.nextLine();
+        int categoryId;
+
+        if (categoryIdInput.isBlank()) {
+            // Input is blank, create a default category
+            CategoryDTO newCategory = categoryService.createOrGetDefaultCategory(getLoggedInUser().getId());
+            categoryService.addCategory(newCategory);
+            categoryId = newCategory.getCategoryId();
+            System.out.println("Default category created with ID: " + categoryId);
+        } else {
+            try {
+                // Parse the entered category ID
+                categoryId = Integer.parseInt(categoryIdInput);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid category ID. Using default category instead.");
+                CategoryDTO newCategory = categoryService.createOrGetDefaultCategory(getLoggedInUser().getId());
+                categoryService.addCategory(newCategory);
+                categoryId = newCategory.getCategoryId();
+            }
+        }
+
+        // Create IncomeDTO with all the inputs
         LocalDateTime now = LocalDateTime.now();
+        IncomeDTO incomeDTO = new IncomeDTO(getLoggedInUser().getId(), categoryId, amount, now, description, source, now, now);
 
-        IncomeDTO incomeDTO = new IncomeDTO(loggedInUser.getId(), categoryId, amount, LocalDateTime.now(), description, source, now, now);
+        // Add income
         incomeService.addIncome(incomeDTO);
         System.out.println();
-        System.out.println("Income added: " + incomeDTO.toString());
+        System.out.println("Income added: " + incomeDTO);
     }
+
 
     private void deleteIncome() {
         System.out.print("Enter income ID to delete: ");

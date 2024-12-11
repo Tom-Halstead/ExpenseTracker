@@ -1,5 +1,7 @@
 package com.expensetracker.dto;
 
+import com.expensetracker.entity.Category;
+
 import java.time.LocalDateTime;
 
 public class CategoryDTO {
@@ -36,6 +38,10 @@ public class CategoryDTO {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+
+
+
+
 
     // Getters and Setters
     public int getCategoryId() {

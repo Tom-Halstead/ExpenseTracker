@@ -30,7 +30,7 @@ import java.util.Scanner;
                 CommandLine.HelpCommand.class
         }
 )
-public class MainCommand implements Runnable, ApplicationListener<UserLoginEvent> {
+public class MainCommand implements Runnable, ApplicationListener<ApplicationEvent> {
     private volatile boolean running = true;
     private UserDTO loggedInUser;
     private Map<String, Runnable> commandMap = new HashMap<>();
@@ -64,6 +64,9 @@ public class MainCommand implements Runnable, ApplicationListener<UserLoginEvent
         }
     }
 
+
+    // I think there's a more intuitive way of doing this especially using PicoCLI, but I have already manually created the implementation so I will keep it as it is.
+    // This is for learning purposes so anything manual is *advantageous*
     private void initCommands() {
         IncomeCommand incomeCommand = applicationContext.getBean(IncomeCommand.class);
         incomeCommand.setLoggedInUser(loggedInUser);
@@ -90,23 +93,20 @@ public class MainCommand implements Runnable, ApplicationListener<UserLoginEvent
         commandMap.put("logout", logoutCommand);
     }
 
-    @Override
-    public void onApplicationEvent(UserLoginEvent event) {
-        this.loggedInUser = event.getUser();
-        initCommands();
-        run();
-    }
 
-//    @Override
-//    public void onApplicationEvent(ApplicationEvent event) {
-//        if (event instanceof UserLoginEvent) {
-//            this.loggedInUser = ((UserLoginEvent) event).getUser();
-////            System.out.println("Login successful for: " + loggedInUser.getUsername());
-//        } else if (event instanceof UserLogoutEvent) {
-//            this.loggedInUser = null;
-//            System.out.println("Enter 'user login' or 'user register' to start:");
-//        }
-//    }
+
+
+    @Override
+    public void onApplicationEvent(ApplicationEvent event) {
+        if (event instanceof UserLoginEvent) {
+            this.loggedInUser = ((UserLoginEvent)event).getUser();
+            initCommands();
+            run();
+        } else if (event instanceof UserLogoutEvent) {
+            loggedInUser = null;
+            stopRunning();
+        }
+    }
 
     private void clearBuffer(Scanner scanner) {
         if (scanner.hasNextLine()) {

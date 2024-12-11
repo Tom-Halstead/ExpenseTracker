@@ -24,28 +24,19 @@ public class LogoutCommand implements UserAwareCommand {
     this.mainCommand = mainCommand;
     }
 
-//    @Override
-//    public void run() {
-//
-//        System.out.println("Logging out " + loggedInUser.getUsername() + "...");
-//        System.out.println();
-//        // Clear state
-//        loggedInUser = null;
-//        mainCommand.setLoggedInUser(null);
-//        mainCommand.stopRunning();
-//        System.out.println("Logged out.");
-//
-//    }
 
-
+    // Using SpringBoot listeners and event publishers to de-couple code and handle login/logout events
     @Override
     public void run() {
-        if (loggedInUser != null) {
-            System.out.println("Logging out " + loggedInUser.getUsername());
-            eventPublisher.publishEvent(new UserLogoutEvent(this));
-            System.out.println("Logged out.");
-        }
+        System.out.println();
+        System.out.println("Logging out " + loggedInUser.getUsername() + "...");
+        System.out.println();
+        eventPublisher.publishEvent(new UserLogoutEvent(this));
+        System.out.println("Logout successful for " + loggedInUser.getUsername());
     }
+
+
+
 
     public void setLoggedInUser(UserDTO loggedInUser) {
         this.loggedInUser = loggedInUser;
