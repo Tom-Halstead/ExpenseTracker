@@ -37,6 +37,8 @@ public class CategoryCommand implements Runnable {
 
     @CommandLine.Option(names = {"-u", "--update"}, description = "Update an existing category")
     private boolean update;
+    @CommandLine.Option(names = {"-e", "--exit"}, description = "Exit the expense command")
+    private boolean exit;
 
 
     public CategoryCommand() {

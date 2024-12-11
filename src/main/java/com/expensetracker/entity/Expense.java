@@ -105,6 +105,7 @@ public class Expense {
         this.recurring = recurring;
     }
 
+
     public Category getCategory() {
         return category;
     }

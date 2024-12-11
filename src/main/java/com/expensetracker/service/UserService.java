@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 import static com.expensetracker.utils.CognitoUtils.extractCognitoUuid;
 
 @Service
+@Transactional
 public class UserService {
 
     private static final Logger log = LoggerFactory.getLogger(UserService.class);
@@ -45,7 +46,6 @@ public class UserService {
      * @throws DataIntegrityViolationException If a database integrity constraint is violated.
      * @throws Exception If any other unexpected errors occur during the registration process.
      */
-    @Transactional
     public RegistrationResult addUser(UserDTO userDTO) {
         validateUserData(userDTO);
         log.debug("Starting registration process for username: {}", userDTO.getUsername());

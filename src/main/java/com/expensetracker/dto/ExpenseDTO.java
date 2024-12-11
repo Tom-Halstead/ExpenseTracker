@@ -12,14 +12,25 @@ public class ExpenseDTO {
     private boolean recurring;
     private int categoryId;
     private String categoryName;
+    private LocalDateTime now;
     private int userId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     public ExpenseDTO() {}
 
-    public ExpenseDTO(int id, String description, BigDecimal amount, LocalDateTime date, boolean recurring,
-                      int categoryId, String categoryName, int userId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ExpenseDTO(int userId, int categoryId, BigDecimal amount, LocalDateTime date, String description, String source, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.userId = userId;
+        this.categoryId = categoryId;
+        this.amount = amount;
+        this.date = date;
+        this.description = description;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+
+    public ExpenseDTO(int id, String description, BigDecimal amount, LocalDateTime date, boolean recurring, int categoryId, String categoryName, int userId, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.description = description;
         this.amount = amount;

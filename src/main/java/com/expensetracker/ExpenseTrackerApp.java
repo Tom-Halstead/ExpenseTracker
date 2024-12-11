@@ -47,12 +47,11 @@ public class ExpenseTrackerApp {
                 System.out.println();
                 System.out.println("Welcome to the Expense Tracker CLI.");
                 System.out.println();
-                System.out.println("Type 'user login' or 'user register' to start.");
-                System.out.println();
 
                 new Thread(() -> {
                         while (true) {
-                                System.out.print("Enter CLI command ('help' for options): ");
+                                System.out.print("Type 'user login' or 'user register' to start: ");
+                                System.out.println("\n");
                                 String input = scanner.nextLine().trim();
                                 if ("exit".equalsIgnoreCase(input)) {
                                         System.out.println("Exiting the application...");

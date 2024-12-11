@@ -37,6 +37,8 @@ public class BudgetCommand implements Runnable {
 
     @CommandLine.Option(names = {"-u", "--update"}, description = "Update an existing budget")
     private boolean update;
+    @CommandLine.Option(names = {"-e", "--exit"}, description = "Exit the expense command")
+    private boolean exit;
 
     public BudgetCommand() {
         // Default constructor for Spring to manage

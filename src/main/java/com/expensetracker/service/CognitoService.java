@@ -3,6 +3,7 @@ package com.expensetracker.service;
 import com.expensetracker.dto.AuthResponse;
 import com.expensetracker.exception.AuthenticationException;
 import com.expensetracker.exception.ServiceException;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.time.Instant;
 import java.util.Map;
 
 @Service
+@Transactional
 public class CognitoService {
 
     private final CognitoIdentityProviderClient cognitoClient;

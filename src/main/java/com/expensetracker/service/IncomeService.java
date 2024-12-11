@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class IncomeService {
 
     @Autowired
@@ -25,26 +26,22 @@ public class IncomeService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @Transactional
     public List<IncomeDTO> getAllIncomes() {
         List<Income> incomes = incomeRepository.findAll();
         return incomes.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
-    @Transactional
     public IncomeDTO getIncomeById(int id) {
         Income income = incomeRepository.findById(id)
                 .orElseThrow(() -> new IncomeNotFoundException("Income with ID " + id + " not found"));
         return convertToDTO(income);
     }
-    @Transactional
     public IncomeDTO addIncome(IncomeDTO incomeDTO) {
         Income income = convertToEntity(incomeDTO);
         income = incomeRepository.save(income);
         return convertToDTO(income);
     }
-    @Transactional
     public IncomeDTO updateIncome(int id, IncomeDTO incomeDTO) {
         Income income = incomeRepository.findById(id)
                 .orElseThrow(() -> new IncomeNotFoundException("Income with ID " + id + " not found"));
@@ -52,14 +49,12 @@ public class IncomeService {
         income = incomeRepository.save(income);
         return convertToDTO(income);
     }
-    @Transactional
     public void deleteIncome(int id) {
         if (!incomeRepository.existsById(id)) {
             throw new IncomeNotFoundException("Income with ID " + id + " not found");
         }
         incomeRepository.deleteById(id);
     }
-    @Transactional
     private IncomeDTO convertToDTO(Income income) {
         IncomeDTO dto = new IncomeDTO();
         dto.setId(income.getId());
@@ -73,7 +68,6 @@ public class IncomeService {
         dto.setUpdatedAt(income.getUpdatedAt());  // Directly using the timestamp set by JPA
         return dto;
     }
-    @Transactional
     private Income convertToEntity(IncomeDTO dto) {
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new IncomeNotFoundException("User not found"));
@@ -90,7 +84,6 @@ public class IncomeService {
         income.setSource(dto.getSource());
         return income;
     }
-    @Transactional
     private void updateEntityWithDTO(Income income, IncomeDTO dto) {
         income.setAmount(dto.getAmount());
         income.setDate(dto.getDate());

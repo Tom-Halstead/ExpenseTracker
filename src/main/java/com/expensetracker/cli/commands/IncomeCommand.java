@@ -46,6 +46,8 @@ public class IncomeCommand implements UserAwareCommand {
 
     @CommandLine.Option(names = {"-u", "--update"}, description = "Update an existing income")
     private boolean update;
+    @CommandLine.Option(names = {"-e", "--exit"}, description = "Exit the expense command")
+    private boolean exit;
 
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
@@ -77,10 +79,10 @@ public class IncomeCommand implements UserAwareCommand {
                     break;
                 case "exit":
                     System.out.println();
-                    System.out.println("Previous Selections...");
+                    System.out.println("Exiting Income Management...");
                     System.out.println();
                     mainCommand.run();
-                    return;  // Exit the loop and end the method
+                    return;
                 default:
                     System.out.println("Invalid command. Please try again.");
                     break;
@@ -161,31 +163,33 @@ public class IncomeCommand implements UserAwareCommand {
     }
 
     private void updateIncome() {
+        Scanner scanner = new Scanner(System.in);
+
         System.out.print("Enter the ID of the income to update: ");
         int id = Integer.parseInt(scanner.nextLine());
         IncomeDTO existingIncome = incomeService.getIncomeById(id);
 
-        System.out.println("Current income details: " + existingIncome.toString());
+        System.out.println("Current income details: " + existingIncome);
 
+        // Use a single variable to capture user input for different fields
         System.out.print("Enter new amount (leave blank to keep current): ");
-        String amountInput = scanner.nextLine();
-        BigDecimal amount = amountInput.isEmpty() ? existingIncome.getAmount() : new BigDecimal(amountInput);
+        String userInput = scanner.nextLine();
+        BigDecimal amount = userInput.isEmpty() ? existingIncome.getAmount() : new BigDecimal(userInput);
 
         System.out.print("Enter new description (leave blank to keep current): ");
-        String userInput = scanner.nextLine();
+        userInput = scanner.nextLine();
         String description = userInput.isEmpty() ? existingIncome.getDescription() : userInput;
 
         System.out.print("Enter new source (leave blank to keep current): ");
         userInput = scanner.nextLine();
         String source = userInput.isEmpty() ? existingIncome.getSource() : userInput;
 
-        LocalDateTime date = existingIncome.getDate();
-
         LocalDateTime now = LocalDateTime.now();
-        IncomeDTO updatedIncome = new IncomeDTO(id, existingIncome.getUserId(), existingIncome.getCategoryId(), amount, date, description, source, existingIncome.getCreatedAt(), now);
+        IncomeDTO updatedIncome = new IncomeDTO(id, existingIncome.getUserId(), existingIncome.getCategoryId(), amount, existingIncome.getDate(), description, source, existingIncome.getCreatedAt(), now);
         incomeService.updateIncome(id, updatedIncome);
-        System.out.println("Income updated: " + updatedIncome.toString());
+        System.out.println("Income updated: " + updatedIncome);
     }
+
 
     public UserDTO getLoggedInUser() {
         return loggedInUser;

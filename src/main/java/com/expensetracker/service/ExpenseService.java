@@ -10,6 +10,7 @@ import com.expensetracker.exception.UserNotFoundException;
 import com.expensetracker.repository.ExpenseRepository;
 import com.expensetracker.repository.UserRepository;
 import com.expensetracker.repository.CategoryRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class ExpenseService {
 
     private final ExpenseRepository expenseRepository;
@@ -51,7 +53,7 @@ public class ExpenseService {
 
     public ExpenseDTO updateExpense(int id, ExpenseDTO expenseDTO) {
         Expense expense = expenseRepository.findById(id)
-                .orElseThrow(() -> new ExpenseNotFoundException("Expense not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Expense not found with id: " + id));  // Adjusted exception for consistency
         updateEntityWithDTO(expense, expenseDTO);
         expense = expenseRepository.save(expense);
         return convertToDTO(expense);
@@ -99,9 +101,17 @@ public class ExpenseService {
 
 
     private void updateEntityWithDTO(Expense expense, ExpenseDTO expenseDTO) {
-        expense.setDescription(expenseDTO.getDescription());
-        expense.setAmount(expenseDTO.getAmount());
-        expense.setDate(expenseDTO.getDate());
-        // Assuming the category and user are not updated in this method
+        if (expenseDTO.getAmount() != null) {
+            expense.setAmount(expenseDTO.getAmount());
+        }
+        if (expenseDTO.getDescription() != null) {
+            expense.setDescription(expenseDTO.getDescription());
+        }
+        if (expenseDTO.getDate() != null) {
+            expense.setDate(expenseDTO.getDate());
+        }
+        if (expenseDTO.isRecurring()) {
+            expense.setRecurring(expenseDTO.isRecurring());
+        }
     }
 }

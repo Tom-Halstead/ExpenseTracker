@@ -22,6 +22,8 @@ public class AppConfig {
                 .region(Region.US_EAST_2)
                 .build();
     }
+
+    // Global scanner bean for spring dependency injection
     @Bean
     public Scanner scanner() {
         return new Scanner(System.in);
