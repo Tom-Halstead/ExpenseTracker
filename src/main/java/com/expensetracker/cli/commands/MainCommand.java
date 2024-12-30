@@ -65,8 +65,8 @@ public class MainCommand implements Runnable, ApplicationListener<ApplicationEve
     }
 
 
-    // I think there's a more intuitive way of doing this especially using PicoCLI, but I have already manually created the implementation so I will keep it as it is.
-    // This is for learning purposes so anything manual is *advantageous*
+    // I think there's a more intuitive way of doing this especially using PicoCLI, but I have already manually created the implementation, so I will keep it as it is.
+    // This is for learning purposes so anything manual is *advantageous* to my advancement within programming
     private void initCommands() {
         IncomeCommand incomeCommand = applicationContext.getBean(IncomeCommand.class);
         incomeCommand.setLoggedInUser(loggedInUser);
